@@ -56,5 +56,4 @@ private fun shouldSkipClick(
     useLastParam: Boolean
 ): Boolean = job?.isCompleted != true && !useLastParam
 
-
 private const val DEBOUNCE_TIME = 2000L
