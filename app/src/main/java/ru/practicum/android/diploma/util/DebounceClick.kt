@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.util
 
 import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,6 +22,12 @@ fun Modifier.debounceClick(
     val scope = rememberCoroutineScope()
     var debounceJob: Job? by remember { mutableStateOf(null) }
 
+    DisposableEffect(Unit) {
+        onDispose {
+            debounceJob?.cancel()
+        }
+    }
+
     fun startDelay() {
         debounceJob = scope.launch {
             delay(delayMillis)
@@ -36,12 +43,18 @@ fun Modifier.debounceClick(
 
                     if (useLastParam) debounceJob?.cancel()
 
-                    if (debounceJob?.isCompleted != true && !useLastParam) continue
+                    if (shouldSkipClick(debounceJob, useLastParam)) continue
                     startDelay()
                 }
             }
         }
     )
 }
+
+private fun shouldSkipClick(
+    job: Job?,
+    useLastParam: Boolean
+): Boolean = job?.isCompleted != true && !useLastParam
+
 
 private const val DEBOUNCE_TIME = 2000L
