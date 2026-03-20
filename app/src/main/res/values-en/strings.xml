@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_home">Home</string>
+    <string name="nav_favorites">Favorites</string>
+    <string name="nav_team">Team</string>
+    <string name="screen_vacancy">Vacancy</string>
+    <string name="screen_vacancy_search">Vacancy Search</string>
+    <string name="screen_filter_settings">Filter Settings</string>
+    <string name="screen_work_location">Select Work Location</string>
+    <string name="screen_select_region">Select Region</string>
+    <string name="screen_select_industry">Select Industry</string>
+    <string name="screen_favorites">Favorites</string>
+    <string name="error_vacancies_list">Failed to get vacancies list</string>
+    <string name="error_no_internet">No internet connection</string>
+    <string name="error_vacancy_not_found">Vacancy not found or removed</string>
+    <string name="error_region_not_found">Region not found</string>
+    <string name="error_list_fetch">Failed to fetch list</string>
+    <string name="error_server">Server error</string>
+    <string name="error_empty_list">List is empty</string>
+    <string name="hint_search_vacancy">Enter query</string>
+    <string name="hint_search_region">Enter region</string>
+    <string name="hint_search_industry">Enter industry</string>
+    <string name="hint_salary_amount">Enter amount</string>
+    <string name="label_expected_salary">Expected salary</string>
+    <string name="filter_work_location">Work location</string>
+    <string name="filter_industry">Industry</string>
+    <string name="filter_country">Country</string>
+    <string name="filter_region">Region</string>
+    <string name="checkbox_hide_without_salary">Hide vacancies without salary</string>
+    <string name="cd_add_to_favorites">Add to favorites</string>
+    <string name="cd_remove_from_favorites">Remove from favorites</string>
+    <string name="cd_share">Share</string>
+    <string name="cd_filter">Filter</string>
+    <string name="cd_back">Back</string>
+    <string name="about_team">Made by</string>
+    <string name="no_vacancies_found">No vacancies found</string>
+    <string name="vacancies_found">
+        <item quantity="one">Found %d vacancy</item>
+        <item quantity="other">Found %d vacancies</item>
+    </string>
+</resources>
