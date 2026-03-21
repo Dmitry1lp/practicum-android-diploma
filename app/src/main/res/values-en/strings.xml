@@ -32,6 +32,9 @@
     <string name="cd_share">Share</string>
     <string name="cd_filter">Filter</string>
     <string name="cd_back">Back</string>
+    <string name="button_apply">Apply</string>
+    <string name="button_reset">Reset</string>
+    <string name="button_choose">Choose</string>
     <string name="about_team">Made by</string>
     <string name="no_vacancies_found">No vacancies found</string>
     <plurals name="vacancies_found">
