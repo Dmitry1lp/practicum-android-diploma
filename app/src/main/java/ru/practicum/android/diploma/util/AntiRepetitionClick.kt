@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.util
 
 import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,12 +35,8 @@ fun <T> Modifier.antiRepetitionClick(
 
     this.then(
         Modifier.pointerInput(Unit) {
-            awaitPointerEventScope {
-                while (true) {
-                    awaitFirstDown(requireUnconsumed = false)
-
-                    if (isLocked) continue
-
+            detectTapGestures {
+                if (!isLocked) {
                     onClick(param)
                     isLocked = true
                     startDelay()

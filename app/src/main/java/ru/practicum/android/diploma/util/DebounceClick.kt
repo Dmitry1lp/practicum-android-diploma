@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.util
 
-import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,15 +37,11 @@ fun Modifier.debounceClick(
 
     this.then(
         Modifier.pointerInput(Unit) {
-            awaitPointerEventScope {
-                while (true) {
-                    awaitFirstDown(requireUnconsumed = false)
+            detectTapGestures {
 
-                    if (useLastParam) debounceJob?.cancel()
+                if (useLastParam) debounceJob?.cancel()
 
-                    if (shouldSkipClick(debounceJob, useLastParam)) continue
-                    startDelay()
-                }
+                if (shouldSkipClick(debounceJob, useLastParam)) startDelay()
             }
         }
     )
