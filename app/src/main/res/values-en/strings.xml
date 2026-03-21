@@ -9,6 +9,7 @@
     <string name="screen_work_location">Select Work Location</string>
     <string name="screen_select_region">Select Region</string>
     <string name="screen_select_industry">Select Industry</string>
+    <string name="screen_select_country">Select Country</string>
     <string name="screen_favorites">Favorites</string>
     <string name="error_vacancies_list">Failed to get vacancies list</string>
     <string name="error_no_internet">No internet connection</string>
