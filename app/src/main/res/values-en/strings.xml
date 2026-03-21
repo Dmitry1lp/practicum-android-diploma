@@ -34,8 +34,8 @@
     <string name="cd_back">Back</string>
     <string name="about_team">Made by</string>
     <string name="no_vacancies_found">No vacancies found</string>
-    <string name="vacancies_found">
+    <plurals name="vacancies_found">
         <item quantity="one">Found %d vacancy</item>
         <item quantity="other">Found %d vacancies</item>
-    </string>
+    </plurals>
 </resources>
