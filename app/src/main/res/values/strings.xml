@@ -9,6 +9,7 @@
     <string name="screen_work_location">Выбор места работы</string>
     <string name="screen_select_region">Выбор региона</string>
     <string name="screen_select_industry">Выбор отрасли</string>
+    <string name="screen_country">Выбор страны</string>
     <string name="screen_favorites">Избранное</string>
     <string name="error_vacancies_list">Не удалось получить список вакансий</string>
     <string name="error_no_internet">Нет интернета</string>
@@ -32,12 +33,15 @@
     <string name="cd_share">Поделиться</string>
     <string name="cd_filter">Фильтр</string>
     <string name="cd_back">Назад</string>
+    <string name="button_choose">Выбрать</string>
+    <string name="button_apply">Применить</string>
+    <string name="button_reset">Сбросить</string>
     <string name="about_team">Над приложением работали</string>
     <string name="no_vacancies_found">Таких вакансий нет</string>
-    <string name="vacancies_found">
+    <plurals name="vacancies_found">
         <item quantity="one">Найдена %d вакансия</item>
         <item quantity="few">Найдено %d вакансии</item>
         <item quantity="many">Найдено %d вакансий</item>
         <item quantity="other">Найдено %d вакансий</item>
-    </string>
+    </plurals>
 </resources>
