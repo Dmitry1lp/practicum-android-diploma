@@ -38,9 +38,7 @@ fun Modifier.debounceClick(
     this.then(
         Modifier.pointerInput(Unit) {
             detectTapGestures {
-
                 if (useLastParam) debounceJob?.cancel()
-
                 if (shouldSkipClick(debounceJob, useLastParam)) startDelay()
             }
         }
