@@ -18,6 +18,13 @@ fun Modifier.debounceClick(
     delayMillis: Long = DEBOUNCE_TIME,
     useLastParam: Boolean = true,
     onDebouncedClick: () -> Unit
+): Modifier = debounceClick(delayMillis, useLastParam, Unit) { _ -> onDebouncedClick() }
+
+fun <T> Modifier.debounceClick(
+    delayMillis: Long = DEBOUNCE_TIME,
+    useLastParam: Boolean = true,
+    param: T,
+    onDebouncedClick: (T) -> Unit
 ): Modifier = composed {
     val scope = rememberCoroutineScope()
     var debounceJob: Job? by remember { mutableStateOf(null) }
@@ -31,7 +38,7 @@ fun Modifier.debounceClick(
     fun startDelay() {
         debounceJob = scope.launch {
             delay(delayMillis)
-            onDebouncedClick()
+            onDebouncedClick(param)
         }
     }
 
@@ -43,17 +50,12 @@ fun Modifier.debounceClick(
 
                     if (useLastParam) debounceJob?.cancel()
 
-                    if (shouldSkipClick(debounceJob, useLastParam)) continue
+                    if (debounceJob?.isCompleted != true && !useLastParam) continue
                     startDelay()
                 }
             }
         }
     )
 }
-
-private fun shouldSkipClick(
-    job: Job?,
-    useLastParam: Boolean
-): Boolean = job?.isCompleted != true && !useLastParam
 
 private const val DEBOUNCE_TIME = 2000L
