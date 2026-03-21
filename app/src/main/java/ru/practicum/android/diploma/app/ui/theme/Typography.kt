@@ -8,7 +8,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import ru.practicum.android.diploma.R
 
-
 val YsDisplayFontFamily = FontFamily(
     Font(R.font.ys_display_regular, weight = FontWeight.Normal),
     Font(R.font.ys_display_medium, weight = FontWeight.Medium)
@@ -63,5 +62,4 @@ val AppTypography = Typography(
         lineHeight = 16.sp,
         fontSize = 12.sp
     )
-
 )
