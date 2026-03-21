@@ -1,9 +1,45 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.PracticumAndroidDiploma" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Colors -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/onPrimary</item>
+
+        <item name="colorPrimaryContainer">@color/primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/onPrimaryContainer</item>
+
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/onSecondary</item>
+
+        <item name="colorTertiary">@color/tertiary</item>
+        <item name="colorOnTertiary">@color/onTertiary</item>
+
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorOnBackground">@color/onBackground</item>
+
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/onSurface</item>
+
+        <item name="colorSurfaceVariant">@color/surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/onSurfaceVariant</item>
+
+        <item name="colorSurfaceInverse">@color/inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/inverseOnSurface</item>
+
+        <item name="colorOutline">@color/outline</item>
+        <item name="colorOutlineVariant">@color/outlineVariant</item>
+
+
+        <!-- Typography -->
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.PlaylistMaker.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.PlaylistMaker.TitleMedium
+        </item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.PlaylistMaker.TitleSmall</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.PlaylistMaker.LabelMedium
+        </item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.PlaylistMaker.LabelSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.PlaylistMaker.BodyLarge</item>
+
     </style>
 
-    <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma" />
 </resources>
