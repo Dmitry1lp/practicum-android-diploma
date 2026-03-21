@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber") // исключения для детекта
+
 package ru.practicum.android.diploma.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
