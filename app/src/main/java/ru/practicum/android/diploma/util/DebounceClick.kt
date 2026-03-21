@@ -50,12 +50,17 @@ fun <T> Modifier.debounceClick(
 
                     if (useLastParam) debounceJob?.cancel()
 
-                    if (debounceJob?.isCompleted != true && !useLastParam) continue
+                    if (shouldSkipClick(debounceJob, useLastParam)) continue
                     startDelay()
                 }
             }
         }
     )
 }
+
+private fun shouldSkipClick(
+    job: Job?,
+    useLastParam: Boolean
+): Boolean = job?.isCompleted != true && !useLastParam
 
 private const val DEBOUNCE_TIME = 2000L
