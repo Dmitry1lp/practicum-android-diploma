@@ -1,6 +1,4 @@
 package ru.practicum.android.diploma.core.data.network
-
-
 /**
  * Формирует параметры запроса для поиска вакансий.
  *
@@ -33,7 +31,6 @@ package ru.practicum.android.diploma.core.data.network
  *
  * api.searchVacancies(params)
  */
-
 fun buildVacancyQuery(
     text: String,
     area: Int?,
