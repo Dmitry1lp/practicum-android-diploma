@@ -1,12 +1,10 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
-
 package ru.practicum.android.diploma.app.ui.theme
 
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.runtime.Composable
-
 
 @Composable
 fun primaryButtonColors() = ButtonDefaults.buttonColors(
