@@ -8,6 +8,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import ru.practicum.android.diploma.R
 
+/**
+ * Typography mapping:
+ * titleLarge - Bold / 32
+ * titleMedium - Medium / 22
+ * titleSmall - Medium / 16
+ * bodyLarge - Regular / 16
+ * labelMedium - Regular / 12
+ * Note:
+ * Bold отсутствует в ресурсах,
+ * используется Medium.
+ */
+
 val YsDisplayFontFamily = FontFamily(
     Font(R.font.ys_display_regular, weight = FontWeight.Normal),
     Font(R.font.ys_display_medium, weight = FontWeight.Medium)
@@ -15,51 +27,44 @@ val YsDisplayFontFamily = FontFamily(
 
 val AppTypography = Typography(
 
-    // Title
+    // Bold / 32
     titleLarge = TextStyle(
         fontFamily = YsDisplayFontFamily,
-        fontWeight = FontWeight.Medium,
-        lineHeight = 28.sp,
-        fontSize = 22.sp
+        fontWeight = FontWeight.Bold,
+        fontSize = 32.sp,
+        lineHeight = 36.sp
     ),
+
+    // Medium / 22
     titleMedium = TextStyle(
         fontFamily = YsDisplayFontFamily,
         fontWeight = FontWeight.Medium,
-        lineHeight = 24.sp,
-        fontSize = 19.sp
+        fontSize = 22.sp,
+        lineHeight = 28.sp
     ),
+
+    // Medium / 16
     titleSmall = TextStyle(
         fontFamily = YsDisplayFontFamily,
         fontWeight = FontWeight.Medium,
-        lineHeight = 20.sp,
-        fontSize = 16.sp
+        fontSize = 16.sp,
+        lineHeight = 20.sp
     ),
 
-    // Body
+    // Regular / 16
     bodyLarge = TextStyle(
         fontFamily = YsDisplayFontFamily,
         fontWeight = FontWeight.Normal,
-        lineHeight = 24.sp,
-        fontSize = 16.sp
+        fontSize = 16.sp,
+        lineHeight = 24.sp
     ),
 
-    // Label
-    labelLarge = TextStyle(
-        fontFamily = YsDisplayFontFamily,
-        fontWeight = FontWeight.Medium,
-        lineHeight = 20.sp,
-        fontSize = 14.sp
-    ),
+    // Regular / 12
     labelMedium = TextStyle(
         fontFamily = YsDisplayFontFamily,
         fontWeight = FontWeight.Normal,
-        lineHeight = 16.sp,
-        fontSize = 12.sp
-    ),
-    labelSmall = TextStyle(
-        fontFamily = YsDisplayFontFamily,
-        fontWeight = FontWeight.Normal,
-        lineHeight = 16.sp,
-        fontSize = 12.sp
+        fontSize = 12.sp,
+        lineHeight = 16.sp
     )
 )
+

@@ -4,14 +4,14 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 data class AppColors(
-    val switchCheckedThumb: Color,
-    val switchCheckedTrack: Color,
-    val switchUncheckedThumb: Color,
-    val switchUncheckedTrack: Color,
+
     val settingDrawable: Color,
 
-    val actionButtonContainer: Color,
-    val actionButtonContent: Color,
+    val primaryButtonContainer: Color,
+    val primaryButtonContent: Color,
+
+    val tertiaryButtonContainer: Color,
+    val tertiaryButtonContent: Color,
 
     val searchBarBackground: Color,
     val searchBarIcon: Color,
@@ -24,33 +24,31 @@ val LocalAppColors = staticCompositionLocalOf<AppColors> {
 }
 
 val LightAppColors = AppColors(
-    switchCheckedThumb = Blue,
-    switchCheckedTrack = SoftBlue,
-    switchUncheckedThumb = Gray,
-    switchUncheckedTrack = LightGray,
-    settingDrawable = Gray,
+    settingDrawable = Black,
 
-    actionButtonContainer = Black,
-    actionButtonContent = White,
+    primaryButtonContainer = Blue,
+    primaryButtonContent = White,
+
+    tertiaryButtonContainer = White,
+    tertiaryButtonContent = Red,
 
     searchBarBackground = LightGray,
-    searchBarIcon = Gray,
+    searchBarIcon = Black,
     searchBarText = Black,
-    searchBarHint = Gray
+    searchBarHint = LightGray
 )
 
 val DarkAppColors = AppColors(
-    switchCheckedThumb = Blue,
-    switchCheckedTrack = SoftBlue,
-    switchUncheckedThumb = Gray,
-    switchUncheckedTrack = LightGray,
-    settingDrawable = White,
+    settingDrawable = BlackNight,
 
-    actionButtonContainer = White,
-    actionButtonContent = Black,
+    primaryButtonContainer = Blue,
+    primaryButtonContent = White,
 
-    searchBarBackground = DarkGrayTertiary,
-    searchBarIcon = White,
-    searchBarText = White,
-    searchBarHint = Gray
+    tertiaryButtonContainer = Black,
+    tertiaryButtonContent = Red,
+
+    searchBarBackground = Gray,
+    searchBarIcon = Black,
+    searchBarText = Black,
+    searchBarHint = BlackNight
 )

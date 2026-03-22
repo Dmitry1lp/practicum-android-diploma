@@ -10,11 +10,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 private val LightColorScheme = lightColorScheme(
     primary = Blue, // активный элемент BottomNav, progress bar, курсор
     onPrimary = White,
-    primaryContainer = LightBlue,
-    onPrimaryContainer = DarkBlue,
     secondary = Gray, // неактивный элемент BottomNav, текст (перехода) фильтров
-    onSecondary = Black,
-    tertiary = Red,
+    onSecondary = Black, // текст в поле ввода
+    tertiary = Red, // цвет текста в кнопке
     onTertiary = White,
     background = White,
     onBackground = Black, // названия экранов, текст в ошибках поиска, стрелки в фильтрации, текст в фильтрах
@@ -26,22 +24,18 @@ private val LightColorScheme = lightColorScheme(
     inverseOnSurface = White,
     outline = Gray, // hint в строке поиска, текст зп
     outlineVariant = LightGray,
-    error = DarkRed,
     onError = White,
 )
 
 private val DarkColorScheme = darkColorScheme(
     primary = Blue, // активный элемент BottomNav, progress bar, курсор
     onPrimary = White,
-    primaryContainer = VeryDarkBlue,
-    onPrimaryContainer = LightBlue,
     secondary = Gray, // неактивный элемент BottomNav, текст (перехода) фильтров
-    onSecondary = Black,
-    tertiary = Red,
+    onSecondary = Black, // текст в поле ввода
+    tertiary = Red, // цвет текста в кнопке
     onTertiary = White,
     background = Black,
     onBackground = BlackNight, // названия экранов, текст в ошибках поиска, стрелки в фильтрации, текст в фильтрах
-    surface = AlmostBlack,
     onSurface = White,
     surfaceVariant = Gray, // цвет поля ввода поиска
     onSurfaceVariant = Gray,
@@ -49,8 +43,6 @@ private val DarkColorScheme = darkColorScheme(
     inverseOnSurface = Black,
     outline = BlackNight, // hint в строке поиска,
     outlineVariant = White,
-    error = LightRed,
-    onError = VeryDarkRed
 )
 
 @Composable
@@ -70,5 +62,4 @@ fun DiplomaTheme(
             content = content
         )
     }
-
 }
