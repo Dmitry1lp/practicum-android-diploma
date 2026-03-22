@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.core.data.network
 
-import ru.practicum.android.diploma.core.data.network.dto.VacancyQuery
+import ru.practicum.android.diploma.core.domain.model.VacancyQuery
 
 /**
  * Формирует параметры запроса для поиска вакансий.

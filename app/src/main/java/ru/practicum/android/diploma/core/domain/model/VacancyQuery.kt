@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.core.data.network.dto
+package ru.practicum.android.diploma.core.domain.model
 
 data class VacancyQuery(
     val text: String,
