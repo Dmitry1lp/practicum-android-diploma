@@ -11,5 +11,3 @@ val Gray = Color(0xFFAEAFB4)
 val Red = Color(0xFFF56B6C)
 val LightGray = Color(0xFFE6E8EB)
 val Background = Black.copy(alpha = 0.5f)
-
-
