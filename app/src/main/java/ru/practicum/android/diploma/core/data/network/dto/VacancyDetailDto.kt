@@ -15,4 +15,4 @@ data class VacancyDetailDto(
     val skills: List<String>?,
     val url: String?,
     val industry: FilterIndustryDto?
-): Response()
+) : Response()

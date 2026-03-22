@@ -14,11 +14,9 @@ import ru.practicum.android.diploma.core.data.network.dto.FilterAreaDto
  */
 
 fun flattenAreas(areas: List<FilterAreaDto>): List<FilterAreaDto> {
-
     val result = mutableListOf<FilterAreaDto>()
 
     fun traverse(area: FilterAreaDto) {
-
         val isRegion = area.parentId != null && area.areas.isNotEmpty()
         val isCity = area.areas.isEmpty()
 

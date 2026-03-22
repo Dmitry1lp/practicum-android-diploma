@@ -39,7 +39,6 @@ fun buildVacancyQuery(
     page: Int?,
     onlyWithSalary: Boolean?
 ): Map<String, String> {
-
     val params = mutableMapOf<String, String>()
 
     params["text"] = text

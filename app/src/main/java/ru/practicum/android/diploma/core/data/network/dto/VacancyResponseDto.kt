@@ -5,4 +5,4 @@ data class VacancyResponseDto(
     val pages: Int,
     val page: Int,
     val vacancies: List<VacancyDetailDto>
-): Response()
+) : Response()

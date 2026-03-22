@@ -4,7 +4,6 @@ import ru.practicum.android.diploma.core.data.network.dto.VacancyDetailDto
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 
 fun VacancyDetailDto.toDomain(): Vacancy {
-
     return Vacancy(
         id = id,
         name = name,
