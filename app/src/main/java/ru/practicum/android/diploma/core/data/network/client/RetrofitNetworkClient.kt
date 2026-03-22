@@ -17,37 +17,26 @@ import java.io.IOException
 class RetrofitNetworkClient(
     private val api: VacancyApi
 ) : NetworkClient {
-    override suspend fun doRequest(dto: Any): Response {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response: Response = when (dto) {
-                    is VacancySearchRequest -> {
-                        api.searchVacancies(dto.params)
-                    }
-
-                    is VacancyDetailsRequest -> {
-                        api.getVacancyDetails(dto.id)
-                    }
-
-                    is AreasRequest -> {
-                        AreasResponse(api.getAreas())
-                    }
-
-                    is IndustriesRequest -> {
-                        IndustriesResponse(api.getIndustries())
-                    }
-
-                    else -> Response().apply { resultCode = RESULT_BAD_REQUEST }
-                }
-                response.apply { resultCode = RESULT_OK }
-            } catch (e: IOException) { // Проблемы с сетью, таймауты
-                Log.e(TAG, "Network error", e)
-                Response().apply { resultCode = RESULT_SERVER_ERROR }
-            } catch (e: HttpException) { // Ошибки HTTP, например 404, 500
-                Log.e(TAG, "HTTP error", e)
-                Response().apply { resultCode = e.code() }
-            }
+    override suspend fun doRequest(dto: Any): Response = withContext(Dispatchers.IO) {
+        try {
+            handleRequest(dto)
+        } catch (e: IOException) {
+            Log.e(TAG, "Network error", e)
+            Response().apply { resultCode = RESULT_SERVER_ERROR }
+        } catch (e: HttpException) {
+            Log.e(TAG, "HTTP error", e)
+            Response().apply { resultCode = e.code() }
         }
+    }
+
+    private suspend fun handleRequest(dto: Any): Response {
+        return when (dto) {
+            is VacancySearchRequest -> api.searchVacancies(dto.params)
+            is VacancyDetailsRequest -> api.getVacancyDetails(dto.id)
+            is AreasRequest -> AreasResponse(api.getAreas())
+            is IndustriesRequest -> IndustriesResponse(api.getIndustries())
+            else -> Response().apply { resultCode = RESULT_BAD_REQUEST }
+        }.apply { resultCode = RESULT_OK }
     }
 
     companion object {
