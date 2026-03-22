@@ -1,4 +1,7 @@
 package ru.practicum.android.diploma.core.data.network
+
+import ru.practicum.android.diploma.core.data.network.dto.VacancyQuery
+
 /**
  * Формирует параметры запроса для поиска вакансий.
  *
@@ -32,26 +35,21 @@ package ru.practicum.android.diploma.core.data.network
  * api.searchVacancies(params)
  */
 fun buildVacancyQuery(
-    text: String,
-    area: Int?,
-    industry: Int?,
-    salary: Int?,
-    page: Int?,
-    onlyWithSalary: Boolean?
+    query: VacancyQuery
 ): Map<String, String> {
     val params = mutableMapOf<String, String>()
 
-    params["text"] = text
+    params["text"] = query.text
 
-    area?.let { params["area"] = it.toString() }
+    query.area?.let { params["area"] = it.toString() }
 
-    industry?.let { params["industry"] = it.toString() }
+    query.industry?.let { params["industry"] = it.toString() }
 
-    salary?.let { params["salary"] = it.toString() }
+    query.salary?.let { params["salary"] = it.toString() }
 
-    page?.let { params["page"] = it.toString() }
+    query.page?.let { params["page"] = it.toString() }
 
-    if (onlyWithSalary == true) {
+    if (query.onlyWithSalary == true) {
         params["only_with_salary"] = "true"
     }
 
