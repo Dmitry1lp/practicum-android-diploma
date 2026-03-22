@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
@@ -32,7 +33,6 @@ fun NavigationRoot(
             rememberSaveableStateHolderNavEntryDecorator(),
             rememberViewModelStoreNavEntryDecorator()
         ),
-        onBack = { backStack.removeLastOrNull() },
         entryProvider = appEntryProvider(backStack)
     )
 }
@@ -42,7 +42,7 @@ private fun appEntryProvider(
 ) = entryProvider<NavKey> {
     entry<Route.Team> {
         // TODO(feature-team): интегрировать TeamScreen
-        ScreenPlaceholder(it.javaClass.simpleName)
+        ScreenPlaceholder(it::class.simpleName)
     }
 
     entry<Route.Favorites> {
@@ -67,7 +67,7 @@ private fun appEntryProvider(
          *     onVacancyClick = { id -> backStack.add(Route.Vacancy(id)) }
          * )
          */
-        ScreenPlaceholder(it.javaClass.simpleName)
+        ScreenPlaceholder(it::class.simpleName)
     }
 
     entry<Route.Search> {
@@ -92,7 +92,7 @@ private fun appEntryProvider(
          *     onVacancyClick = { id -> backStack.add(Route.Vacancy(id)) }
          * )
          */
-        ScreenPlaceholder(it.javaClass.simpleName)
+        ScreenPlaceholder(it::class.simpleName)
     }
 
     entry<Route.Vacancy> { route ->
@@ -120,7 +120,7 @@ private fun appEntryProvider(
          * )
          */
 
-        ScreenPlaceholder(route.javaClass.simpleName)
+        ScreenPlaceholder(route::class.simpleName)
     }
 
     entry<Route.Filters> {
@@ -145,13 +145,13 @@ private fun appEntryProvider(
          *     onVacancyClick = { id -> backStack.add(Route.Vacancy(id)) }
          * )
          */
-        ScreenPlaceholder(it.javaClass.simpleName)
+        ScreenPlaceholder(it::class.simpleName)
     }
 }
 
 @Composable
 private fun ScreenPlaceholder(
-    text: String,
+    text: String?,
     modifier: Modifier = Modifier
 ) {
     Box(
