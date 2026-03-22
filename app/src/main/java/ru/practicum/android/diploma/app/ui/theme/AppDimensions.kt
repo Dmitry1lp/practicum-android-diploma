@@ -10,7 +10,7 @@ object AppDimensions {
     val paddingMedium = 16.dp
     val paddingSmall = 8.dp
 
-    val buttonContentPadding = PaddingValues(top = 20.dp, bottom = 20.dp, start = 8.dp, end = 8.dp)
+    val buttonContentPadding = PaddingValues(vertical = 20.dp, horizontal = 8.dp)
 
     val rowListItemHeight = 60.dp
 

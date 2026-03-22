@@ -35,13 +35,13 @@ private val DarkColorScheme = darkColorScheme(
     tertiary = Red, // цвет текста в кнопке
     onTertiary = White,
     background = Black,
-    onBackground = BlackNight, // названия экранов, текст в ошибках поиска, стрелки в фильтрации, текст в фильтрах
+    onBackground = White, // названия экранов, текст в ошибках поиска, стрелки в фильтрации, текст в фильтрах
     onSurface = White,
     surfaceVariant = Gray, // цвет поля ввода поиска
     onSurfaceVariant = Gray,
     inverseSurface = White,
     inverseOnSurface = Black,
-    outline = BlackNight, // hint в строке поиска,
+    outline = White, // hint в строке поиска,
     outlineVariant = White,
 )
 

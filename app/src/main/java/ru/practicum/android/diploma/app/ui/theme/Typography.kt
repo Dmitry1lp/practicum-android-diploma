@@ -32,7 +32,7 @@ val AppTypography = Typography(
         fontFamily = YsDisplayFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 32.sp,
-        lineHeight = 36.sp
+        lineHeight = 38.sp
     ),
 
     // Medium / 22
@@ -40,7 +40,7 @@ val AppTypography = Typography(
         fontFamily = YsDisplayFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 22.sp,
-        lineHeight = 28.sp
+        lineHeight = 26.sp
     ),
 
     // Medium / 16
@@ -48,7 +48,7 @@ val AppTypography = Typography(
         fontFamily = YsDisplayFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
-        lineHeight = 20.sp
+        lineHeight = 19.sp
     ),
 
     // Regular / 16
@@ -56,7 +56,7 @@ val AppTypography = Typography(
         fontFamily = YsDisplayFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
-        lineHeight = 24.sp
+        lineHeight = 19.sp
     ),
 
     // Regular / 12

@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 
 data class AppColors(
 
-    val settingDrawable: Color,
+    val iconColor: Color, // иконки в фиче Вакансии
 
     val primaryButtonContainer: Color,
     val primaryButtonContent: Color,
@@ -24,7 +24,7 @@ val LocalAppColors = staticCompositionLocalOf<AppColors> {
 }
 
 val LightAppColors = AppColors(
-    settingDrawable = Black,
+    iconColor = Black,
 
     primaryButtonContainer = Blue,
     primaryButtonContent = White,
@@ -39,7 +39,7 @@ val LightAppColors = AppColors(
 )
 
 val DarkAppColors = AppColors(
-    settingDrawable = BlackNight,
+    iconColor = White,
 
     primaryButtonContainer = Blue,
     primaryButtonContent = White,
@@ -50,5 +50,5 @@ val DarkAppColors = AppColors(
     searchBarBackground = Gray,
     searchBarIcon = Black,
     searchBarText = Black,
-    searchBarHint = BlackNight
+    searchBarHint = White
 )
