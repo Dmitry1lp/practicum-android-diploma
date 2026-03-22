@@ -3,19 +3,27 @@
 package ru.practicum.android.diploma.app.navigation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
-import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 
@@ -23,21 +31,56 @@ import androidx.navigation3.ui.NavDisplay
 fun NavigationRoot(
     modifier: Modifier = Modifier
 ) {
-    val backStack = rememberNavBackStack(Route.Search)
-
-    NavDisplay(
-        modifier = modifier,
-        backStack = backStack,
-        entryDecorators = listOf(
-            rememberSaveableStateHolderNavEntryDecorator(),
-            rememberViewModelStoreNavEntryDecorator()
-        ),
-        entryProvider = appEntryProvider(backStack)
+    val bottomNavItems = listOf(
+        Route.Search,
+        Route.Favorites,
+        Route.Team
     )
+
+    val topLevelBackStack = remember { TopLevelBackStack<NavKey>(Route.Search) }
+
+    Scaffold(
+        bottomBar = {
+            if (topLevelBackStack.shouldDrawBottomNavBar()) {
+                NavigationBar {
+                    bottomNavItems.forEach { item ->
+                        val selected = topLevelBackStack.topLevelKey == item
+
+                        NavigationBarItem(
+                            selected = selected,
+                            onClick = { topLevelBackStack.switchTopLevel(item) },
+                            icon = {
+                                Icon(
+                                    painterResource(item.icon),
+                                    contentDescription = null
+                                ) //TODO: recolor based on state
+                            },
+                            label = {
+                                Text(stringResource(item.label))
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    ) { innerPaddings ->
+        NavDisplay(
+            modifier = modifier.padding(innerPaddings),
+            backStack = topLevelBackStack.backStack,
+            entryDecorators = listOf(
+                rememberSaveableStateHolderNavEntryDecorator(),
+                rememberViewModelStoreNavEntryDecorator()
+            ),
+            onBack = { topLevelBackStack.removeLast() },
+            entryProvider = appEntryProvider(topLevelBackStack)
+        )
+    }
 }
 
+private fun TopLevelBackStack<NavKey>.shouldDrawBottomNavBar(): Boolean = this.backStack.last() is BottomNavItem
+
 private fun appEntryProvider(
-    backStack: NavBackStack<NavKey>
+    topLevelBackStack: TopLevelBackStack<NavKey>
 ) = entryProvider<NavKey> {
     entry<Route.Team> {
         // TODO(feature-team): интегрировать TeamScreen
@@ -52,9 +95,9 @@ private fun appEntryProvider(
          * - Экраны не должны принимать в качестве аргумента ViewModel
          *      и вместо этого должны принимать в качестве аргументов
          *      все необходимые состояния state и коллбэки
-         * - Для перемещения на другой экран используется backStack и метод add():
-         *      например, backStack.add(Route.Search)
-         * - Для перемещения назад используется backStack и метод removeLastOrNull()
+         * - Для перемещения на другой экран используется topLevelBackStack и метод add():
+         *      например, topLevelBackStack.add(Route.Search)
+         * - Для перемещения назад используется topLevelBackStack и метод removeLast()
          *
          * Пример реализации:
          *
@@ -63,7 +106,7 @@ private fun appEntryProvider(
          * SearchScreen(
          *     state = viewmodel.state,
          *     onQueryChange = viewmodel::onQueryChange,
-         *     onVacancyClick = { id -> backStack.add(Route.Vacancy(id)) }
+         *     onVacancyClick = { id -> topLevelBackStack.add(Route.Vacancy(id)) }
          * )
          */
         ScreenPlaceholder(it::class.simpleName)
@@ -77,9 +120,9 @@ private fun appEntryProvider(
          * - Экраны не должны принимать в качестве аргумента ViewModel
          *      и вместо этого должны принимать в качестве аргументов
          *      все необходимые состояния state и коллбэки
-         * - Для перемещения на другой экран используется backStack и метод add():
-         *      например, backStack.add(Route.Search)
-         * - Для перемещения назад используется backStack и метод removeLastOrNull()
+         * - Для перемещения на другой экран используется topLevelBackStack и метод add():
+         *      например, topLevelBackStack.add(Route.Search)
+         * - Для перемещения назад используется topLevelBackStack и метод removeLast()
          *
          * Пример реализации:
          *
@@ -88,10 +131,12 @@ private fun appEntryProvider(
          * SearchScreen(
          *     state = viewmodel.state,
          *     onQueryChange = viewmodel::onQueryChange,
-         *     onVacancyClick = { id -> backStack.add(Route.Vacancy(id)) }
+         *     onVacancyClick = { id -> topLevelBackStack.add(Route.Vacancy(id)) }
          * )
          */
-        ScreenPlaceholder(it::class.simpleName)
+        ScreenPlaceholder(it::class.simpleName) {
+            topLevelBackStack.add(Route.Vacancy("Dmitrii"))
+        }
     }
 
     entry<Route.Vacancy> { route ->
@@ -104,9 +149,9 @@ private fun appEntryProvider(
          * - Экраны не должны принимать в качестве аргумента ViewModel
          *      и вместо этого должны принимать в качестве аргументов
          *      все необходимые состояния state и коллбэки
-         * - Для перемещения на другой экран используется backStack и метод add():
-         *      например, backStack.add(Route.Search)
-         * - Для перемещения назад используется backStack и метод removeLastOrNull()
+         * - Для перемещения на другой экран используется topLevelBackStack и метод add():
+         *      например, topLevelBackStack.add(Route.Search)
+         * - Для перемещения назад используется topLevelBackStack и метод removeLast()
          *
          * Пример реализации:
          *
@@ -115,7 +160,7 @@ private fun appEntryProvider(
          * SearchScreen(
          *     state = viewmodel.state,
          *     onQueryChange = viewmodel::onQueryChange,
-         *     onVacancyClick = { id -> backStack.add(Route.Vacancy(id)) }
+         *     onVacancyClick = { id -> topLevelBackStack.add(Route.Vacancy(id)) }
          * )
          */
 
@@ -130,9 +175,9 @@ private fun appEntryProvider(
          * - Экраны не должны принимать в качестве аргумента ViewModel
          *      и вместо этого должны принимать в качестве аргументов
          *      все необходимые состояния state и коллбэки
-         * - Для перемещения на другой экран используется backStack и метод add():
-         *      например, backStack.add(Route.Search)
-         * - Для перемещения назад используется backStack и метод removeLastOrNull()
+         * - Для перемещения на другой экран используется topLevelBackStack и метод add():
+         *      например, topLevelBackStack.add(Route.Search)
+         * - Для перемещения назад используется topLevelBackStack и метод removeLast()
          *
          * Пример реализации:
          *
@@ -141,7 +186,7 @@ private fun appEntryProvider(
          * SearchScreen(
          *     state = viewmodel.state,
          *     onQueryChange = viewmodel::onQueryChange,
-         *     onVacancyClick = { id -> backStack.add(Route.Vacancy(id)) }
+         *     onVacancyClick = { id -> topLevelBackStack.add(Route.Vacancy(id)) }
          * )
          */
         ScreenPlaceholder(it::class.simpleName)
@@ -151,12 +196,14 @@ private fun appEntryProvider(
 @Composable
 private fun ScreenPlaceholder(
     text: String?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.Red),
+            .background(Color.Red)
+            .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -165,4 +212,10 @@ private fun ScreenPlaceholder(
             color = Color.White
         )
     }
+}
+
+@Preview
+@Composable
+fun Prev() {
+    NavigationRoot(Modifier.fillMaxSize())
 }
