@@ -35,11 +35,10 @@ sealed interface Route : NavKey {
 
 }
 
-interface BottomNavItem {
+interface BottomNavItem : NavKey {
     @get:DrawableRes
     val icon: Int
 
     @get:StringRes
     val label: Int
 }
-

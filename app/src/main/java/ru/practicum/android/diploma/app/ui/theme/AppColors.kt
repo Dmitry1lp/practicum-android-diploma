@@ -16,7 +16,9 @@ data class AppColors(
     val searchBarBackground: Color,
     val searchBarIcon: Color,
     val searchBarText: Color,
-    val searchBarHint: Color
+    val searchBarHint: Color,
+
+    val bottomNavBarDivider: Color
 )
 
 val LocalAppColors = staticCompositionLocalOf<AppColors> {
@@ -35,7 +37,9 @@ val LightAppColors = AppColors(
     searchBarBackground = LightGray,
     searchBarIcon = Black,
     searchBarText = Black,
-    searchBarHint = LightGray
+    searchBarHint = LightGray,
+
+    bottomNavBarDivider = LightGray
 )
 
 val DarkAppColors = AppColors(
@@ -50,5 +54,7 @@ val DarkAppColors = AppColors(
     searchBarBackground = Gray,
     searchBarIcon = Black,
     searchBarText = Black,
-    searchBarHint = White
+    searchBarHint = White,
+
+    bottomNavBarDivider = LightGray
 )

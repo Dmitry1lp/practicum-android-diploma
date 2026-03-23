@@ -4,8 +4,11 @@ package ru.practicum.android.diploma.app.ui.theme
 
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun primaryButtonColors() = ButtonDefaults.buttonColors(
@@ -32,4 +35,13 @@ fun appSearchBarColors() = SearchBarDefaults.colors(
         focusedTrailingIconColor = LocalAppColors.current.searchBarIcon,
         unfocusedTrailingIconColor = LocalAppColors.current.searchBarIcon
     )
+)
+
+@Composable
+fun appNavBarItemColors() = NavigationBarItemDefaults.colors(
+    selectedIconColor = MaterialTheme.colorScheme.primary,
+    selectedTextColor = MaterialTheme.colorScheme.primary,
+    unselectedIconColor = MaterialTheme.colorScheme.secondary,
+    unselectedTextColor = MaterialTheme.colorScheme.secondary,
+    indicatorColor = Color.Transparent
 )
