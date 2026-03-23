@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,19 +20,21 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import org.koin.androidx.compose.koinViewModel
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 
 @Composable
 fun NavigationRoot(
     modifier: Modifier = Modifier
 ) {
+    val navigationViewModel: NavigationViewModel = koinViewModel()
+    val topLevelBackStack = navigationViewModel.backStack
     val bottomNavItems = listOf(
         Route.Search,
         Route.Favorites,
         Route.Team
     )
 
-    val topLevelBackStack = remember { TopLevelBackStack<NavKey>(Route.Search) }
 
     Scaffold(
         bottomBar = {
