@@ -8,26 +8,30 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import ru.practicum.android.diploma.R
 
-/**
- * Typography mapping:
- * titleLarge - Bold / 32
- * titleMedium - Medium / 22
- * titleSmall - Medium / 16
- * bodyLarge - Regular / 16
- * labelMedium - Regular / 12
- * Note:
- * Bold отсутствует в ресурсах,
- * используется Medium.
- */
-
 val YsDisplayFontFamily = FontFamily(
     Font(R.font.ys_display_regular, weight = FontWeight.Normal),
     Font(R.font.ys_display_medium, weight = FontWeight.Medium)
 )
 
+/**
+ * Typography mapping:
+ *
+ * `titleLarge` - Bold/32
+ *
+ * `titleMedium` - Medium/22
+ *
+ * `titleSmall` - Medium/16
+ *
+ * `bodyLarge` - Regular/16
+ *
+ * `labelMedium` - Regular/12
+ *
+ * Note:
+ * Bold отсутствует в ресурсах,
+ * используется Medium.
+ */
 val AppTypography = Typography(
-
-    // Bold / 32
+    // Bold/32
     titleLarge = TextStyle(
         fontFamily = YsDisplayFontFamily,
         fontWeight = FontWeight.Bold,
@@ -35,7 +39,7 @@ val AppTypography = Typography(
         lineHeight = 38.sp
     ),
 
-    // Medium / 22
+    // Medium/22
     titleMedium = TextStyle(
         fontFamily = YsDisplayFontFamily,
         fontWeight = FontWeight.Medium,
@@ -43,7 +47,7 @@ val AppTypography = Typography(
         lineHeight = 26.sp
     ),
 
-    // Medium / 16
+    // Medium/16
     titleSmall = TextStyle(
         fontFamily = YsDisplayFontFamily,
         fontWeight = FontWeight.Medium,
@@ -51,7 +55,7 @@ val AppTypography = Typography(
         lineHeight = 19.sp
     ),
 
-    // Regular / 16
+    // Regular/16
     bodyLarge = TextStyle(
         fontFamily = YsDisplayFontFamily,
         fontWeight = FontWeight.Normal,
@@ -59,7 +63,7 @@ val AppTypography = Typography(
         lineHeight = 19.sp
     ),
 
-    // Regular / 12
+    // Regular/12
     labelMedium = TextStyle(
         fontFamily = YsDisplayFontFamily,
         fontWeight = FontWeight.Normal,
@@ -67,4 +71,3 @@ val AppTypography = Typography(
         lineHeight = 16.sp
     )
 )
-
