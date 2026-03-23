@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.core.utils
+package ru.practicum.android.diploma.util
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.runtime.DisposableEffect
@@ -14,50 +14,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-fun Modifier.antiRepetitionClick(
-    lockTimeMillis: Long = LOCK_TIME,
-    onClick: () -> Unit
-): Modifier = antiRepetitionClick(lockTimeMillis, Unit) { _ -> onClick() }
-
-fun <T> Modifier.antiRepetitionClick(
-    lockTimeMillis: Long = LOCK_TIME,
-    param: T,
-    onClick: (T) -> Unit
-): Modifier = composed {
-    val scope = rememberCoroutineScope()
-    var isLocked by remember { mutableStateOf(false) }
-
-    fun startDelay() {
-        scope.launch {
-            delay(lockTimeMillis)
-            isLocked = false
-        }
-    }
-
-    this.then(
-        Modifier.pointerInput(Unit) {
-            detectTapGestures {
-                if (!isLocked) {
-                    onClick(param)
-                    isLocked = true
-                    startDelay()
-                }
-            }
-        }
-    )
-}
-
 fun Modifier.debounceClick(
     delayMillis: Long = DEBOUNCE_TIME,
     useLastParam: Boolean = true,
     onDebouncedClick: () -> Unit
-): Modifier = debounceClick(delayMillis, useLastParam, Unit) { _ -> onDebouncedClick() }
-
-fun <T> Modifier.debounceClick(
-    delayMillis: Long = DEBOUNCE_TIME,
-    useLastParam: Boolean = true,
-    param: T,
-    onDebouncedClick: (T) -> Unit
 ): Modifier = composed {
     val scope = rememberCoroutineScope()
     var debounceJob: Job? by remember { mutableStateOf(null) }
@@ -71,7 +31,7 @@ fun <T> Modifier.debounceClick(
     fun startDelay() {
         debounceJob = scope.launch {
             delay(delayMillis)
-            onDebouncedClick(param)
+            onDebouncedClick()
         }
     }
 
@@ -79,11 +39,16 @@ fun <T> Modifier.debounceClick(
         Modifier.pointerInput(Unit) {
             detectTapGestures {
                 if (useLastParam) debounceJob?.cancel()
-                if (debounceJob?.isCompleted == true || useLastParam) startDelay()
+                if (shouldSkipClick(debounceJob, useLastParam)) startDelay()
             }
         }
     )
 }
 
-private const val LOCK_TIME = 300L
+private fun shouldSkipClick(
+    job: Job?,
+    useLastParam: Boolean
+): Boolean = job?.isCompleted != true && !useLastParam
+
+
 private const val DEBOUNCE_TIME = 2000L
