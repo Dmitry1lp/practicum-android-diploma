@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.util
+package ru.practicum.android.diploma.core.utils
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.runtime.DisposableEffect
@@ -49,6 +49,5 @@ private fun shouldSkipClick(
     job: Job?,
     useLastParam: Boolean
 ): Boolean = job?.isCompleted != true && !useLastParam
-
 
 private const val DEBOUNCE_TIME = 2000L
