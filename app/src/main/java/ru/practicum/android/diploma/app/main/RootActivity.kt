@@ -1,21 +1,26 @@
 package ru.practicum.android.diploma.app.main
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import ru.practicum.android.diploma.BuildConfig
-import ru.practicum.android.diploma.R
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
+import ru.practicum.android.diploma.app.navigation.NavigationRoot
+import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 
-class RootActivity : AppCompatActivity() {
+class RootActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_root)
-
-        // Пример использования access token для HeadHunter API
-        networkRequestExample(accessToken = BuildConfig.API_ACCESS_TOKEN)
-    }
-
-    private fun networkRequestExample(accessToken: String) {
-        // ...
+        enableEdgeToEdge()
+        setContent {
+            DiplomaTheme {
+                NavigationRoot(
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
     }
 
 }
