@@ -8,7 +8,7 @@ data class FilterAreaDto(
     val parentId: Int?,
     val areas: List<FilterAreaDto>
 ) {
-    fun FilterAreaDto.toDomain(): FilterArea {
+    fun toDomain(): FilterArea {
         return FilterArea(
             id = id,
             name = name
