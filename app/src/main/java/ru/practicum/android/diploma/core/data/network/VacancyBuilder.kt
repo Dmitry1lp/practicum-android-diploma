@@ -40,7 +40,8 @@ fun buildVacancyQuery(
     val params = mutableMapOf<String, String>()
 
     query.text.takeIf { it.isNotBlank() }?.let {
-    params["text"] = query.text }
+        params["text"] = query.text
+    }
 
     query.area?.let { params["area"] = it.toString() }
 
