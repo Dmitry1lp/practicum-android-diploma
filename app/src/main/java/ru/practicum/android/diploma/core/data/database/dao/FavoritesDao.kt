@@ -15,8 +15,8 @@ interface FavoritesDao {
     suspend fun insert(vacancy: FavoriteVacancyEntity)
 
     // удалить
-    @Delete
-    suspend fun delete(vacancy: FavoriteVacancyEntity)
+    @Query("DELETE FROM favorites WHERE id = :id")
+    suspend fun deleteById(id: String)
 
     // получить список избранных вакансий
     @Query("SELECT * FROM favorites")
