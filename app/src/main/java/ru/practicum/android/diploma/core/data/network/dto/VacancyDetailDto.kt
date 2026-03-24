@@ -17,19 +17,4 @@ data class VacancyDetailDto(
     val skills: List<String>?,
     val url: String?,
     val industry: FilterIndustryDto?
-) : Response() {
-    fun VacancyDetailDto.toDomain(): Vacancy {
-        return Vacancy(
-            id = id,
-            name = name,
-            description = description ?: "",
-            employerName = employer?.name ?: "",
-            salaryFrom = salary?.from,
-            salaryTo = salary?.to,
-            currency = salary?.currency,
-            city = address?.city ?: area?.name ?: "",
-            skills = skills ?: emptyList(),
-            url = url ?: ""
-        )
-    }
-}
+) : Response()
