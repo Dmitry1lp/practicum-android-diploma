@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.core.data.network.dto
 
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 
-data class VacancyDetailDto(
+class VacancyDetailDto(
     val id: String,
     val name: String,
     val description: String?,
@@ -17,4 +17,19 @@ data class VacancyDetailDto(
     val skills: List<String>?,
     val url: String?,
     val industry: FilterIndustryDto?
-) : Response()
+) : Response() {
+    fun toDomain(): Vacancy {
+        return Vacancy(
+            id = id,
+            name = name,
+            description = description ?: "",
+            employerName = employer?.name ?: "",
+            salaryFrom = salary?.from,
+            salaryTo = salary?.to,
+            currency = salary?.currency,
+            city = address?.city ?: area?.name ?: "",
+            skills = skills ?: emptyList(),
+            url = url ?: ""
+        )
+    }
+}
