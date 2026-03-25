@@ -44,4 +44,10 @@
         <item quantity="many">Найдено %d вакансий</item>
         <item quantity="other">Найдено %d вакансий</item>
     </plurals>
+    <string-array name="developers">
+        <item>Дмитрий Крылов</item>
+        <item>Дмитрий Перов</item>
+        <item>Иван Свиридов</item>
+        <item>Сергей Аникин</item>
+    </string-array>
 </resources>
