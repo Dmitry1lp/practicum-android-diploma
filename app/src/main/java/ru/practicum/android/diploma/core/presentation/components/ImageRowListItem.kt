@@ -51,7 +51,7 @@ fun ImageListItem(
                 .size(AppDimensions.imageRowListItemImageSize)
                 .border(
                     border = BorderStroke(
-                        width = AppDimensions.imageBorderWidth,
+                        width = AppDimensions.imageRowListItemImageBorderWidth,
                         color = MaterialTheme.colorScheme.secondary
                     ),
                     shape = shape
