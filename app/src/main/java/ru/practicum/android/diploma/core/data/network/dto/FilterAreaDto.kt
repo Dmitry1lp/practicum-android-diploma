@@ -49,4 +49,3 @@ fun flattenAreas(areas: List<FilterAreaDto>): List<FilterAreaDto> {
 
     return result.sortedBy { it.name }
 }
-

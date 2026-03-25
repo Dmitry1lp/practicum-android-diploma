@@ -46,8 +46,8 @@ fun VacancyListItem(
 
 @Preview
 @Composable
-private fun VacancyListItemPreviewLight() {
-    DiplomaTheme() {
+private fun VacancyListItemPreview() {
+    DiplomaTheme {
         VacancyListItem(
             model = null,
             title = "Android-разработчик, Москва",
