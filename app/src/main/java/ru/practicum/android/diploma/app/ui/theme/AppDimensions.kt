@@ -14,6 +14,12 @@ object AppDimensions {
 
     val rowListItemHeight = 60.dp
 
+    val imageRowListItemContentPadding = PaddingValues(vertical = 9.dp, horizontal = 16.dp)
+    val imageRowListItemImageSize = DpSize(48.dp, 48.dp)
+    val imageRowListItemImageRadius = 12.dp
+
+    val imageBorderWidth = 1.dp
+
     val loadingIndicatorSize = DpSize(48.dp, 48.dp)
     val searchBarIconSize = DpSize(24.dp, 24.dp)
 
