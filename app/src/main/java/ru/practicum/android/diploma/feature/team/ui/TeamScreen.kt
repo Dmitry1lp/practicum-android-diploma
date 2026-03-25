@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package ru.practicum.android.diploma.feature.team.ui
 
 import androidx.compose.foundation.layout.Column
@@ -17,18 +19,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.app.ui.theme.AppDimensions.heightTopBar
+import ru.practicum.android.diploma.app.ui.theme.AppDimensions.paddingBig
+import ru.practicum.android.diploma.app.ui.theme.AppDimensions.paddingMedium
+import ru.practicum.android.diploma.app.ui.theme.AppDimensions.paddingVeryBig
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TeamScreen() {
+fun TeamScreen(
+    modifier: Modifier = Modifier
+) {
     val developers = stringArrayResource(R.array.developers)
 
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.height(64.dp),
+                modifier = Modifier.height(heightTopBar),
                 title = {
                     Text(
                         text = stringResource(R.string.nav_team),
@@ -39,11 +46,7 @@ fun TeamScreen() {
         }
     ) { paddingValues ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(top = 24.dp)
-                .padding(horizontal = 16.dp)
+            modifier = modifier.padding(paddingValues)
         ) {
             Text(
                 text = stringResource(R.string.about_team),
@@ -51,11 +54,11 @@ fun TeamScreen() {
             )
 
             LazyColumn(
-                modifier = Modifier.padding(top = 32.dp)
+                modifier = Modifier.padding(top = paddingVeryBig)
             ) {
                 items(developers) { item ->
                     Text(
-                        modifier = Modifier.padding(bottom = 16.dp),
+                        modifier = Modifier.padding(bottom = paddingMedium),
                         text = item,
                         style = AppTypography.titleSmall
                     )
