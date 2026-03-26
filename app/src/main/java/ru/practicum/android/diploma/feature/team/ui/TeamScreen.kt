@@ -3,28 +3,23 @@
 package ru.practicum.android.diploma.feature.team.ui
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.app.ui.theme.AppDimensions.heightTopBar
-import ru.practicum.android.diploma.app.ui.theme.AppDimensions.paddingBig
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.paddingMedium
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.paddingVeryBig
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
+import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 
 @Composable
 fun TeamScreen(
@@ -34,14 +29,8 @@ fun TeamScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                modifier = Modifier.height(heightTopBar),
-                title = {
-                    Text(
-                        text = stringResource(R.string.nav_team),
-                        style = AppTypography.titleMedium
-                    )
-                }
+            AppTopBar(
+                title = stringResource(R.string.nav_team)
             )
         }
     ) { paddingValues ->
