@@ -19,7 +19,10 @@ data class AppColors(
     val searchBarHint: Color,
 
     val bottomNavBarDivider: Color,
-    val imageBorder: Color
+    val imageBorder: Color,
+
+    val cardBackground: Color,
+    val cardText: Color
 )
 
 val LocalAppColors = staticCompositionLocalOf<AppColors> {
@@ -41,7 +44,10 @@ val LightAppColors = AppColors(
     searchBarHint = LightGray,
 
     bottomNavBarDivider = LightGray,
-    imageBorder = LightGray
+    imageBorder = LightGray,
+
+    cardBackground = LightGray,
+    cardText = Black
 )
 
 val DarkAppColors = AppColors(
@@ -59,5 +65,8 @@ val DarkAppColors = AppColors(
     searchBarHint = White,
 
     bottomNavBarDivider = LightGray,
-    imageBorder = LightGray
+    imageBorder = LightGray,
+
+    cardBackground = LightGray,
+    cardText = Black
 )

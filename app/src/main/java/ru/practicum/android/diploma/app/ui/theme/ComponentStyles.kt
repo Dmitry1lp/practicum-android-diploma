@@ -3,6 +3,7 @@
 package ru.practicum.android.diploma.app.ui.theme
 
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -51,4 +52,10 @@ fun appNavBarItemColors() = NavigationBarItemDefaults.colors(
 fun appCheckboxColors() = CheckboxDefaults.colors(
     checkedColor = MaterialTheme.colorScheme.primary,
     uncheckedColor = MaterialTheme.colorScheme.primary
+)
+
+@Composable
+fun appCardColors() = CardDefaults.cardColors(
+    containerColor = LocalAppColors.current.cardBackground,
+    contentColor = LocalAppColors.current.cardText
 )

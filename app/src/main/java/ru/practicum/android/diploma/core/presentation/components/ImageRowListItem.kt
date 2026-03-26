@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -28,34 +27,34 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
+import ru.practicum.android.diploma.core.utils.applyIf
 
 @Composable
 fun ImageListItem(
     modifier: Modifier = Modifier,
     model: Any? = null,
+    imageBorder: BorderStroke? = null,
     imageContentDescription: String? = null,
     content: @Composable () -> Unit
 ) {
     val shape = remember { RoundedCornerShape(AppDimensions.imageRowListItemImageCornerRadius) }
+    val borderIsApplied = remember { imageBorder != null }
 
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(AppDimensions.imageRowListItemContentPadding),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+            .wrapContentHeight(),
         verticalAlignment = Alignment.Top
     ) {
         AsyncImage(
             modifier = Modifier
                 .size(AppDimensions.imageRowListItemImageSize)
-                .border(
-                    border = BorderStroke(
-                        width = AppDimensions.imageRowListItemImageBorderWidth,
-                        color = MaterialTheme.colorScheme.secondary
-                    ),
-                    shape = shape
-                )
+                .applyIf(borderIsApplied) {
+                    border(
+                        border = imageBorder!!,
+                        shape = shape
+                    )
+                }
                 .clip(shape),
             model = model,
             contentDescription = imageContentDescription,
