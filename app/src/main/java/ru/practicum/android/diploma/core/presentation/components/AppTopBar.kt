@@ -46,7 +46,7 @@ fun AppTopBar(
                 IconButton(onClick = action1.onClick) {
                     Icon(
                         painter = painterResource(id = action1.iconResId),
-                        contentDescription = "Action 1",
+                        contentDescription = action1.contentDescription,
                         tint = when {
                             action1.iconResId == R.drawable.ic_favorites_on_24 -> Color.Unspecified
                             else -> MaterialTheme.colorScheme.onSurface
@@ -58,7 +58,7 @@ fun AppTopBar(
                 IconButton(onClick = action2.onClick) {
                     Icon(
                         painter = painterResource(id = action2.iconResId),
-                        contentDescription = "Action 2",
+                        contentDescription = action2.contentDescription,
                         tint = when {
                             action2.iconResId == R.drawable.ic_favorites_on_24 -> Color.Unspecified
                             else -> MaterialTheme.colorScheme.onSurface
@@ -72,5 +72,6 @@ fun AppTopBar(
 
 data class TopBarIcon(
     val iconResId: Int,
-    val onClick: () -> Unit
+    val onClick: () -> Unit,
+    val contentDescription: String? = null
 )
