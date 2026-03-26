@@ -15,6 +15,8 @@ import ru.practicum.android.diploma.core.presentation.components.ThumbnailListIt
 
 @Composable
 fun VacancyCard(
+    title: String,
+    subtitle: String,
     modifier: Modifier = Modifier,
     model: Any? = null
 ) {
@@ -30,11 +32,11 @@ fun VacancyCard(
                 Modifier.padding(start = 8.dp)
             ) {
                 Text(
-                    text = "Text",
+                    text = title,
                     style = AppTypography.titleMedium
                 )
                 Text(
-                    text = "Text",
+                    text = subtitle,
                     style = AppTypography.bodyLarge
                 )
             }
@@ -46,7 +48,7 @@ fun VacancyCard(
 @Composable
 private fun VacancyCardPreview() {
     DiplomaTheme {
-        VacancyCard()
+        VacancyCard("Еда", "Москва")
     }
 }
 
@@ -54,6 +56,6 @@ private fun VacancyCardPreview() {
 @Composable
 private fun VacancyCardPreviewDark() {
     DiplomaTheme(true) {
-        VacancyCard()
+        VacancyCard("Еда", "Москва")
     }
 }
