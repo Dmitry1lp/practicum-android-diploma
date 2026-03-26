@@ -22,12 +22,12 @@ fun Chip(
 ) {
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(AppDimensions.chipCornerRadius))
+            .clip(RoundedCornerShape(AppDimensions.Chip.cornerRadius))
             .background(MaterialTheme.colorScheme.primary),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            modifier = Modifier.padding(AppDimensions.chipContentPadding),
+            modifier = Modifier.padding(AppDimensions.Chip.contentPadding),
             text = text,
             style = AppTypography.bodyLarge,
             color = MaterialTheme.colorScheme.onPrimary

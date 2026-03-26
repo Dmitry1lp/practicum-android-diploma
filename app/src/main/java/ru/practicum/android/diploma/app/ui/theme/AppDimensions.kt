@@ -10,22 +10,32 @@ object AppDimensions {
     val paddingMedium = 16.dp
     val paddingSmall = 8.dp
 
-    val buttonContentPadding = PaddingValues(vertical = 20.dp, horizontal = 8.dp)
+    object Button {
+        val contentPadding = PaddingValues(vertical = 20.dp, horizontal = 8.dp)
+    }
 
-    val chipCornerRadius = 12.dp
-    val chipContentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
+    object Chip {
+        val cornerRadius = 12.dp
+        val contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
+    }
 
-    val rowListItemHeight = 60.dp
-    val rowListItemTrailingContentPadding = 4.dp
-    val rowListItemContentPadding = PaddingValues(top = 6.dp, bottom = 6.dp, start = 16.dp)
-    val rowListItemTrailingContentSize = DpSize(48.dp, 48.dp)
+    object RowListItem {
+        val itemHeight = 60.dp
+        val contentPadding = PaddingValues(top = 6.dp, bottom = 6.dp, start = 16.dp)
+        val trailingContentSize = DpSize(48.dp, 48.dp)
+        val trailingContentPadding = PaddingValues(4.dp)
+    }
 
-    val imageRowListItemImageSize = DpSize(48.dp, 48.dp)
-    val imageRowListItemImageCornerRadius = 12.dp
+    object ImageRowListItem {
+        val imageSize = DpSize(48.dp, 48.dp)
+        val imageCornerRadius = 12.dp
+    }
 
-    val vacancyListItemContentPadding = PaddingValues(vertical = 9.dp, horizontal = 16.dp)
-    val vacancyListItemImageBorderWidth = 1.dp
-    val vacancyListItemGap = 12.dp
+    object VacancyListItem {
+        val contentPadding = PaddingValues(vertical = 9.dp, horizontal = 16.dp)
+        val imageBorderWidth = 1.dp
+        val contentGap = 12.dp
+    }
 
     val loadingIndicatorSize = DpSize(48.dp, 48.dp)
     val searchBarIconSize = DpSize(24.dp, 24.dp)

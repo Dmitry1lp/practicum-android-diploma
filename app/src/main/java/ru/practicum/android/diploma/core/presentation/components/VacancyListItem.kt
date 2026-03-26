@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import okhttp3.internal.immutableListOf
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
@@ -35,15 +34,15 @@ fun VacancyListItem(
     ImageListItem(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
-            .padding(AppDimensions.vacancyListItemContentPadding),
+            .padding(AppDimensions.VacancyListItem.contentPadding),
         model = model,
         imageBorder = BorderStroke(
-            width = AppDimensions.vacancyListItemImageBorderWidth,
+            width = AppDimensions.VacancyListItem.imageBorderWidth,
             color = MaterialTheme.colorScheme.secondary
         )
     ) {
         Column(
-            Modifier.padding(start = AppDimensions.vacancyListItemGap)
+            Modifier.padding(start = AppDimensions.VacancyListItem.contentGap)
         ) {
             textItems.forEach { (text, style) ->
                 Text(

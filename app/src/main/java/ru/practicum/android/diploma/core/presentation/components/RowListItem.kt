@@ -28,17 +28,17 @@ fun RowListItem(
                 onClick?.invoke()
             }
             .background(MaterialTheme.colorScheme.background)
-            .height(AppDimensions.rowListItemHeight)
+            .height(AppDimensions.RowListItem.itemHeight)
             .fillMaxWidth()
-            .padding(AppDimensions.rowListItemContentPadding),
+            .padding(AppDimensions.RowListItem.contentPadding),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         leadingContent()
         Box(
             modifier = Modifier
-                .size(AppDimensions.rowListItemTrailingContentSize)
-                .padding(AppDimensions.rowListItemTrailingContentPadding),
+                .size(AppDimensions.RowListItem.trailingContentSize)
+                .padding(AppDimensions.RowListItem.trailingContentPadding),
             contentAlignment = Alignment.Center
         ) {
             trailingContent()

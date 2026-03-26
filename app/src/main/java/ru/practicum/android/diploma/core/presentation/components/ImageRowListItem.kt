@@ -2,12 +2,10 @@ package ru.practicum.android.diploma.core.presentation.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -37,7 +35,7 @@ fun ImageListItem(
     imageContentDescription: String? = null,
     content: @Composable () -> Unit
 ) {
-    val shape = remember { RoundedCornerShape(AppDimensions.imageRowListItemImageCornerRadius) }
+    val shape = remember { RoundedCornerShape(AppDimensions.ImageRowListItem.imageCornerRadius) }
     val borderIsApplied = remember { imageBorder != null }
 
     Row(
@@ -48,7 +46,7 @@ fun ImageListItem(
     ) {
         AsyncImage(
             modifier = Modifier
-                .size(AppDimensions.imageRowListItemImageSize)
+                .size(AppDimensions.ImageRowListItem.imageSize)
                 .applyIf(borderIsApplied) {
                     border(
                         border = imageBorder!!,
