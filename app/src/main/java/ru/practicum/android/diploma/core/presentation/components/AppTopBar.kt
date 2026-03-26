@@ -23,12 +23,6 @@ fun AppTopBar(
     action1: TopBarIcon? = null,
     action2: TopBarIcon? = null
 ) {
-    val tint = if (action2?.iconResId == R.drawable.ic_favorites_on_24) {
-        Color.Unspecified
-    } else {
-        MaterialTheme.colorScheme.onSurface
-    }
-
     TopAppBar(
         modifier = modifier,
         title = {
@@ -53,7 +47,10 @@ fun AppTopBar(
                     Icon(
                         painter = painterResource(id = action1.iconResId),
                         contentDescription = "Action 1",
-                        tint = tint
+                        tint = when {
+                            action1.iconResId == R.drawable.ic_favorites_on_24 -> Color.Unspecified
+                            else -> MaterialTheme.colorScheme.onSurface
+                        }
                     )
                 }
             }
@@ -62,7 +59,10 @@ fun AppTopBar(
                     Icon(
                         painter = painterResource(id = action2.iconResId),
                         contentDescription = "Action 2",
-                        tint = tint
+                        tint = when {
+                            action2.iconResId == R.drawable.ic_favorites_on_24 -> Color.Unspecified
+                            else -> MaterialTheme.colorScheme.onSurface
+                        }
                     )
                 }
             }
