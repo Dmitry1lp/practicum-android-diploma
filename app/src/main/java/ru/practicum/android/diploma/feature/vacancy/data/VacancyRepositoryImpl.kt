@@ -14,7 +14,6 @@ class VacancyRepositoryImpl(
 ) : VacancyRepository {
 
     override suspend fun getVacancy(id: String): VacancyResult {
-
         // получение данных из избранных
         val local = favoritesDataSource.getVacancy(id)
         if (local != null) {
@@ -24,20 +23,19 @@ class VacancyRepositoryImpl(
         val response = networkClient.doRequest(
             Request.VacancyDetailsRequest(id)
         )
-
         // получение данных через NetworkClient с использованием VacancyResult
         return when (response.resultCode) {
 
-            200 -> {
+            SUCCESS -> {
                 val dto = response as? VacancyDetailDto
                 if (dto != null) {
                     VacancyResult.Success(dto.toDomain())
                 } else {
-                    VacancyResult.ServerError(200)
+                    VacancyResult.ServerError(SUCCESS)
                 }
             }
 
-            404 -> VacancyResult.NotFound
+            NOT_FOUND -> VacancyResult.NotFound
 
             else -> VacancyResult.NetworkError
         }
@@ -53,5 +51,10 @@ class VacancyRepositoryImpl(
 
     override suspend fun isFavorite(id: String): Boolean {
         return favoritesDataSource.isFavorite(id)
+    }
+
+    companion object {
+        private const val SUCCESS = 200
+        private const val NOT_FOUND = 404
     }
 }
