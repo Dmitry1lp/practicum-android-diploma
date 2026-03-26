@@ -19,13 +19,11 @@ class VacancyRepositoryImpl(
         if (local != null) {
             return VacancyResult.Success(local)
         }
-
         val response = networkClient.doRequest(
             Request.VacancyDetailsRequest(id)
         )
         // получение данных через NetworkClient с использованием VacancyResult
         return when (response.resultCode) {
-
             SUCCESS -> {
                 val dto = response as? VacancyDetailDto
                 if (dto != null) {
@@ -34,9 +32,7 @@ class VacancyRepositoryImpl(
                     VacancyResult.ServerError(SUCCESS)
                 }
             }
-
             NOT_FOUND -> VacancyResult.NotFound
-
             else -> VacancyResult.NetworkError
         }
     }
