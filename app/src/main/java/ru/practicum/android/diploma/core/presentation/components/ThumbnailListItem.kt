@@ -36,7 +36,6 @@ fun ThumbnailListItem(
     content: @Composable () -> Unit
 ) {
     val shape = remember { RoundedCornerShape(AppDimensions.ThumbnailListItem.imageCornerRadius) }
-    val borderIsApplied = remember { imageBorder != null }
 
     Row(
         modifier = modifier
@@ -47,7 +46,7 @@ fun ThumbnailListItem(
         AsyncImage(
             modifier = Modifier
                 .size(AppDimensions.ThumbnailListItem.imageSize)
-                .applyIf(borderIsApplied) {
+                .applyIf(imageBorder != null) {
                     border(
                         border = imageBorder!!,
                         shape = shape
