@@ -49,7 +49,7 @@ fun HintRowListItem(
 
 @Preview
 @Composable
-fun HintRowListItemPreview() {
+private fun HintRowListItemPreview() {
     DiplomaTheme {
         HintRowListItem(
             text = "Россия, Москва",
@@ -61,7 +61,7 @@ fun HintRowListItemPreview() {
 
 @Preview
 @Composable
-fun HintRowListItemPreviewDark() {
+private fun HintRowListItemPreviewDark() {
     DiplomaTheme(true) {
         HintRowListItem(
             text = "Россия, Москва",

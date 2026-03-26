@@ -44,7 +44,7 @@ fun SwitchRowListItem(
 
 @Preview
 @Composable
-fun SwitchRowListItemPreview() {
+private fun SwitchRowListItemPreview() {
     var checked by remember { mutableStateOf(false) }
 
     DiplomaTheme {
@@ -60,7 +60,7 @@ fun SwitchRowListItemPreview() {
 
 @Preview
 @Composable
-fun SwitchRowListItemPreviewDark() {
+private fun SwitchRowListItemPreviewDark() {
     var checked by remember { mutableStateOf(true) }
 
     DiplomaTheme(true) {

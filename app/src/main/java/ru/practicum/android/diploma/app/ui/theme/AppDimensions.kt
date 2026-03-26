@@ -12,6 +12,9 @@ object AppDimensions {
 
     val buttonContentPadding = PaddingValues(vertical = 20.dp, horizontal = 8.dp)
 
+    val chipCornerRadius = 12.dp
+    val chipContentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
+
     val rowListItemHeight = 60.dp
     val rowListItemTrailingContentPadding = 4.dp
     val rowListItemContentPadding = PaddingValues(top = 6.dp, bottom = 6.dp, start = 16.dp)
@@ -19,7 +22,7 @@ object AppDimensions {
 
     val imageRowListItemContentPadding = PaddingValues(vertical = 9.dp, horizontal = 16.dp)
     val imageRowListItemImageSize = DpSize(48.dp, 48.dp)
-    val imageRowListItemImageRadius = 12.dp
+    val imageRowListItemImageCornerRadius = 12.dp
     val imageRowListItemImageBorderWidth = 1.dp
 
     val loadingIndicatorSize = DpSize(48.dp, 48.dp)

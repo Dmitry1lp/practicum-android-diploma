@@ -36,7 +36,7 @@ fun ImageListItem(
     imageContentDescription: String? = null,
     content: @Composable () -> Unit
 ) {
-    val shape = remember { RoundedCornerShape(AppDimensions.imageRowListItemImageRadius) }
+    val shape = remember { RoundedCornerShape(AppDimensions.imageRowListItemImageCornerRadius) }
 
     Row(
         modifier = modifier

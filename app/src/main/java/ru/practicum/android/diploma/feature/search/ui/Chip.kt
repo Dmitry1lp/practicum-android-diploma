@@ -1,0 +1,52 @@
+package ru.practicum.android.diploma.feature.search.ui
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.tooling.preview.Preview
+import ru.practicum.android.diploma.app.ui.theme.AppDimensions
+import ru.practicum.android.diploma.app.ui.theme.AppTypography
+import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
+
+@Composable
+fun Chip(
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(AppDimensions.chipCornerRadius))
+            .background(MaterialTheme.colorScheme.primary),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            modifier = Modifier.padding(AppDimensions.chipContentPadding),
+            text = text,
+            style = AppTypography.bodyLarge,
+            color = MaterialTheme.colorScheme.onPrimary
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun ChipPreview() {
+    DiplomaTheme {
+        Chip("Найдено 1012 вакансий")
+    }
+}
+
+@Preview
+@Composable
+private fun ChipPreviewDark() {
+    DiplomaTheme(true) {
+        Chip("Найдено 1012 вакансий")
+    }
+}

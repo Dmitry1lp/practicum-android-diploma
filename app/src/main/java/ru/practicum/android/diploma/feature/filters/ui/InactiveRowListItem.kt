@@ -40,7 +40,7 @@ fun InactiveRowListItem(
 
 @Preview
 @Composable
-fun InactiveRowListItemPreview() {
+private fun InactiveRowListItemPreview() {
     DiplomaTheme {
         InactiveRowListItem(
             text = "Отрасль",
@@ -51,7 +51,7 @@ fun InactiveRowListItemPreview() {
 
 @Preview
 @Composable
-fun InactiveRowListItemPreviewDark() {
+private fun InactiveRowListItemPreviewDark() {
     DiplomaTheme(true) {
         InactiveRowListItem(
             text = "Отрасль",
