@@ -15,11 +15,6 @@ import androidx.compose.ui.res.painterResource
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 
-data class TopBarIcon(
-    val iconResId: Int,
-    val onClick: () -> Unit
-)
-
 @Composable
 fun AppTopBar(
     modifier: Modifier = Modifier,
@@ -74,3 +69,8 @@ fun AppTopBar(
         }
     )
 }
+
+data class TopBarIcon(
+    val iconResId: Int,
+    val onClick: () -> Unit
+)
