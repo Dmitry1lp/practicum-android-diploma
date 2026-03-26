@@ -87,3 +87,17 @@ fun <T> Modifier.debounceClick(
 
 private const val LOCK_TIME = 300L
 private const val DEBOUNCE_TIME = 2000L
+
+/**
+ * Применяет модификатор [modifier] при выполнении условия [condition].
+ *
+ * @param condition Условие применения модификатора
+ * @param modifier Применяемый модификатор
+ */
+inline fun Modifier.applyIf(
+    condition: Boolean,
+    modifier: Modifier.() -> Modifier
+): Modifier = when (condition) {
+    true -> then(modifier(Modifier))
+    false -> this
+}
