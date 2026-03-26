@@ -28,14 +28,14 @@ import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.utils.applyIf
 
 @Composable
-fun ImageListItem(
+fun ThumbnailListItem(
     modifier: Modifier = Modifier,
     model: Any? = null,
     imageBorder: BorderStroke? = null,
     imageContentDescription: String? = null,
     content: @Composable () -> Unit
 ) {
-    val shape = remember { RoundedCornerShape(AppDimensions.ImageRowListItem.imageCornerRadius) }
+    val shape = remember { RoundedCornerShape(AppDimensions.ThumbnailListItem.imageCornerRadius) }
     val borderIsApplied = remember { imageBorder != null }
 
     Row(
@@ -46,7 +46,7 @@ fun ImageListItem(
     ) {
         AsyncImage(
             modifier = Modifier
-                .size(AppDimensions.ImageRowListItem.imageSize)
+                .size(AppDimensions.ThumbnailListItem.imageSize)
                 .applyIf(borderIsApplied) {
                     border(
                         border = imageBorder!!,
@@ -67,9 +67,9 @@ fun ImageListItem(
 
 @Preview
 @Composable
-private fun ImageListItemPreview() {
+private fun ThumbnailListItemPreview() {
     DiplomaTheme {
-        ImageListItem(
+        ThumbnailListItem(
             model = null,
             modifier = Modifier
                 .height(82.dp)

@@ -10,16 +10,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
-import ru.practicum.android.diploma.core.presentation.components.RowListItem
+import ru.practicum.android.diploma.core.presentation.components.LabelActionListItem
 import ru.practicum.android.diploma.core.utils.antiRepetitionClick
 
 @Composable
-fun InactiveRowListItem(
+fun InactiveFilterItem(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    RowListItem(
+    LabelActionListItem(
         modifier = modifier.antiRepetitionClick { onClick() },
         leadingContent = {
             Text(
@@ -40,9 +40,9 @@ fun InactiveRowListItem(
 
 @Preview
 @Composable
-private fun InactiveRowListItemPreview() {
+private fun InactiveFilterItemPreview() {
     DiplomaTheme {
-        InactiveRowListItem(
+        InactiveFilterItem(
             text = "Отрасль",
             onClick = {}
         )
@@ -51,9 +51,9 @@ private fun InactiveRowListItemPreview() {
 
 @Preview
 @Composable
-private fun InactiveRowListItemPreviewDark() {
+private fun InactiveFilterItemPreviewDark() {
     DiplomaTheme(true) {
-        InactiveRowListItem(
+        InactiveFilterItem(
             text = "Отрасль",
             onClick = {}
         )

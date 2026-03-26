@@ -16,7 +16,7 @@ import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 
 @Composable
-fun VacancyListItem(
+fun VacancyItem(
     title: String,
     industry: String,
     salary: String,
@@ -31,18 +31,18 @@ fun VacancyListItem(
         )
     }
 
-    ImageListItem(
+    ThumbnailListItem(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
-            .padding(AppDimensions.VacancyListItem.contentPadding),
+            .padding(AppDimensions.VacancyItem.contentPadding),
         model = model,
         imageBorder = BorderStroke(
-            width = AppDimensions.VacancyListItem.imageBorderWidth,
+            width = AppDimensions.VacancyItem.imageBorderWidth,
             color = MaterialTheme.colorScheme.secondary
         )
     ) {
         Column(
-            Modifier.padding(start = AppDimensions.VacancyListItem.contentGap)
+            Modifier.padding(start = AppDimensions.VacancyItem.contentGap)
         ) {
             textItems.forEach { (text, style) ->
                 Text(
@@ -57,9 +57,9 @@ fun VacancyListItem(
 
 @Preview
 @Composable
-private fun VacancyListItemPreview() {
+private fun VacancyItemPreview() {
     DiplomaTheme {
-        VacancyListItem(
+        VacancyItem(
             model = null,
             title = "Android-разработчик, Москва",
             industry = "Еда",
@@ -70,9 +70,9 @@ private fun VacancyListItemPreview() {
 
 @Preview
 @Composable
-private fun VacancyListItemPreviewDark() {
+private fun VacancyItemPreviewDark() {
     DiplomaTheme(true) {
-        VacancyListItem(
+        VacancyItem(
             model = null,
             title = "Android-разработчик, Москва",
             industry = "Еда",

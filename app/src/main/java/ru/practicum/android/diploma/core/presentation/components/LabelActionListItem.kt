@@ -15,8 +15,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 
+/**
+ * @see [ru.practicum.android.diploma.feature.filters.ui.HintedFilterItem]
+ * @see [ru.practicum.android.diploma.feature.filters.ui.InactiveFilterItem]
+ * @see [ru.practicum.android.diploma.feature.filters.ui.SwitchFilterItem]
+ */
 @Composable
-fun RowListItem(
+fun LabelActionListItem(
     leadingContent: @Composable () -> Unit,
     trailingContent: @Composable () -> Unit,
     modifier: Modifier = Modifier,
@@ -28,17 +33,17 @@ fun RowListItem(
                 onClick?.invoke()
             }
             .background(MaterialTheme.colorScheme.background)
-            .height(AppDimensions.RowListItem.itemHeight)
+            .height(AppDimensions.LabelActionListItem.itemHeight)
             .fillMaxWidth()
-            .padding(AppDimensions.RowListItem.contentPadding),
+            .padding(AppDimensions.LabelActionListItem.contentPadding),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         leadingContent()
         Box(
             modifier = Modifier
-                .size(AppDimensions.RowListItem.trailingContentSize)
-                .padding(AppDimensions.RowListItem.trailingContentPadding),
+                .size(AppDimensions.LabelActionListItem.trailingContentSize)
+                .padding(AppDimensions.LabelActionListItem.trailingContentPadding),
             contentAlignment = Alignment.Center
         ) {
             trailingContent()

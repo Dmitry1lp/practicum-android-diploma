@@ -19,19 +19,19 @@ object AppDimensions {
         val contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
     }
 
-    object RowListItem {
+    object LabelActionListItem {
         val itemHeight = 60.dp
         val contentPadding = PaddingValues(top = 6.dp, bottom = 6.dp, start = 16.dp)
         val trailingContentSize = DpSize(48.dp, 48.dp)
         val trailingContentPadding = PaddingValues(4.dp)
     }
 
-    object ImageRowListItem {
+    object ThumbnailListItem {
         val imageSize = DpSize(48.dp, 48.dp)
         val imageCornerRadius = 12.dp
     }
 
-    object VacancyListItem {
+    object VacancyItem {
         val contentPadding = PaddingValues(vertical = 9.dp, horizontal = 16.dp)
         val imageBorderWidth = 1.dp
         val contentGap = 12.dp

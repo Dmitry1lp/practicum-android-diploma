@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.app.ui.theme.appCardColors
-import ru.practicum.android.diploma.core.presentation.components.ImageListItem
+import ru.practicum.android.diploma.core.presentation.components.ThumbnailListItem
 
 @Composable
 fun VacancyCard(
@@ -22,7 +22,7 @@ fun VacancyCard(
         modifier = modifier,
         colors = appCardColors()
     ) {
-        ImageListItem(
+        ThumbnailListItem(
             modifier = Modifier.padding(16.dp),
             model = model
         ) {

@@ -13,16 +13,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.app.ui.theme.appCheckboxColors
-import ru.practicum.android.diploma.core.presentation.components.RowListItem
+import ru.practicum.android.diploma.core.presentation.components.LabelActionListItem
 
 @Composable
-fun SwitchRowListItem(
+fun SwitchFilterItem(
     text: String,
     checked: Boolean,
     onCheckedChange: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    RowListItem(
+    LabelActionListItem(
         modifier = modifier,
         onClick = { onCheckedChange() },
         leadingContent = {
@@ -44,11 +44,11 @@ fun SwitchRowListItem(
 
 @Preview
 @Composable
-private fun SwitchRowListItemPreview() {
+private fun SwitchFilterItemPreview() {
     var checked by remember { mutableStateOf(false) }
 
     DiplomaTheme {
-        SwitchRowListItem(
+        SwitchFilterItem(
             text = "Не показывать без зарплаты",
             checked = checked,
             onCheckedChange = {
@@ -60,11 +60,11 @@ private fun SwitchRowListItemPreview() {
 
 @Preview
 @Composable
-private fun SwitchRowListItemPreviewDark() {
+private fun SwitchFilterItemPreviewDark() {
     var checked by remember { mutableStateOf(true) }
 
     DiplomaTheme(true) {
-        SwitchRowListItem(
+        SwitchFilterItem(
             text = "Не показывать без зарплаты",
             checked = checked,
             onCheckedChange = {

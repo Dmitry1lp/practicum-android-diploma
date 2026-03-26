@@ -11,17 +11,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
-import ru.practicum.android.diploma.core.presentation.components.RowListItem
+import ru.practicum.android.diploma.core.presentation.components.LabelActionListItem
 import ru.practicum.android.diploma.core.utils.antiRepetitionClick
 
 @Composable
-fun HintRowListItem(
+fun HintedFilterItem(
     text: String,
     hint: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    RowListItem(
+    LabelActionListItem(
         modifier = modifier.antiRepetitionClick { onClick() },
         leadingContent = {
             Column {
@@ -49,9 +49,9 @@ fun HintRowListItem(
 
 @Preview
 @Composable
-private fun HintRowListItemPreview() {
+private fun HintedFilterItemPreview() {
     DiplomaTheme {
-        HintRowListItem(
+        HintedFilterItem(
             text = "Россия, Москва",
             hint = "Место работы",
             onClick = {}
@@ -61,9 +61,9 @@ private fun HintRowListItemPreview() {
 
 @Preview
 @Composable
-private fun HintRowListItemPreviewDark() {
+private fun HintedFilterItemPreviewDark() {
     DiplomaTheme(true) {
-        HintRowListItem(
+        HintedFilterItem(
             text = "Россия, Москва",
             hint = "Место работы",
             onClick = {}
