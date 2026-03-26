@@ -37,6 +37,10 @@ object AppDimensions {
         val contentGap = 12.dp
     }
 
+    object StateInfo {
+        val contentGap = 16.dp
+    }
+
     val loadingIndicatorSize = DpSize(48.dp, 48.dp)
     val searchBarIconSize = DpSize(24.dp, 24.dp)
 
