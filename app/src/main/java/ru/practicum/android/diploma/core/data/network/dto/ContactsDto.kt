@@ -6,4 +6,3 @@ data class ContactsDto(
     val email: String,
     val phones: List<PhonesDto>
 )
-
