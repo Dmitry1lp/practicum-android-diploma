@@ -2,8 +2,10 @@ package ru.practicum.android.diploma.feature.vacancy.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.feature.vacancy.domain.VacancyInteractor
@@ -16,6 +18,10 @@ class VacancyViewModel(
 
     private val _state = MutableStateFlow<VacancyUiState>(VacancyUiState.Loading)
     val state: StateFlow<VacancyUiState> = _state.asStateFlow()
+
+    // для работы с одноразовыми событиями
+    private val _events = MutableSharedFlow<VacancyUiEvent>()
+    val events = _events.asSharedFlow()
 
     init {
         loadVacancy()
@@ -64,6 +70,34 @@ class VacancyViewModel(
                     isFavorite = !currentState.isFavorite
                 )
             }
+        }
+    }
+
+    // обработка кликов - Share
+    fun onShareClick() {
+        val current = _state.value
+        if (current is VacancyUiState.Content) {
+            viewModelScope.launch {
+                _events.emit(VacancyUiEvent.Share(current.vacancy.website))
+            }
+        }
+    }
+
+    // обработка кликов - Email
+    fun onEmailClick(email: String?) {
+        if (email.isNullOrEmpty()) return
+
+        viewModelScope.launch {
+            _events.emit(VacancyUiEvent.OpenEmail(email))
+        }
+    }
+
+    // обработка кликов - Phone
+    fun onPhoneClick(phone: String?) {
+        if (phone.isNullOrEmpty()) return
+
+        viewModelScope.launch {
+            _events.emit(VacancyUiEvent.OpenPhone(phone))
         }
     }
 }
