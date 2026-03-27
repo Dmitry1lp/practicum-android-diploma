@@ -6,10 +6,16 @@ import androidx.compose.ui.unit.dp
 
 object AppDimensions {
 
+    val heightTopBar = 64.dp
+
+    val paddingVeryBig = 32.dp
     val paddingBig = 24.dp
     val paddingMedium = 16.dp
     val paddingSmall = 8.dp
 
+    val teamScreenPadding = PaddingValues(top = paddingBig, start = paddingMedium, end = paddingMedium)
+
+    val buttonContentPadding = PaddingValues(vertical = 20.dp, horizontal = 8.dp)
     object Button {
         val contentPadding = PaddingValues(vertical = 20.dp, horizontal = 8.dp)
     }

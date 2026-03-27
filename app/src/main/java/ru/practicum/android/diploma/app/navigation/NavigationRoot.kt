@@ -21,8 +21,10 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import org.koin.androidx.compose.koinViewModel
+import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
+import ru.practicum.android.diploma.feature.team.ui.TeamScreen
 
 private val bottomNavItems = listOf<BottomNavItem>(
     Route.Search,
@@ -71,8 +73,11 @@ private fun appEntryProvider(
     topLevelBackStack: TopLevelBackStack<NavKey>
 ) = entryProvider<NavKey> {
     entry<Route.Team> {
-        // TODO(feature-team): интегрировать TeamScreen
-        ScreenPlaceholder(it::class.simpleName)
+        TeamScreen(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(teamScreenPadding)
+        )
     }
 
     entry<Route.Favorites> {
