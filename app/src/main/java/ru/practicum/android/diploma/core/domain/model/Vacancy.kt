@@ -4,11 +4,14 @@ data class Vacancy(
     val id: String,
     val name: String,
     val description: String,
-    val employerName: String,
-    val salaryFrom: Int?,
-    val salaryTo: Int?,
-    val currency: String?,
-    val city: String,
+    val salary: Salary?,
+    val address: Address?,
+    val experience: String?,
+    val schedule: String?,
+    val employmentType: String?,
+    val contacts: Contacts?,
+    val employer: Employer,
     val skills: List<String>,
-    val url: String
+    val website: String,
+    val industry: String
 )
