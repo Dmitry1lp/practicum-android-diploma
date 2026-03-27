@@ -5,6 +5,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.BuildConfig
+import ru.practicum.android.diploma.core.config.ApiConfig
 import ru.practicum.android.diploma.core.data.network.api.VacancyApi
 
 /**
@@ -14,7 +15,7 @@ val dataModule = module {
 
     single<Retrofit> {
         Retrofit.Builder()
-            .baseUrl("https://android-diploma.education-services.ru")
+            .baseUrl(ApiConfig.BASE_URL)
             .client(get<OkHttpClient>())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
