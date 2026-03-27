@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.navigation3.ui)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
+    testImplementation(libs.koin.test.junit4)
     implementation(libs.coil.compose)
     implementation(libs.compose.material3)
     implementation(libs.compose.activity)
