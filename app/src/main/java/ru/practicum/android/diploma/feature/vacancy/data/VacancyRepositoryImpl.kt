@@ -14,11 +14,6 @@ class VacancyRepositoryImpl(
 ) : VacancyRepository {
 
     override suspend fun getVacancy(id: String): VacancyResult {
-        // получение данных из избранных
-        val local = favoritesDataSource.getVacancy(id)
-        if (local != null) {
-            return VacancyResult.Success(local)
-        }
         val response = networkClient.doRequest(
             Request.VacancyDetailsRequest(id)
         )
