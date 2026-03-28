@@ -14,7 +14,7 @@ val presentationModule = module {
         NavigationViewModel()
     }
 
-    viewModel { (vacancyId: String) ->
+    viewModel<VacancyViewModel> { (vacancyId: String) ->
         VacancyViewModel(
             interactor = get(),
             vacancyId = vacancyId

@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.feature.vacancy.domain.VacancyInteractor
  */
 val domainModule = module {
 
-    factory {
+    factory<VacancyInteractor> {
         VacancyInteractor(get())
     }
 }
