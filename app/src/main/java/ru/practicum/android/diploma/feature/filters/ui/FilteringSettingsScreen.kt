@@ -48,16 +48,22 @@ import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import androidx.compose.runtime.State
 import androidx.compose.ui.res.painterResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.flow.MutableStateFlow
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.Red
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersState
 
 @Composable
 fun FilteringSettingsScreen(
+    stateViewModel: MutableStateFlow<FiltersState>,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onBranchScreenNavigate: () -> Unit
 ) {
-    var checkbox by remember { mutableStateOf(false) }
+    val state by stateViewModel.collectAsStateWithLifecycle()
+
+//    var checkbox by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("") }
 
     Scaffold(
@@ -85,8 +91,8 @@ fun FilteringSettingsScreen(
             )
             SwitchFilterItem(
                 text = stringResource(R.string.checkbox_hide_without_salary),
-                checked = checkbox,
-                onCheckedChange = { checkbox = !checkbox }
+                checked = state.isBranchScreen,
+                onCheckedChange = onBranchScreenNavigate
             )
             Spacer(modifier = Modifier.weight(1f))
             if (text.isNotEmpty()) {
@@ -236,7 +242,8 @@ private fun FilteringSettingsScreenPreviewLightMode() {
     DiplomaTheme(false) {
         FilteringSettingsScreen(
             onBackClick = {},
-            onBranchScreenNavigate = {}
+            onBranchScreenNavigate = {},
+            stateViewModel = MutableStateFlow<FiltersState>(FiltersState())
         )
     }
 }
@@ -247,7 +254,8 @@ private fun FilteringSettingsScreenPreviewDarkMode() {
     DiplomaTheme(true) {
         FilteringSettingsScreen(
             onBackClick = {},
-            onBranchScreenNavigate = {}
+            onBranchScreenNavigate = {},
+            stateViewModel = MutableStateFlow<FiltersState>(FiltersState())
         )
     }
 }

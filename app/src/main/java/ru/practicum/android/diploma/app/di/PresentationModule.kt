@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.app.di
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.practicum.android.diploma.app.navigation.NavigationViewModel
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
 import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyViewModel
 
 /**
@@ -19,5 +20,9 @@ val presentationModule = module {
             interactor = get(),
             vacancyId = vacancyId
         )
+    }
+
+    viewModel<FiltersViewModel> {
+        FiltersViewModel()
     }
 }

@@ -21,11 +21,10 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import org.koin.androidx.compose.koinViewModel
-import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
-import ru.practicum.android.diploma.feature.filters.ui.FilteringSettingsScreen
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
 import ru.practicum.android.diploma.feature.filters.ui.FiltersScreen
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
 
@@ -164,29 +163,11 @@ private fun appEntryProvider(
     }
 
     entry<Route.Filters> {
-        // TODO(feature-team): интегрировать FiltersScreen и FiltersViewModel
-        /*
-         * - Получение ViewModel происходит через функцию koinViewModel() внутри entry{}
-         * - НЕ СОЗДАВАТЬ ViewModel внутри NavigationRoot() или внутри экранов
-         * - Экраны не должны принимать в качестве аргумента ViewModel
-         *      и вместо этого должны принимать в качестве аргументов
-         *      все необходимые состояния state и коллбэки
-         * - Для перемещения на другой экран используется topLevelBackStack и метод add():
-         *      например, topLevelBackStack.add(Route.Search)
-         * - Для перемещения назад используется topLevelBackStack и метод removeLast()
-         *
-         * Пример реализации:
-         *
-         * val viewmodel: SearchViewModel = koinViewModel()
-         *
-         * SearchScreen(
-         *     state = viewmodel.state,
-         *     onQueryChange = viewmodel::onQueryChange,
-         *     onVacancyClick = { id -> topLevelBackStack.add(Route.Vacancy(id)) }
-         * )
-         */
+        val viewModel: FiltersViewModel = koinViewModel()
         FiltersScreen(
-            onBackClick = { topLevelBackStack.removeLast() }
+            stateViewModel = viewModel.state,
+            onBackClick = { topLevelBackStack.removeLast() },
+//            onBranchScreen = viewModel::onBranchScreen
         )
     }
 }
