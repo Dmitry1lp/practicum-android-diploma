@@ -22,7 +22,6 @@ fun HintedFilterItem(
     modifier: Modifier = Modifier
 ) {
     LabelActionListItem(
-        modifier = modifier.antiRepetitionClick { onClick() },
         leadingContent = {
             Column {
                 Text(
@@ -39,6 +38,7 @@ fun HintedFilterItem(
         },
         trailingContent = {
             Icon(
+                modifier = modifier.antiRepetitionClick { onClick() },
                 painter = painterResource(R.drawable.ic_close_24),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onBackground

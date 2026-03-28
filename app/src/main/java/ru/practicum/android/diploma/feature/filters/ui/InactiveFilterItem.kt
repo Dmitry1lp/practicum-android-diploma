@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.feature.filters.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,7 +21,8 @@ fun InactiveFilterItem(
     modifier: Modifier = Modifier
 ) {
     LabelActionListItem(
-        modifier = modifier.antiRepetitionClick { onClick() },
+        modifier = modifier,
+        onClick = onClick,
         leadingContent = {
             Text(
                 text = text,
