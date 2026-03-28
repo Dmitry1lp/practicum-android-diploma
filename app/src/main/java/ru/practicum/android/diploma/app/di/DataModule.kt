@@ -1,12 +1,19 @@
 package ru.practicum.android.diploma.app.di
 
+import androidx.room.Room
 import okhttp3.OkHttpClient
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.core.config.ApiConfig
+import ru.practicum.android.diploma.core.config.DatabaseConfig
 import ru.practicum.android.diploma.core.data.network.api.VacancyApi
+import ru.practicum.android.diploma.feature.favorite.data.AppDatabase
+import ru.practicum.android.diploma.feature.favorite.data.FavoritesDao
+import ru.practicum.android.diploma.feature.favorite.data.FavoritesRepositoryImpl
+import ru.practicum.android.diploma.feature.favorite.domain.FavoritesRepository
 
 /**
  * Модуль Koin, отвечающий за зависимости Repository и Data sources
@@ -39,6 +46,24 @@ val dataModule = module {
 
     single<VacancyApi> {
         get<Retrofit>().create(VacancyApi::class.java)
+    }
+
+    single<AppDatabase> {
+        Room.databaseBuilder(
+            androidContext(),
+            AppDatabase::class.java,
+            DatabaseConfig.DATABASE_NAME
+        )
+            .fallbackToDestructiveMigration(false)
+            .build()
+    }
+
+    single<FavoritesDao> {
+        get<AppDatabase>().favoriteDao()
+    }
+
+    single<FavoritesRepository> {
+        FavoritesRepositoryImpl(get<FavoritesDao>())
     }
 
 }
