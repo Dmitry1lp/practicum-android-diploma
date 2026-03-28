@@ -90,15 +90,13 @@ fun FiltersScreen(
             Spacer(modifier = Modifier.weight(1f))
             if (text.isNotEmpty()) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 17.dp)
+                    modifier = Modifier.padding(horizontal = 17.dp)
                 ) {
                     Button(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(59.dp),
-                        shape = RoundedCornerShape(12.dp),
+                            .height(AppDimensions.FiltersScreen.heightButton),
+                        shape = RoundedCornerShape(AppDimensions.FiltersScreen.cornerRadius),
                         onClick = {}
                     ) {
                         Text(
@@ -106,21 +104,15 @@ fun FiltersScreen(
                             style = AppTypography.titleSmall
                         )
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Box(
+                    Text(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(59.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            modifier = Modifier.clickable(onClick = { text = "" }),
-                            text = stringResource(R.string.button_reset),
-                            style = AppTypography.titleSmall,
-                            color = Red
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(24.dp))
+                            .padding(AppDimensions.FiltersScreen.resetButtonPadding)
+                            .align(Alignment.CenterHorizontally)
+                            .clickable(onClick = { text = "" }),
+                        text = stringResource(R.string.button_reset),
+                        style = AppTypography.titleSmall,
+                        color = Red
+                    )
                 }
             }
         }
@@ -145,16 +137,16 @@ private fun SalaryInputField(
 
     Box(
         modifier = Modifier
-            .height(AppDimensions.SalaryInputField.heightBox)
+            .height(AppDimensions.FiltersScreen.heightBoxInputField)
             .padding(horizontal = AppDimensions.paddingMedium),
         contentAlignment = Alignment.Center
     ) {
         BasicTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(AppDimensions.SalaryInputField.heightTextField)
+                .height(AppDimensions.FiltersScreen.heightTextField)
                 .background(
-                    shape = RoundedCornerShape(AppDimensions.SalaryInputField.cornerRadius),
+                    shape = RoundedCornerShape(AppDimensions.FiltersScreen.cornerRadius),
                     color = MaterialTheme.colorScheme.surfaceVariant
                 ),
             interactionSource = interactionSource,
@@ -169,7 +161,7 @@ private fun SalaryInputField(
             cursorBrush = SolidColor(Blue),
             decorationBox = { innerTextField ->
                 Row(
-                    modifier = Modifier.padding(AppDimensions.SalaryInputField.rowPadding),
+                    modifier = Modifier.padding(AppDimensions.FiltersScreen.rowPaddingTextField),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column(
