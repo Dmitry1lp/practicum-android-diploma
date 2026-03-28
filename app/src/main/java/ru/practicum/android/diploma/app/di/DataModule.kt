@@ -2,13 +2,13 @@ package ru.practicum.android.diploma.app.di
 
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
+import ru.practicum.android.diploma.feature.search.data.repository.VacancyRepositoryImpl
+import ru.practicum.android.diploma.feature.search.domain.repository.VacancyRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.core.config.ApiConfig
 import ru.practicum.android.diploma.core.data.network.api.VacancyApi
-import ru.practicum.android.diploma.feature.vacancy.data.VacancyRepositoryImpl
-import ru.practicum.android.diploma.feature.vacancy.domain.VacancyRepository
 
 /**
  * Модуль Koin, отвечающий за зависимости Repository и Data sources
@@ -46,7 +46,6 @@ val dataModule = module {
     single<VacancyRepository> {
         VacancyRepositoryImpl(
             networkClient = get(),
-            favoritesDataSource = get()
         )
     }
 
