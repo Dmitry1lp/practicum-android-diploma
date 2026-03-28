@@ -17,11 +17,13 @@ object AppDimensions {
 
     val buttonContentPadding = PaddingValues(vertical = 20.dp, horizontal = 8.dp)
 
-    object SalaryInputField {
-        val heightBox = 99.dp
+    object FiltersScreen {
+        val heightBoxInputField = 99.dp
         val heightTextField = 51.dp
+        val heightButton = 59.dp
         val cornerRadius = 12.dp
-        val rowPadding = PaddingValues(vertical = paddingSmall, horizontal = paddingMedium)
+        val rowPaddingTextField = PaddingValues(vertical = paddingSmall, horizontal = paddingMedium)
+        val resetButtonPadding = PaddingValues(top = 28.dp, bottom = 44.dp)
     }
 
     object Button {
