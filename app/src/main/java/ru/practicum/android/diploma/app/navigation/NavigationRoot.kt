@@ -21,9 +21,11 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import org.koin.androidx.compose.koinViewModel
+import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
+import ru.practicum.android.diploma.feature.filters.ui.FiltersScreen
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
 
 private val bottomNavItems = listOf<BottomNavItem>(
@@ -77,7 +79,7 @@ private fun appEntryProvider(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(teamScreenPadding)
-        )
+        ) { topLevelBackStack.add(Route.Filters) }
     }
 
     entry<Route.Favorites> {
@@ -182,7 +184,10 @@ private fun appEntryProvider(
          *     onVacancyClick = { id -> topLevelBackStack.add(Route.Vacancy(id)) }
          * )
          */
-        ScreenPlaceholder(it::class.simpleName)
+        FiltersScreen(
+            modifier = Modifier.padding(top = AppDimensions.paddingMedium),
+            onBackClick = { topLevelBackStack.removeLast() }
+        )
     }
 }
 
