@@ -16,6 +16,14 @@ object AppDimensions {
     val teamScreenPadding = PaddingValues(top = paddingBig, start = paddingMedium, end = paddingMedium)
 
     val buttonContentPadding = PaddingValues(vertical = 20.dp, horizontal = 8.dp)
+
+    object SalaryInputField {
+        val heightBox = 99.dp
+        val heightTextField = 51.dp
+        val cornerRadius = 12.dp
+        val rowPadding = PaddingValues(vertical = paddingSmall, horizontal = paddingMedium)
+    }
+
     object Button {
         val contentPadding = PaddingValues(vertical = 20.dp, horizontal = 8.dp)
     }
