@@ -26,6 +26,7 @@ import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
+import ru.practicum.android.diploma.feature.filters.ui.FilteringSettingsScreen
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
 import ru.practicum.android.diploma.feature.filters.ui.FiltersScreen
@@ -174,7 +175,6 @@ private fun appEntryProvider(
          * )
          */
         FiltersScreen(
-            modifier = Modifier.padding(top = AppDimensions.paddingMedium),
             onBackClick = { topLevelBackStack.removeLast() }
         )
     }

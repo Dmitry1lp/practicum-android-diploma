@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
+import ru.practicum.android.diploma.core.utils.antiRepetitionClick
 
 /**
  * @see [ru.practicum.android.diploma.feature.filters.ui.HintedFilterItem]
@@ -28,10 +29,7 @@ fun LabelActionListItem(
     onClick: (() -> Unit)? = null
 ) {
     Row(
-        modifier = modifier
-            .clickable(enabled = onClick != null) {
-                onClick?.invoke()
-            }
+        modifier = modifier.antiRepetitionClick { onClick?.invoke() }
             .background(MaterialTheme.colorScheme.background)
             .height(AppDimensions.LabelActionListItem.itemHeight)
             .fillMaxWidth()
