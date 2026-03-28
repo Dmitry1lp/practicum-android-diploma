@@ -42,4 +42,8 @@
         <item quantity="one">Found %d vacancy</item>
         <item quantity="other">Found %d vacancies</item>
     </plurals>
+    <string name="vacancy_salary_not_specified">Salary not specified</string>
+    <string name="vacancy_salary_from">From %1$s %2$s</string>
+    <string name="vacancy_salary_to">Up to %1$s %2$s</string>
+    <string name="vacancy_salary_range">From %1$s to %2$s %3$s</string>
 </resources>

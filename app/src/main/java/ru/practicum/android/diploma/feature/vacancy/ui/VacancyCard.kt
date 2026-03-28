@@ -12,13 +12,12 @@ import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.app.ui.theme.appCardColors
 import ru.practicum.android.diploma.core.presentation.components.ThumbnailListItem
+import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyCardData
 
 @Composable
 fun VacancyCard(
-    title: String,
-    subtitle: String,
-    modifier: Modifier = Modifier,
-    model: Any? = null
+    data: VacancyCardData,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
@@ -26,17 +25,17 @@ fun VacancyCard(
     ) {
         ThumbnailListItem(
             modifier = Modifier.padding(16.dp),
-            model = model
+            model = data.logoUrl
         ) {
             Column(
                 Modifier.padding(start = 8.dp)
             ) {
                 Text(
-                    text = title,
+                    text = data.industry,
                     style = AppTypography.titleMedium
                 )
                 Text(
-                    text = subtitle,
+                    text = data.location ?: "",
                     style = AppTypography.bodyLarge
                 )
             }
@@ -44,11 +43,17 @@ fun VacancyCard(
     }
 }
 
+private val mockData = VacancyCardData(
+    industry = "Еда",
+    location = "Москва",
+    logoUrl = null
+)
+
 @Preview
 @Composable
 private fun VacancyCardPreview() {
     DiplomaTheme {
-        VacancyCard("Еда", "Москва")
+        VacancyCard(mockData)
     }
 }
 
@@ -56,6 +61,6 @@ private fun VacancyCardPreview() {
 @Composable
 private fun VacancyCardPreviewDark() {
     DiplomaTheme(true) {
-        VacancyCard("Еда", "Москва")
+        VacancyCard(mockData)
     }
 }

@@ -88,6 +88,7 @@ navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref =
 # DI
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
 
 # Image Loading
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
