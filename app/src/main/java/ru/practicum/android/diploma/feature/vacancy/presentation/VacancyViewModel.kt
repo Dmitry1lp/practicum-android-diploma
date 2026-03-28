@@ -25,7 +25,7 @@ class VacancyViewModel(
     private val _events = MutableSharedFlow<VacancyUiEvent>()
     val events = _events.asSharedFlow()
 
-    public fun loadVacancy() {
+    fun loadVacancy() {
         viewModelScope.launch {
             _state.value = VacancyUiState.Loading
 
