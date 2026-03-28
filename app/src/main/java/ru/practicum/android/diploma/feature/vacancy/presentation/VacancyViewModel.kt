@@ -19,15 +19,13 @@ class VacancyViewModel(
     private val _state = MutableStateFlow<VacancyUiState>(VacancyUiState.Loading)
     val state: StateFlow<VacancyUiState> = _state.asStateFlow()
 
-    // для работы с одноразовыми событиями
+    /**
+     * для работы с одноразовыми событиями
+     */
     private val _events = MutableSharedFlow<VacancyUiEvent>()
     val events = _events.asSharedFlow()
 
-    init {
-        loadVacancy()
-    }
-
-    private fun loadVacancy() {
+    public fun loadVacancy() {
         viewModelScope.launch {
             _state.value = VacancyUiState.Loading
 
@@ -73,31 +71,37 @@ class VacancyViewModel(
         }
     }
 
-    // обработка кликов - Share
+    /**
+     * обработка кликов - Share
+     */
     fun onShareClick() {
         val current = _state.value
         if (current is VacancyUiState.Content) {
             viewModelScope.launch {
-                _events.emit(VacancyUiEvent.Share(current.vacancy.website))
+                _events.emit(VacancyUiEvent.ShareVacancyLink(current.vacancy.website))
             }
         }
     }
 
-    // обработка кликов - Email
+    /**
+     * обработка кликов - Email
+     */
     fun onEmailClick(email: String?) {
         if (email.isNullOrEmpty()) return
 
         viewModelScope.launch {
-            _events.emit(VacancyUiEvent.OpenEmail(email))
+            _events.emit(VacancyUiEvent.OpenEmailTo(email))
         }
     }
 
-    // обработка кликов - Phone
-    fun onPhoneClick(phone: String?) {
+    /**
+     *  // обработка кликов - Phone
+     */
+    fun onPhoneCall(phone: String?) {
         if (phone.isNullOrEmpty()) return
 
         viewModelScope.launch {
-            _events.emit(VacancyUiEvent.OpenPhone(phone))
+            _events.emit(VacancyUiEvent.OpenPhoneCall(phone))
         }
     }
 }
