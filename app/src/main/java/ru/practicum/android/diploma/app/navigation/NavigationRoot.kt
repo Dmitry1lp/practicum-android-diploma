@@ -24,6 +24,8 @@ import org.koin.androidx.compose.koinViewModel
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
+import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
+import ru.practicum.android.diploma.feature.favorite.ui.FavoritesUiState
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
 
 private val bottomNavItems = listOf<BottomNavItem>(
@@ -81,7 +83,7 @@ private fun appEntryProvider(
     }
 
     entry<Route.Favorites> {
-        // TODO(feature-team): интегрировать FavoritesScreen и FavoritesViewModel
+        // TODO(feature-team): интегрировать FavoritesViewModel
         /*
          * - Получение ViewModel происходит через функцию koinViewModel() внутри entry{}
          * - НЕ СОЗДАВАТЬ ViewModel внутри NavigationRoot() или внутри экранов
@@ -102,7 +104,11 @@ private fun appEntryProvider(
          *     onVacancyClick = { id -> topLevelBackStack.add(Route.Vacancy(id)) }
          * )
          */
-        ScreenPlaceholder(it::class.simpleName)
+        FavoritesScreen(
+            state = FavoritesUiState.Empty,
+            onVacancyClick = {},
+            modifier = Modifier.fillMaxSize()
+        )
     }
 
     entry<Route.Search> {
