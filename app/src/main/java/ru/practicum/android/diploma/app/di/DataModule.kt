@@ -7,6 +7,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.core.config.ApiConfig
 import ru.practicum.android.diploma.core.data.network.api.VacancyApi
+import ru.practicum.android.diploma.core.data.network.client.NetworkClient
+import ru.practicum.android.diploma.core.data.network.client.RetrofitNetworkClient
+import ru.practicum.android.diploma.feature.filters.data.FiltersRepositoryImpl
+import ru.practicum.android.diploma.feature.filters.domain.FiltersRepository
 import ru.practicum.android.diploma.feature.vacancy.data.VacancyRepositoryImpl
 import ru.practicum.android.diploma.feature.vacancy.domain.VacancyRepository
 
@@ -14,6 +18,10 @@ import ru.practicum.android.diploma.feature.vacancy.domain.VacancyRepository
  * Модуль Koin, отвечающий за зависимости Repository и Data sources
  */
 val dataModule = module {
+
+    single<NetworkClient> {
+        RetrofitNetworkClient(get())
+    }
 
     single<Retrofit> {
         Retrofit.Builder()
@@ -48,6 +56,10 @@ val dataModule = module {
             networkClient = get(),
             favoritesDataSource = get()
         )
+    }
+
+    single<FiltersRepository> {
+        FiltersRepositoryImpl(get())
     }
 
 }

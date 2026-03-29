@@ -4,7 +4,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.core.data.network.dto.FilterAreaDto
-import ru.practicum.android.diploma.core.data.network.dto.FilterIndustryDto
+import ru.practicum.android.diploma.core.data.network.dto.IndustryDto
 import ru.practicum.android.diploma.core.data.network.dto.VacancyDetailDto
 import ru.practicum.android.diploma.core.data.network.dto.VacancyResponseDto
 
@@ -19,7 +19,7 @@ interface VacancyApi {
      * Получение отрасли (экран выбора отрасли)
      */
     @GET("industries")
-    suspend fun getIndustries(): List<FilterIndustryDto>
+    suspend fun getIndustries(): List<IndustryDto>
 
     /**
      * Получение вакансий (экран поиска)
