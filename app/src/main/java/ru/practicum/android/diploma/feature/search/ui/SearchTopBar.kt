@@ -30,8 +30,7 @@ fun SearchTopBar() {
                 onClick = {
                     println("Переход на экран фильтра")
                 },
-
-                ) {
+            ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_filter),
                     contentDescription = "Filter Icon",
