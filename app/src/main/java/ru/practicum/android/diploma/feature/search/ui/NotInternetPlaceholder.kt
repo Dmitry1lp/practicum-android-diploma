@@ -31,6 +31,7 @@ fun NotInternetPlaceholder(
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 private fun NotInternetPlaceholderPreview() {
