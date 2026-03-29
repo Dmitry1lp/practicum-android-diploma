@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.feature.filters.data
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.core.data.network.client.NetworkClient
+import ru.practicum.android.diploma.core.data.network.dto.IndustriesResponse
 import ru.practicum.android.diploma.core.data.network.dto.Request
 import ru.practicum.android.diploma.core.data.network.dto.toDomain
 import ru.practicum.android.diploma.core.domain.model.Industry
@@ -19,7 +20,7 @@ class FiltersRepositoryImpl(
             200 -> with(response as IndustriesResponse) {
                 emit(
                     Resource.Success(
-                        results.map {it.toDomain()}
+                        industries.map {it.toDomain()}
                     )
                 )
             }

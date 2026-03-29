@@ -19,7 +19,7 @@ import ru.practicum.android.diploma.feature.vacancy.domain.VacancyRepository
  */
 val dataModule = module {
 
-    single<NetworkClient> {
+    factory<NetworkClient> {
         RetrofitNetworkClient(get())
     }
 
