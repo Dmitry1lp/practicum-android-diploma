@@ -59,7 +59,7 @@ class SearchViewModel(
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             if (text.isNotEmpty()) {
-                delay(2000L)
+                delay(SEARCH_DEBOUNCE_DELAY)
                 performSearch(text)
             } else {
                 _uiState.value = _uiState.value.copy(

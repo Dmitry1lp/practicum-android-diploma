@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 
-
 @Composable
 fun SearchBar(
     text: String,
@@ -30,10 +29,10 @@ fun SearchBar(
     onTextChange: (String) -> Unit,
     onClearClick: () -> Unit
 ) {
-    //управление клавиатурой
+    // управление клавиатурой
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    //сам поисковик
+    // сам поисковик
     OutlinedTextField(
         value = text,
         onValueChange = onTextChange,
@@ -46,7 +45,7 @@ fun SearchBar(
         },
         singleLine = true,
 
-        //иконка лупа\крестик
+        // иконка лупа\крестик
         trailingIcon = {
             if (isClearVisible) {
                 IconButton(onClick = {
@@ -104,4 +103,3 @@ private fun SearchBarPreview() {
         )
     }
 }
-
