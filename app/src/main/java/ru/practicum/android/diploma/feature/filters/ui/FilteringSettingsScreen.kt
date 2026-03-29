@@ -59,7 +59,8 @@ fun FilteringSettingsScreen(
     stateViewModel: MutableStateFlow<FiltersState>,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    onBranchScreenNavigate: () -> Unit
+    onIndustriesScreenNavigate: () -> Unit,
+    onSwitchClick: () -> Unit
 ) {
     val state by stateViewModel.collectAsStateWithLifecycle()
 
@@ -83,7 +84,7 @@ fun FilteringSettingsScreen(
             )
             InactiveFilterItem(
                 text = stringResource(R.string.filter_industry),
-                onClick = onBranchScreenNavigate
+                onClick = onIndustriesScreenNavigate
             )
             SalaryInputField(
                 text = text,
@@ -91,8 +92,8 @@ fun FilteringSettingsScreen(
             )
             SwitchFilterItem(
                 text = stringResource(R.string.checkbox_hide_without_salary),
-                checked = state.isBranchScreen,
-                onCheckedChange = onBranchScreenNavigate
+                checked = state.isCheckedSwitch,
+                onCheckedChange = onSwitchClick
             )
             Spacer(modifier = Modifier.weight(1f))
             if (text.isNotEmpty()) {
@@ -241,9 +242,10 @@ fun rememberIsKeyboardVisible(): State<Boolean> {
 private fun FilteringSettingsScreenPreviewLightMode() {
     DiplomaTheme(false) {
         FilteringSettingsScreen(
+            stateViewModel = MutableStateFlow(FiltersState()),
             onBackClick = {},
-            onBranchScreenNavigate = {},
-            stateViewModel = MutableStateFlow<FiltersState>(FiltersState())
+            onIndustriesScreenNavigate = {},
+            onSwitchClick = {}
         )
     }
 }
@@ -253,9 +255,10 @@ private fun FilteringSettingsScreenPreviewLightMode() {
 private fun FilteringSettingsScreenPreviewDarkMode() {
     DiplomaTheme(true) {
         FilteringSettingsScreen(
+            stateViewModel = MutableStateFlow(FiltersState()),
             onBackClick = {},
-            onBranchScreenNavigate = {},
-            stateViewModel = MutableStateFlow<FiltersState>(FiltersState())
+            onIndustriesScreenNavigate = {},
+            onSwitchClick = {}
         )
     }
 }

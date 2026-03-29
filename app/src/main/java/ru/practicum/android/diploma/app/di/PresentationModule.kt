@@ -24,7 +24,7 @@ val presentationModule = module {
     }
 
     viewModel<FiltersViewModel> {
-        FiltersViewModel()
+        FiltersViewModel(get())
     }
 
 }

@@ -157,6 +157,7 @@ private fun appEntryProvider(
         FiltersScreen(
             stateViewModel = viewModel.state,
             onBackClick = { topLevelBackStack.removeLast() },
+            onSwitchClick = viewModel::onSwitchClicked
 //            onBranchScreen = viewModel::onBranchScreen
         )
     }

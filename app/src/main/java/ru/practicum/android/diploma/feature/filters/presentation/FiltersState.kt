@@ -1,5 +1,10 @@
 package ru.practicum.android.diploma.feature.filters.presentation
 
+import okhttp3.internal.immutableListOf
+import ru.practicum.android.diploma.core.domain.model.Industry
+
 data class FiltersState(
-    val isBranchScreen: Boolean = false
+    val isCheckedSwitch: Boolean = false,
+    val industries: List<Industry> = immutableListOf(),
+    val errorMessage: String = ""
 )
