@@ -30,7 +30,6 @@ fun VacancyContentState(
     vacancy: Vacancy,
     onPhoneClick: (String) -> Unit,
     onEmailClick: (String) -> Unit,
-    onWebsiteClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -244,32 +243,6 @@ fun VacancyContentState(
             }
         }
 
-        // website
-        val website = vacancy.website.takeIf { it.isNotBlank() }
-        website?.let {
-
-            // заголовок website
-            item {
-                Text(
-                    modifier = Modifier.padding(top = AppDimensions.paddingBig),
-                    text = stringResource(R.string.vacancy_website),
-                    style = AppTypography.titleMedium
-                )
-            }
-
-            website.let { websiteUrl ->
-                item {
-                    Text(
-                        modifier = Modifier
-                            .clickable {
-                                onWebsiteClick(websiteUrl)
-                            },
-                        text = websiteUrl,
-                        style = AppTypography.bodyLarge
-                    )
-                }
-            }
-        }
     }
 }
 
@@ -315,8 +288,7 @@ fun VacancyContentStatePreview() {
         VacancyContentState(
             vacancy = mockVacancy,
             onPhoneClick = {},
-            onEmailClick = {},
-            onWebsiteClick = {}
+            onEmailClick = {}
         )
     }
 }
