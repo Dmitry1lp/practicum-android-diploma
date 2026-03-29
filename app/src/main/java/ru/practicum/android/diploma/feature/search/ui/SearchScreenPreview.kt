@@ -11,7 +11,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import ru.practicum.android.diploma.core.domain.model.Employer
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
@@ -19,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
+import ru.practicum.android.diploma.core.domain.model.Employer
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 
 @Composable
@@ -61,6 +61,7 @@ fun SearchScreenPreview(
                         Spacer(modifier = Modifier.height(8.dp))
                         VacancyList(vacancies = stateContent.vacancies, onVacancyClick = onVacancyClick)
                     }
+
                     VacancyState.Empty -> {
                         if (state.searchText.isEmpty()) {
                             Image(
@@ -69,6 +70,7 @@ fun SearchScreenPreview(
                             )
                         }
                     }
+
                     VacancyState.ErrorInternet -> NoInternetPlaceholder()
                     VacancyState.ErrorFound -> NotFoundPlaceholder()
                 }
@@ -81,14 +83,14 @@ fun SearchScreenPreview(
 @Composable
 fun PreviewSearchScreenEmpty() {
     val state = SearchUiState(searchText = "", vacancyState = VacancyState.Empty)
-    DiplomaTheme{ SearchScreenPreview(state = state) }
+    DiplomaTheme { SearchScreenPreview(state = state) }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewSearchScreenLoading() {
-    val state = SearchUiState(searchText = "Android", vacancyState = VacancyState.Loading, )
-    DiplomaTheme{ SearchScreenPreview(state = state) }
+    val state = SearchUiState(searchText = "Android", vacancyState = VacancyState.Loading)
+    DiplomaTheme { SearchScreenPreview(state = state) }
 }
 
 @Preview(showBackground = true)
@@ -137,5 +139,5 @@ fun PreviewSearchScreenContent() {
         vacancyState = VacancyState.Content(vacancies)
     )
 
-    DiplomaTheme{ SearchScreenPreview(state = state) }
+    DiplomaTheme { SearchScreenPreview(state = state) }
 }

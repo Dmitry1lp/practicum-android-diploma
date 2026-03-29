@@ -1,23 +1,24 @@
 package ru.practicum.android.diploma.feature.search.ui
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.presentation.components.VacancyItem
 import ru.practicum.android.diploma.core.presentation.model.VacancyItemData
+import ru.practicum.android.diploma.core.utils.toLocalizedString
 
 @Composable
 fun VacancyList(
     vacancies: List<Vacancy>,
+    modifier: Modifier = Modifier,
     onVacancyClick: (Vacancy) -> Unit
 ) {
-    LazyColumn {
+    LazyColumn(
+        modifier = modifier
+    ) {
         items(
             items = vacancies,
             key = { it.id }
@@ -33,29 +34,13 @@ fun VacancyList(
 }
 
 @Composable
-private fun Vacancy.formatSalary(): String {
-    return when {
-        this.salary?.lowerBound != null && this.salary.upperBound != null ->
-            "от ${this.salary.lowerBound} до ${this.salary.upperBound} ${this.salary.currency.orEmpty()}"
-
-        this.salary?.lowerBound != null ->
-            "от ${this.salary.lowerBound} ${this.salary.currency.orEmpty()}"
-
-        this.salary?.upperBound != null ->
-            "до ${this.salary.upperBound} ${this.salary.currency.orEmpty()}"
-
-        else -> stringResource(R.string.vacancy_salary_not_specified)
-    }
-}
-
-@Composable
 private fun Vacancy.toItemData(): VacancyItemData {
     return VacancyItemData(
-        id = this.id,
-        name = this.name,
-        location = this.address?.city.orEmpty(),
-        imageUrl = this.employer.logoUrl.orEmpty(),
-        industry = this.industry,
-        salary = this.formatSalary()
+        id = id,
+        name = name,
+        location = address?.city.orEmpty(),
+        imageUrl = employer.logoUrl.orEmpty(),
+        industry = industry,
+        salary = salary.toLocalizedString()
     )
 }

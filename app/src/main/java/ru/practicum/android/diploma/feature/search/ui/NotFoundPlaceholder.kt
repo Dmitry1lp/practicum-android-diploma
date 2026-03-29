@@ -17,9 +17,11 @@ import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.StateInfo
 
 @Composable
-fun NotFoundPlaceholder() {
+fun NotFoundPlaceholder(
+    modifier: Modifier = Modifier,
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(24.dp),
         contentAlignment = Alignment.Center

@@ -15,7 +15,9 @@ import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.StateInfo
 
 @Composable
-fun NoInternetPlaceholder() {
+fun NoInternetPlaceholder(
+    modifier: Modifier = Modifier,
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -28,7 +30,6 @@ fun NoInternetPlaceholder() {
         )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
