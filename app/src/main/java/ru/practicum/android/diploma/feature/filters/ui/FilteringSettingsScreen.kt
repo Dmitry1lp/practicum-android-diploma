@@ -92,7 +92,7 @@ fun FilteringSettingsScreen(
             )
             SwitchFilterItem(
                 text = stringResource(R.string.checkbox_hide_without_salary),
-                checked = state.isCheckedSwitch,
+                checked = state.isWithoutSalary,
                 onCheckedChange = onSwitchClick
             )
             Spacer(modifier = Modifier.weight(1f))

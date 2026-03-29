@@ -23,7 +23,7 @@ class FiltersViewModel(
     }
 
     fun onSwitchClicked() {
-        _state.update { it.copy(isCheckedSwitch = !state.value.isCheckedSwitch) }
+        _state.update { it.copy(isWithoutSalary = !state.value.isWithoutSalary) }
     }
 
     private fun getIndustries() {

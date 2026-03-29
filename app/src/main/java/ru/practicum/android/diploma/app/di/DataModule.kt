@@ -26,7 +26,7 @@ import ru.practicum.android.diploma.feature.favorite.data.FavoritesRepositoryImp
  */
 val dataModule = module {
 
-    single<NetworkClient> {
+    factory<NetworkClient> {
         RetrofitNetworkClient(get())
     }
 
