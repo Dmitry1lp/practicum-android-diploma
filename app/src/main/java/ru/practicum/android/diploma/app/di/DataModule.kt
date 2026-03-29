@@ -9,11 +9,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.core.config.ApiConfig
 import ru.practicum.android.diploma.core.config.DatabaseConfig
+import ru.practicum.android.diploma.core.data.database.dao.FavoritesDao
+import ru.practicum.android.diploma.core.data.database.db.AppDatabase
 import ru.practicum.android.diploma.core.data.network.api.VacancyApi
-import ru.practicum.android.diploma.feature.favorite.data.AppDatabase
-import ru.practicum.android.diploma.feature.favorite.data.FavoritesDao
+import ru.practicum.android.diploma.core.domain.repository.FavoritesRepository
 import ru.practicum.android.diploma.feature.favorite.data.FavoritesRepositoryImpl
-import ru.practicum.android.diploma.feature.favorite.domain.FavoritesRepository
 
 /**
  * Модуль Koin, отвечающий за зависимости Repository и Data sources
@@ -59,7 +59,7 @@ val dataModule = module {
     }
 
     single<FavoritesDao> {
-        get<AppDatabase>().favoriteDao()
+        get<AppDatabase>().favoritesDao()
     }
 
     single<FavoritesRepository> {

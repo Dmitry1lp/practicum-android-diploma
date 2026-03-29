@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.feature.favorite.ui
+package ru.practicum.android.diploma.feature.favorite.presentation
 
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 

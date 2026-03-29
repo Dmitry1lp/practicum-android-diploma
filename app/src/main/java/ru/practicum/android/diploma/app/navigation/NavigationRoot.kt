@@ -2,7 +2,6 @@
 
 package ru.practicum.android.diploma.app.navigation
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -11,11 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,17 +21,12 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
-import ru.practicum.android.diploma.core.domain.model.Employer
-import ru.practicum.android.diploma.core.domain.model.Vacancy
-import ru.practicum.android.diploma.feature.favorite.domain.FavoritesRepository
+import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
-import ru.practicum.android.diploma.feature.favorite.ui.FavoritesUiState
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
 
 private val bottomNavItems = listOf<BottomNavItem>(
@@ -92,64 +83,12 @@ private fun appEntryProvider(
     }
 
     entry<Route.Favorites> {
-        // TODO(feature-team): интегрировать FavoritesViewModel
-        /*
-         * - Получение ViewModel происходит через функцию koinViewModel() внутри entry{}
-         * - НЕ СОЗДАВАТЬ ViewModel внутри NavigationRoot() или внутри экранов
-         * - Экраны не должны принимать в качестве аргумента ViewModel
-         *      и вместо этого должны принимать в качестве аргументов
-         *      все необходимые состояния state и коллбэки
-         * - Для перемещения на другой экран используется topLevelBackStack и метод add():
-         *      например, topLevelBackStack.add(Route.Search)
-         * - Для перемещения назад используется topLevelBackStack и метод removeLast()
-         *
-         * Пример реализации:
-         *
-         * val viewmodel: SearchViewModel = koinViewModel()
-         *
-         * SearchScreen(
-         *     state = viewmodel.state,
-         *     onQueryChange = viewmodel::onQueryChange,
-         *     onVacancyClick = { id -> topLevelBackStack.add(Route.Vacancy(id)) }
-         * )
-         */
-        val repo: FavoritesRepository = koinInject()
+        val viewModel: FavoritesViewModel = koinViewModel()
 
-        val vacancies by repo.getVacancies().collectAsState(initial = emptyList())
-
-        LaunchedEffect(Unit) {
-            repeat(5) {
-                repo.insert(
-                    Vacancy(
-                        id = "test$it",
-                        name = "Test vacancy $it",
-                        description = "Test description",
-                        salary = null,
-                        address = null,
-                        experience = null,
-                        schedule = null,
-                        employmentType = null,
-                        contacts = null,
-                        employer = Employer("Test company", ""),
-                        skills = listOf("Kotlin"),
-                        website = "",
-                        industry = "IT"
-                    )
-                )
-            }
-        }
-
-        val scope = rememberCoroutineScope()
         FavoritesScreen(
-            state = if (vacancies.isEmpty())
-                FavoritesUiState.Empty
-            else
-                FavoritesUiState.Content(vacancies),
+            state = viewModel.state.collectAsState().value,
             onVacancyClick = { vacancyId ->
-                scope.launch {
-                    Log.d("TEST", repo.getVacancy(vacancyId).toString())
-                    repo.delete(vacancyId)
-                }
+                topLevelBackStack.add(Route.Vacancy(vacancyId))
             },
             modifier = Modifier.fillMaxSize()
         )

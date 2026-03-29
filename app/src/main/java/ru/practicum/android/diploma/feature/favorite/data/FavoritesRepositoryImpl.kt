@@ -2,8 +2,10 @@ package ru.practicum.android.diploma.feature.favorite.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import ru.practicum.android.diploma.core.data.database.dao.FavoritesDao
+import ru.practicum.android.diploma.core.data.database.entity.FavoriteVacancyEntity
 import ru.practicum.android.diploma.core.domain.model.Vacancy
-import ru.practicum.android.diploma.feature.favorite.domain.FavoritesRepository
+import ru.practicum.android.diploma.core.domain.repository.FavoritesRepository
 
 class FavoritesRepositoryImpl(
     val favoritesDao: FavoritesDao

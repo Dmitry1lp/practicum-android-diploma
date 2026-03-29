@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
+import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesUiState
 
 @Composable
 fun FavoritesScreen(

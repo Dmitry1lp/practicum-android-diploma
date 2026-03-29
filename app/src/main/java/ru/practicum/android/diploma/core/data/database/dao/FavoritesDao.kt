@@ -1,27 +1,31 @@
 package ru.practicum.android.diploma.core.data.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
+import ru.practicum.android.diploma.core.config.DatabaseConfig
 import ru.practicum.android.diploma.core.data.database.entity.FavoriteVacancyEntity
 
 @Dao
 interface FavoritesDao {
 
-    // добавить в избранное
+    @Query(
+        """
+        SELECT * FROM ${DatabaseConfig.FAVORITE_VACANCY_TABLE}
+        ORDER BY addedAtMillis DESC
+    """
+    )
+    fun getVacancies(): Flow<List<FavoriteVacancyEntity>>
+
+    @Query(" SELECT * FROM ${DatabaseConfig.FAVORITE_VACANCY_TABLE} WHERE id = :id")
+    suspend fun getVacancy(id: String): FavoriteVacancyEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vacancy: FavoriteVacancyEntity)
 
-    // удалить
-    @Query("DELETE FROM favorites WHERE id = :id")
-    suspend fun deleteById(id: String)
-
-    // получить список избранных вакансий
-    @Query("SELECT * FROM favorites")
-    suspend fun getAll(): List<FavoriteVacancyEntity>
-
-    // получить по id
-    @Query("SELECT * FROM favorites WHERE id = :id")
-    suspend fun getById(id: String): FavoriteVacancyEntity?
+    @Delete
+    suspend fun delete(vacancy: FavoriteVacancyEntity)
 }
