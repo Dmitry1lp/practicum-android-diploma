@@ -64,7 +64,7 @@ fun AppSearchBar(
         shape = RoundedCornerShape(12.dp),
         colors = TextFieldDefaults.colors(
 
-            //фон
+            // фон
             focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
             unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
 
