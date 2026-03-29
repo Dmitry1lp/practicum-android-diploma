@@ -54,4 +54,11 @@
     <string name="vacancy_salary_to">До %1$s %2$s</string>
     <string name="vacancy_salary_range">От %1$s до %2$s %3$s</string>
     <string name="screen_select_country">Выбор страны</string>
+    <string name="vacancy_required_experience">Требуемый опыт</string>
+    <string name="vacancy_description">Описание вакансии</string>
+    <string name="vacancy_key_skills">Ключевые навыки</string>
+    <string name="vacancy_contacts">Контакты</string>
+    <string name="vacancy_website">Website</string>
+    <string name="vacancy_address">Адрес</string>
+    <string name="vacancy_company_title">Компания</string>
 </resources>
