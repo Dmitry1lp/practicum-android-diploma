@@ -3,6 +3,10 @@ package ru.practicum.android.diploma.app.di
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.practicum.android.diploma.app.navigation.NavigationViewModel
+import ru.practicum.android.diploma.feature.search.domain.repository.VacancyRepository
+import ru.practicum.android.diploma.feature.search.ui.SearchViewModel
+import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyViewModel
+
 import ru.practicum.android.diploma.core.domain.repository.FavoritesRepository
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.search.domain.repository.VacancyRepository
