@@ -11,10 +11,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,28 +20,22 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.flow.MutableStateFlow
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.Red
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersState
+import ru.practicum.android.diploma.feature.filters.presentation.Actions
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
 
 @Composable
 fun FilteringSettingsScreen(
-    stateViewModel: MutableStateFlow<FiltersState>,
+    state: FiltersUiState,
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit,
-    onIndustriesScreenNavigate: () -> Unit,
-    onSwitchClick: () -> Unit
+    actions: Actions
 ) {
-    val state by stateViewModel.collectAsStateWithLifecycle()
-    var text by remember { mutableStateOf("") }
-
     Scaffold(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.screen_filter_settings),
-                onNavigationIcon = onBackClick
+                onNavigationIcon = actions.onBackClick
             )
         }
     ) { paddingValues ->
@@ -58,19 +48,19 @@ fun FilteringSettingsScreen(
             )
             InactiveFilterItem(
                 text = stringResource(R.string.filter_industry),
-                onClick = onIndustriesScreenNavigate
+                onClick = actions.onIndustriesScreen
             )
             SalaryInputField(
-                text = text,
-                onTextChange = { text = it }
+                text = state.salaryText,
+                onTextChange = actions.onSalaryTextChange
             )
             SwitchFilterItem(
                 text = stringResource(R.string.checkbox_hide_without_salary),
-                checked = state.isWithoutSalary,
-                onCheckedChange = onSwitchClick
+                checked = state.isCheckBox,
+                onCheckedChange = actions.onCheckBox
             )
             Spacer(modifier = Modifier.weight(1f))
-            if (text.isNotEmpty()) {
+            if (state.salaryText.isNotEmpty() || state.isCheckBox) {
                 Column(
                     modifier = Modifier.padding(horizontal = 17.dp)
                 ) {
@@ -90,7 +80,10 @@ fun FilteringSettingsScreen(
                         modifier = Modifier
                             .padding(AppDimensions.FiltersScreen.resetButtonPadding)
                             .align(Alignment.CenterHorizontally)
-                            .clickable(onClick = { text = "" }),
+                            .clickable(onClick = {
+                                if (state.isCheckBox) actions.onCheckBox()
+                                actions.onSalaryTextChange("")
+                            }),
                         text = stringResource(R.string.button_reset),
                         style = AppTypography.titleSmall,
                         color = Red
@@ -106,10 +99,8 @@ fun FilteringSettingsScreen(
 private fun FilteringSettingsScreenPreviewLightMode() {
     DiplomaTheme(false) {
         FilteringSettingsScreen(
-            stateViewModel = MutableStateFlow(FiltersState()),
-            onBackClick = {},
-            onIndustriesScreenNavigate = {},
-            onSwitchClick = {}
+            state = FiltersUiState(),
+            actions = Actions()
         )
     }
 }
@@ -119,10 +110,8 @@ private fun FilteringSettingsScreenPreviewLightMode() {
 private fun FilteringSettingsScreenPreviewDarkMode() {
     DiplomaTheme(true) {
         FilteringSettingsScreen(
-            stateViewModel = MutableStateFlow(FiltersState()),
-            onBackClick = {},
-            onIndustriesScreenNavigate = {},
-            onSwitchClick = {}
+            state = FiltersUiState(),
+            actions = Actions()
         )
     }
 }
