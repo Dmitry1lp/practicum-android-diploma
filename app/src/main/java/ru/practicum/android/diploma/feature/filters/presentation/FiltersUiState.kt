@@ -13,7 +13,7 @@ data class FiltersUiState(
     val isCheckBox: Boolean = false,
     val industries: List<FilterIndustry> = immutableListOf(),
     val errorMessage: String = ""
-    )
+)
 
 data class Actions(
     val onBackClick: () -> Unit = {},
