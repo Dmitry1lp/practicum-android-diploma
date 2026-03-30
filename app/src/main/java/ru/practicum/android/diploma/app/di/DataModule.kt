@@ -80,4 +80,8 @@ val dataModule = module {
         FiltersRepositoryImpl(get())
     }
 
+    single<FiltersRepository> {
+        FiltersRepositoryImpl(get())
+    }
+
 }
