@@ -12,7 +12,7 @@ import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
 
 class FiltersViewModel(
     private val interactor: FiltersInteractor
-): ViewModel() {
+) : ViewModel() {
 
     private val _state = MutableStateFlow(FiltersUiState())
     val state = _state

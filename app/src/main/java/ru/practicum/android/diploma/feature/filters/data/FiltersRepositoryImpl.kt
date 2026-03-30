@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.feature.filters.domain
+package ru.practicum.android.diploma.feature.filters.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -9,6 +9,7 @@ import ru.practicum.android.diploma.core.data.network.dto.toDomain
 import ru.practicum.android.diploma.core.domain.model.FilterArea
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.Resource
+import ru.practicum.android.diploma.feature.filters.domain.FiltersRepository
 
 class FiltersRepositoryImpl(
     private val networkClient: NetworkClient
@@ -20,8 +21,8 @@ class FiltersRepositoryImpl(
     override fun getIndustries(): Flow<Resource<List<FilterIndustry>>> = flow {
         val response = networkClient.doRequest(Request.IndustriesRequest)
         when (response.resultCode) {
-            -1 -> emit(Resource.Error(response.resultCode.toString()))
-            200 -> with(response as IndustriesResponse) {
+            ERROR -> emit(Resource.Error(response.resultCode.toString()))
+            SUCCESS -> with(response as IndustriesResponse) {
                 emit(
                     Resource.Success(
                         industries.map { it.toDomain() }
@@ -31,5 +32,10 @@ class FiltersRepositoryImpl(
 
             else -> emit(Resource.Error(response.resultCode.toString()))
         }
+    }
+
+    companion object {
+        private const val SUCCESS = 200
+        private const val ERROR = -1
     }
 }

@@ -77,7 +77,7 @@ private fun ShowContent(industries: List<FilterIndustry>) {
                     .fillMaxWidth()
                     .height(AppDimensions.LabelActionListItem.itemHeight)
                     .selectable(
-                        selected = (industry == selectedOption),
+                        selected = industry == selectedOption,
                         onClick = { selectedOption = industry }
                     )
                     .padding(horizontal = AppDimensions.paddingMedium),
@@ -91,7 +91,7 @@ private fun ShowContent(industries: List<FilterIndustry>) {
                     style = AppTypography.bodyLarge
                 )
                 RadioButton(
-                    selected = (industry == selectedOption),
+                    selected = industry == selectedOption,
                     onClick = null,
                     colors = RadioButtonDefaults.colors(
                         selectedColor = Blue,

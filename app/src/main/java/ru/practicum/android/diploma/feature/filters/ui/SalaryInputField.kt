@@ -29,6 +29,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalView
@@ -54,11 +56,7 @@ fun SalaryInputField(
     val isFocused by interactionSource.collectIsFocusedAsState()
     val isKeyboardVisible by rememberIsKeyboardVisible()
 
-    LaunchedEffect(isKeyboardVisible) {
-        if (!isKeyboardVisible && isFocused) {
-            focusManager.clearFocus()
-        }
-    }
+    HandleKeyboardFocus(isKeyboardVisible, isFocused, focusManager)
 
     Box(
         modifier = Modifier
@@ -66,63 +64,89 @@ fun SalaryInputField(
             .padding(horizontal = AppDimensions.paddingMedium),
         contentAlignment = Alignment.Center
     ) {
-        BasicTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(AppDimensions.FiltersScreen.heightTextField)
-                .background(
-                    shape = RoundedCornerShape(AppDimensions.FiltersScreen.cornerRadius),
-                    color = MaterialTheme.colorScheme.surfaceVariant
-                ),
-            interactionSource = interactionSource,
-            value = text,
-            onValueChange = onTextChange,
-            textStyle = AppTypography.bodyLarge.copy(
-                color = MaterialTheme.colorScheme.onSecondary,
-                textAlign = TextAlign.Start
+        SalaryTextField(text, onTextChange, interactionSource, isFocused)
+    }
+}
+
+@Composable
+private fun HandleKeyboardFocus(
+    isKeyboardVisible: Boolean,
+    isFocused: Boolean,
+    focusManager: FocusManager
+) {
+    LaunchedEffect(isKeyboardVisible) {
+        if (!isKeyboardVisible && isFocused) {
+            focusManager.clearFocus()
+        }
+    }
+}
+
+@Composable
+private fun SalaryTextField(
+    text: String,
+    onTextChange: (String) -> Unit,
+    interactionSource: MutableInteractionSource,
+    isFocused: Boolean
+) {
+    BasicTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(AppDimensions.FiltersScreen.heightTextField)
+            .background(
+                shape = RoundedCornerShape(AppDimensions.FiltersScreen.cornerRadius),
+                color = MaterialTheme.colorScheme.surfaceVariant
             ),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            cursorBrush = SolidColor(Blue),
-            decorationBox = { innerTextField ->
-                Row(
-                    modifier = Modifier.padding(AppDimensions.FiltersScreen.rowPaddingTextField),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.label_expected_salary),
-                            style = AppTypography.labelMedium,
-                            color = when {
-                                text.isEmpty() && !isFocused -> MaterialTheme.colorScheme.outline
-                                isFocused -> Blue
-                                else -> Black
-                            }
-                        )
-                        Box {
-                            innerTextField()
-                            if (text.isEmpty()) {
-                                Text(
-                                    stringResource(R.string.hint_salary_amount),
-                                    style = AppTypography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.outline
-                                )
-                            }
+        interactionSource = interactionSource,
+        value = text,
+        onValueChange = onTextChange,
+        textStyle = AppTypography.bodyLarge.copy(
+            color = MaterialTheme.colorScheme.onSecondary,
+            textAlign = TextAlign.Start
+        ),
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        cursorBrush = SolidColor(Blue),
+        decorationBox = { innerTextField ->
+            Row(
+                modifier = Modifier.padding(AppDimensions.FiltersScreen.rowPaddingTextField),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(R.string.label_expected_salary),
+                        style = AppTypography.labelMedium,
+                        color = calculateColor(text, isFocused)
+                    )
+                    Box {
+                        innerTextField()
+                        if (text.isEmpty()) {
+                            Text(
+                                stringResource(R.string.hint_salary_amount),
+                                style = AppTypography.bodyLarge,
+                                color = MaterialTheme.colorScheme.outline
+                            )
                         }
                     }
-                    if (text.isNotEmpty() && isFocused) {
-                        Icon(
-                            modifier = Modifier.clickable(onClick = { onTextChange("") }),
-                            painter = painterResource(R.drawable.ic_close_24),
-                            contentDescription = null,
-                            tint = Black
-                        )
-                    }
+                }
+                if (text.isNotEmpty() && isFocused) {
+                    Icon(
+                        modifier = Modifier.clickable(onClick = { onTextChange("") }),
+                        painter = painterResource(R.drawable.ic_close_24),
+                        contentDescription = null,
+                        tint = Black
+                    )
                 }
             }
-        )
+        }
+    )
+}
+
+@Composable
+private fun calculateColor(text: String, isFocused: Boolean): Color {
+    return when {
+        text.isEmpty() && !isFocused -> MaterialTheme.colorScheme.outline
+        isFocused -> Blue
+        else -> Black
     }
 }
 
@@ -148,10 +172,12 @@ private fun rememberIsKeyboardVisible(): State<Boolean> {
 
     return remember {
         derivedStateOf {
-            keyboardHeight > view.height * 0.15
+            keyboardHeight > view.height * KEYBOARD_THRESHOLD_RATIO
         }
     }
 }
+
+private const val KEYBOARD_THRESHOLD_RATIO = 0.15
 
 @Preview
 @Composable
