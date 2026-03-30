@@ -25,7 +25,6 @@ import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.feature.filters.presentation.Actions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
 
-
 @Composable
 fun FilteringSettingsScreen(
     state: FiltersUiState,
