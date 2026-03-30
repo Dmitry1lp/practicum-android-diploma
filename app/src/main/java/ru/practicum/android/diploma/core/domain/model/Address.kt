@@ -5,5 +5,6 @@ class Address(
     val street: String,
     val building: String
 ) {
-    val fullAddress: String = "$city, $street, $building"
+    val fullAddress: String
+        get() = "$city, $street, $building"
 }
