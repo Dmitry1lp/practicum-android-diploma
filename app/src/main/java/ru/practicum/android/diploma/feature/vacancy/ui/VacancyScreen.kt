@@ -23,45 +23,14 @@ import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyViewMode
 
 @Composable
 fun VacancyScreen(
+    state: VacancyUiState,
     onBackClick: () -> Unit,
+    onFavouriteClick: () -> Unit,
+    onShareClick: () -> Unit,
+    onPhoneClick: (String) -> Unit,
+    onEmailClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val viewModel: VacancyViewModel = koinViewModel()
-    val state by viewModel.state.collectAsState()
-
-    val context = LocalContext.current
-
-    LaunchedEffect(Unit) {
-        viewModel.events.collect { event ->
-            when (event) {
-
-                is VacancyUiEvent.ShareVacancyLink -> {
-                    val intent = Intent(Intent.ACTION_SEND).apply {
-                        putExtra(Intent.EXTRA_TEXT, event.url)
-                        type = "text/plain"
-                    }
-                    context.startActivity(
-                        Intent.createChooser(intent, null)
-                    )
-                }
-
-                is VacancyUiEvent.OpenEmailTo -> {
-                    val intent = Intent(Intent.ACTION_SENDTO).apply {
-                        data = Uri.parse("mailto:${event.email}")
-                    }
-                    context.startActivity(intent)
-                }
-
-                is VacancyUiEvent.OpenPhoneCall -> {
-                    val intent = Intent(Intent.ACTION_DIAL).apply {
-                        data = Uri.parse("tel:${event.phone}")
-                    }
-                    context.startActivity(intent)
-                }
-            }
-        }
-    }
-
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -73,14 +42,14 @@ fun VacancyScreen(
                         onNavigationIcon = onBackClick,
                         action1 = TopBarIcon(
                             iconResId = R.drawable.ic_sharing_24,
-                            onClick = { viewModel.onShareClick() }
+                            onClick = onShareClick
                         ),
                         action2 = TopBarIcon(
                             iconResId = if ((state as? VacancyUiState.Content)?.isFavorite == true)
                                 R.drawable.ic_favorites_on_24
                             else
                                 R.drawable.ic_favorites_off_24,
-                            onClick = { viewModel.onFavouriteClick() }
+                            onClick = onFavouriteClick
                         )
                     )
                 }
@@ -90,7 +59,6 @@ fun VacancyScreen(
                     AppTopBar(
                         title = stringResource(R.string.screen_vacancy),
                         onNavigationIcon = onBackClick
-                        // без action1 и action2
                     )
                 }
 
@@ -99,32 +67,21 @@ fun VacancyScreen(
         }
     ) { paddingValues ->
 
-        Surface(
-            modifier = Modifier.padding(paddingValues)
-        ) {
+        Surface(modifier = Modifier.padding(paddingValues)) {
 
             when (state) {
 
-                VacancyUiState.Loading -> {
-                    VacancyLoadingIndicator()
-                }
+                VacancyUiState.Loading -> VacancyLoadingIndicator()
 
-                VacancyUiState.NotFound -> {
-                    VacancyEmptyState()
-                }
+                VacancyUiState.NotFound -> VacancyEmptyState()
 
-                VacancyUiState.ServerError -> {
-                    VacancyErrorState()
-
-                }
+                VacancyUiState.ServerError -> VacancyErrorState()
 
                 is VacancyUiState.Content -> {
-                    val data = state as VacancyUiState.Content
-
                     VacancyContentState(
-                        vacancy = data.vacancy,
-                        onPhoneClick = { viewModel.onPhoneCall(it) },
-                        onEmailClick = { viewModel.onEmailClick(it) }
+                        vacancy = state.vacancy,
+                        onPhoneClick = onPhoneClick,
+                        onEmailClick = onEmailClick
                     )
                 }
 

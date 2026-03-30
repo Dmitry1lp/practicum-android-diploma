@@ -122,7 +122,7 @@ private val mockVacancy = Vacancy(
     industry = "Металлургия, металлообработка"
 )
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, heightDp = 1200)
 @Composable
 fun VacancyScreenContentPreview_Content() {
     DiplomaTheme {
@@ -144,26 +144,46 @@ fun VacancyScreenContentPreview_Content() {
 @Preview(showBackground = true)
 @Composable
 fun VacancyScreenContentPreview_Loading() {
-    VacancyScreenContent(
-        state = VacancyUiState.Loading,
-        onBackClick = {},
-        onFavouriteClick = {},
-        onShareClick = {},
-        onPhoneClick = {},
-        onEmailClick = {}
-    )
+    DiplomaTheme {
+        VacancyScreenContent(
+            state = VacancyUiState.Loading,
+            onBackClick = {},
+            onFavouriteClick = {},
+            onShareClick = {},
+            onPhoneClick = {},
+            onEmailClick = {}
+        )
+    }
 }
 
 
 @Preview(showBackground = true)
 @Composable
 fun VacancyScreenContentPreview_Error() {
-    VacancyScreenContent(
-        state = VacancyUiState.ServerError,
-        onBackClick = {},
-        onFavouriteClick = {},
-        onShareClick = {},
-        onPhoneClick = {},
-        onEmailClick = {}
-    )
+    DiplomaTheme {
+        VacancyScreenContent(
+            state = VacancyUiState.ServerError,
+            onBackClick = {},
+            onFavouriteClick = {},
+            onShareClick = {},
+            onPhoneClick = {},
+            onEmailClick = {}
+        )
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun VacancyScreenContentPreview_Empty() {
+    DiplomaTheme {
+        VacancyScreenContent(
+            state = VacancyUiState.NotFound,
+            onBackClick = {},
+            onFavouriteClick = {},
+            onShareClick = {},
+            onPhoneClick = {},
+            onEmailClick = {}
+        )
+    }
 }

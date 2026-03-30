@@ -12,7 +12,7 @@
     <string name="screen_favorites">Избранное</string>
     <string name="error_vacancies_list">Не удалось получить список вакансий</string>
     <string name="error_no_internet">Нет интернета</string>
-    <string name="error_vacancy_not_found">Вакансия не найдена или удалена</string>
+    <string name="error_vacancy_not_found">Вакансия не найдена или\nудалена</string>
     <string name="error_region_not_found">Такого региона нет</string>
     <string name="error_list_fetch">Не удалось получить список</string>
     <string name="error_server">Ошибка сервера</string>

@@ -7,7 +7,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 
 @Composable
 fun VacancyLoadingIndicator(
@@ -17,7 +17,7 @@ fun VacancyLoadingIndicator(
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
-            modifier = Modifier.size(48.dp)
+            modifier = Modifier.size(AppDimensions.loadingIndicatorSize)
         )
     }
 }
