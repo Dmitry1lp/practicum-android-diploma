@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,8 +25,8 @@ import org.koin.androidx.compose.koinViewModel
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
+import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
-import ru.practicum.android.diploma.feature.favorite.ui.FavoritesUiState
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
 
 private val bottomNavItems = listOf<BottomNavItem>(
@@ -38,7 +39,6 @@ private val bottomNavItems = listOf<BottomNavItem>(
 fun NavigationRoot(
     modifier: Modifier = Modifier,
     navigationViewModel: NavigationViewModel = koinViewModel()
-
 ) {
     val topLevelBackStack = navigationViewModel.backStack
     val entryProvider = remember(topLevelBackStack) {
@@ -83,30 +83,13 @@ private fun appEntryProvider(
     }
 
     entry<Route.Favorites> {
-        // TODO(feature-team): интегрировать FavoritesViewModel
-        /*
-         * - Получение ViewModel происходит через функцию koinViewModel() внутри entry{}
-         * - НЕ СОЗДАВАТЬ ViewModel внутри NavigationRoot() или внутри экранов
-         * - Экраны не должны принимать в качестве аргумента ViewModel
-         *      и вместо этого должны принимать в качестве аргументов
-         *      все необходимые состояния state и коллбэки
-         * - Для перемещения на другой экран используется topLevelBackStack и метод add():
-         *      например, topLevelBackStack.add(Route.Search)
-         * - Для перемещения назад используется topLevelBackStack и метод removeLast()
-         *
-         * Пример реализации:
-         *
-         * val viewmodel: SearchViewModel = koinViewModel()
-         *
-         * SearchScreen(
-         *     state = viewmodel.state,
-         *     onQueryChange = viewmodel::onQueryChange,
-         *     onVacancyClick = { id -> topLevelBackStack.add(Route.Vacancy(id)) }
-         * )
-         */
+        val viewModel: FavoritesViewModel = koinViewModel()
+
         FavoritesScreen(
-            state = FavoritesUiState.Empty,
-            onVacancyClick = {},
+            state = viewModel.state.collectAsState().value,
+            onVacancyClick = { vacancyId ->
+                topLevelBackStack.add(Route.Vacancy(vacancyId))
+            },
             modifier = Modifier.fillMaxSize()
         )
     }
