@@ -9,6 +9,7 @@ import okhttp3.internal.immutableListOf
 import okhttp3.internal.toImmutableList
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
+import ru.practicum.android.diploma.feature.filters.domain.FiltersSettings
 
 class FiltersViewModel(
     private val interactor: FiltersInteractor
@@ -18,6 +19,7 @@ class FiltersViewModel(
     val state = _state
 
     init {
+        getFiltersSettings()
         getIndustries()
     }
 
@@ -44,6 +46,20 @@ class FiltersViewModel(
                 .collect { pair ->
                     processResult(pair.first, pair.second)
                 }
+        }
+    }
+
+    private fun getFiltersSettings() {
+        val filtersSettings = interactor.getFiltersSetting()
+        filtersSettings?.let {
+            _state.update {
+                it.copy(
+                    area = filtersSettings.area,
+                    industry = filtersSettings.industry,
+                    salaryText = filtersSettings.salaryText,
+                    isCheckBox = filtersSettings.isNotShowWithoutSalary
+                )
+            }
         }
     }
 

@@ -100,7 +100,7 @@ private fun appEntryProvider(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(teamScreenPadding)
-        )
+        ) { topLevelBackStack.add(Route.Filters) }
     }
 
     entry<Route.Favorites> {
