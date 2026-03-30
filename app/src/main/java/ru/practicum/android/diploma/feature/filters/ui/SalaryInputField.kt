@@ -36,11 +36,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.Black
 import ru.practicum.android.diploma.app.ui.theme.Blue
+import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 
 @Composable
 fun SalaryInputField(
@@ -148,5 +150,21 @@ private fun rememberIsKeyboardVisible(): State<Boolean> {
         derivedStateOf {
             keyboardHeight > view.height * 0.15
         }
+    }
+}
+
+@Preview
+@Composable
+private fun SalaryInputFieldPreviewLightMode() {
+    DiplomaTheme(false) {
+        SalaryInputField("") { }
+    }
+}
+
+@Preview
+@Composable
+private fun SalaryInputFieldPreviewDarkMode() {
+    DiplomaTheme(true) {
+        SalaryInputField("50000") { }
     }
 }

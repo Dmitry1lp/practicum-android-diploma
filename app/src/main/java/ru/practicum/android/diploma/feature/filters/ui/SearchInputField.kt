@@ -22,7 +22,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 
 @Composable
-fun SearchBar(
+fun SearchInputField(
     text: String,
     onTextChange: (String) -> Unit
 ) {
@@ -71,11 +71,11 @@ fun SearchBar(
 
 @Preview(showBackground = true)
 @Composable
-private fun SearchBarPreview() {
+private fun SearchInputFieldPreview() {
     val textState = remember { mutableStateOf("Введите запрос") }
 
     DiplomaTheme {
-        SearchBar(
+        SearchInputField(
             text = textState.value,
             onTextChange = { textState.value = it },
         )

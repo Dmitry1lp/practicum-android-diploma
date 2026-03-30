@@ -25,6 +25,7 @@ import org.koin.androidx.compose.koinViewModel
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
+import ru.practicum.android.diploma.feature.filters.presentation.Actions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
 import ru.practicum.android.diploma.feature.filters.ui.FilteringSettingsScreen
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
@@ -155,10 +156,14 @@ private fun appEntryProvider(
     entry<Route.Filters> {
         val viewModel: FiltersViewModel = koinViewModel()
         FiltersScreen(
-            stateViewModel = viewModel.state,
-            onBackClick = { topLevelBackStack.removeLast() },
-            onSwitchClick = viewModel::onSwitchClicked
-//            onBranchScreen = viewModel::onBranchScreen
+            state = viewModel.state.collectAsState().value,
+            actions = Actions(
+                onBackClick = { topLevelBackStack.removeLast() },
+                onIndustriesScreen = viewModel::onIndustriesScreen,
+                onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
+                onSearchTextChange = { viewModel.onSearchTextChange(it) },
+                onCheckBox = viewModel::onCheckBox
+            )
         )
     }
 }

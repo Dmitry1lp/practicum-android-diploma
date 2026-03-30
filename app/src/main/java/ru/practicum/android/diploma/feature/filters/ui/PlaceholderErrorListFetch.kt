@@ -16,12 +16,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.flow.MutableStateFlow
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersState
 
 @Composable
 fun PlaceholderErrorListFetch() {
@@ -49,18 +47,10 @@ fun PlaceholderErrorListFetch() {
     }
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 private fun PlaceholderErrorListFetchLightMode() {
     DiplomaTheme(false) {
-        PlaceholderErrorListFetch()
-    }
-}
-
-@Preview
-@Composable
-private fun PlaceholderErrorListFetchDarkMode() {
-    DiplomaTheme(true) {
         PlaceholderErrorListFetch()
     }
 }

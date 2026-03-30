@@ -22,40 +22,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.flow.MutableStateFlow
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.Blue
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
-import ru.practicum.android.diploma.core.domain.model.Industry
+import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersState
+import ru.practicum.android.diploma.feature.filters.presentation.Actions
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
 
 @Composable
 fun IndustriesScreen(
-    stateViewModel: MutableStateFlow<FiltersState>,
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit
+    state: FiltersUiState,
+    actions: Actions
 ) {
-    val state by stateViewModel.collectAsStateWithLifecycle()
-    var text by remember { mutableStateOf("") }
-
     Scaffold(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.screen_select_industry),
-                onNavigationIcon = onBackClick
+                onNavigationIcon = actions.onIndustriesScreen
             )
         }
     ) { paddingValues ->
         Column(
             modifier = modifier.padding(paddingValues)
         ) {
-            SearchBar(
-                text = text,
-                onTextChange = { text = it }
+            SearchInputField(
+                text = state.searchText,
+                onTextChange = { actions.onSearchTextChange(it) }
             )
             if (state.industries.isNotEmpty()) {
                 ShowContent(state.industries)
@@ -67,8 +63,8 @@ fun IndustriesScreen(
 }
 
 @Composable
-private fun ShowContent(industries: List<Industry>) {
-    var selectedOption by remember { mutableStateOf<Industry?>(null) }
+private fun ShowContent(industries: List<FilterIndustry>) {
+    var selectedOption by remember { mutableStateOf<FilterIndustry?>(null) }
 
     LazyColumn(
         modifier = Modifier
@@ -112,8 +108,8 @@ private fun ShowContent(industries: List<Industry>) {
 private fun IndustriesScreenPreviewLightMode() {
     DiplomaTheme(false) {
         IndustriesScreen(
-            stateViewModel = MutableStateFlow(FiltersState()),
-            onBackClick = {}
+            state = FiltersUiState(),
+            actions = Actions()
         )
     }
 }
@@ -123,8 +119,8 @@ private fun IndustriesScreenPreviewLightMode() {
 private fun IndustriesScreenPreviewDarkMode() {
     DiplomaTheme(true) {
         IndustriesScreen(
-            stateViewModel = MutableStateFlow(FiltersState()),
-            onBackClick = {}
+            state = FiltersUiState(),
+            actions = Actions()
         )
     }
 }
