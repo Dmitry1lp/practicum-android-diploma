@@ -7,8 +7,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.core.config.ApiConfig
 import ru.practicum.android.diploma.core.data.network.api.VacancyApi
-import ru.practicum.android.diploma.feature.vacancy.data.VacancyRepositoryImpl
-import ru.practicum.android.diploma.feature.vacancy.domain.VacancyRepository
+import ru.practicum.android.diploma.feature.vacancy.data.VacancyDetailsRepositoryImpl
+import ru.practicum.android.diploma.feature.vacancy.domain.VacancyDetailsRepository
 
 /**
  * Модуль Koin, отвечающий за зависимости Repository и Data sources
@@ -43,8 +43,8 @@ val dataModule = module {
         get<Retrofit>().create(VacancyApi::class.java)
     }
 
-    single<VacancyRepository> {
-        VacancyRepositoryImpl(
+    single<VacancyDetailsRepository> {
+        VacancyDetailsRepositoryImpl(
             networkClient = get(),
             favoritesDataSource = get()
         )

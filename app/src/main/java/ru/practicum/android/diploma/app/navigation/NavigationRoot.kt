@@ -31,8 +31,8 @@ import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
-import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyUiEvent
-import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyViewModel
+import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsUiEvent
+import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsViewModel
 import ru.practicum.android.diploma.feature.vacancy.ui.VacancyScreen
 
 private val bottomNavItems = listOf<BottomNavItem>(
@@ -145,7 +145,7 @@ private fun appEntryProvider(
 
         val vacancyId = route.id
 
-        val viewModel: VacancyViewModel = koinViewModel()
+        val viewModel: VacancyDetailsViewModel = koinViewModel()
 
         val state by viewModel.state.collectAsState()
 
@@ -161,7 +161,7 @@ private fun appEntryProvider(
             viewModel.events.collect { event ->
                 when (event) {
 
-                    is VacancyUiEvent.ShareVacancyLink -> {
+                    is VacancyDetailsUiEvent.ShareVacancyLink -> {
                         val intent = Intent(Intent.ACTION_SEND).apply {
                             putExtra(Intent.EXTRA_TEXT, event.url)
                             type = "text/plain"
@@ -169,14 +169,14 @@ private fun appEntryProvider(
                         context.startActivity(Intent.createChooser(intent, null))
                     }
 
-                    is VacancyUiEvent.OpenEmailTo -> {
+                    is VacancyDetailsUiEvent.OpenEmailTo -> {
                         val intent = Intent(Intent.ACTION_SENDTO).apply {
                             data = Uri.parse("mailto:${event.email}")
                         }
                         context.startActivity(intent)
                     }
 
-                    is VacancyUiEvent.OpenPhoneCall -> {
+                    is VacancyDetailsUiEvent.OpenPhoneCall -> {
                         val intent = Intent(Intent.ACTION_DIAL).apply {
                             data = Uri.parse("tel:${event.phone}")
                         }

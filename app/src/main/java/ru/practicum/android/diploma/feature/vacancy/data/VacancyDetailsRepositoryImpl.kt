@@ -5,15 +5,15 @@ import ru.practicum.android.diploma.core.data.network.dto.Request
 import ru.practicum.android.diploma.core.data.network.dto.VacancyDetailDto
 import ru.practicum.android.diploma.core.data.network.dto.toDomain
 import ru.practicum.android.diploma.core.domain.model.Vacancy
-import ru.practicum.android.diploma.feature.vacancy.domain.VacancyRepository
-import ru.practicum.android.diploma.feature.vacancy.domain.VacancyResult
+import ru.practicum.android.diploma.feature.vacancy.domain.VacancyDetailsRepository
+import ru.practicum.android.diploma.feature.vacancy.domain.VacancyDetailsResult
 
-class VacancyRepositoryImpl(
+class VacancyDetailsRepositoryImpl(
     private val networkClient: NetworkClient,
     private val favoritesDataSource: FavoritesDataSource // интерфейс заглушка от Избранных вакансий
-) : VacancyRepository {
+) : VacancyDetailsRepository {
 
-    override suspend fun getVacancy(id: String): VacancyResult {
+    override suspend fun getVacancy(id: String): VacancyDetailsResult {
         val response = networkClient.doRequest(
             Request.VacancyDetailsRequest(id)
         )
@@ -22,13 +22,13 @@ class VacancyRepositoryImpl(
             SUCCESS -> {
                 val dto = response as? VacancyDetailDto
                 if (dto != null) {
-                    VacancyResult.Success(dto.toDomain())
+                    VacancyDetailsResult.Success(dto.toDomain())
                 } else {
-                    VacancyResult.ServerError(SUCCESS)
+                    VacancyDetailsResult.ServerError(SUCCESS)
                 }
             }
-            NOT_FOUND -> VacancyResult.NotFound
-            else -> VacancyResult.NetworkError
+            NOT_FOUND -> VacancyDetailsResult.NotFound
+            else -> VacancyDetailsResult.NetworkError
         }
     }
 

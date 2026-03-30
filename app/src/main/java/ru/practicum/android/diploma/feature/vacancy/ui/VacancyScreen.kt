@@ -10,11 +10,11 @@ import androidx.compose.ui.res.stringResource
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.core.presentation.components.TopBarIcon
-import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyUiState
+import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsUiState
 
 @Composable
 fun VacancyScreen(
-    state: VacancyUiState,
+    state: VacancyDetailsUiState,
     onBackClick: () -> Unit,
     onFavouriteClick: () -> Unit,
     onShareClick: () -> Unit,
@@ -26,8 +26,8 @@ fun VacancyScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             when (state) {
-                is VacancyUiState.Content,
-                is VacancyUiState.NotFound -> {
+                is VacancyDetailsUiState.Content,
+                is VacancyDetailsUiState.NotFound -> {
                     AppTopBar(
                         title = stringResource(R.string.screen_vacancy),
                         onNavigationIcon = onBackClick,
@@ -36,7 +36,7 @@ fun VacancyScreen(
                             onClick = onShareClick
                         ),
                         action2 = TopBarIcon(
-                            iconResId = if ((state as? VacancyUiState.Content)?.isFavorite == true)
+                            iconResId = if ((state as? VacancyDetailsUiState.Content)?.isFavorite == true)
                                 R.drawable.ic_favorites_on_24
                             else
                                 R.drawable.ic_favorites_off_24,
@@ -45,8 +45,8 @@ fun VacancyScreen(
                     )
                 }
 
-                is VacancyUiState.Loading,
-                is VacancyUiState.ServerError -> {
+                is VacancyDetailsUiState.Loading,
+                is VacancyDetailsUiState.ServerError -> {
                     AppTopBar(
                         title = stringResource(R.string.screen_vacancy),
                         onNavigationIcon = onBackClick
@@ -62,13 +62,13 @@ fun VacancyScreen(
 
             when (state) {
 
-                VacancyUiState.Loading -> VacancyLoadingIndicator()
+                VacancyDetailsUiState.Loading -> VacancyLoadingIndicator()
 
-                VacancyUiState.NotFound -> VacancyEmptyState()
+                VacancyDetailsUiState.NotFound -> VacancyEmptyState()
 
-                VacancyUiState.ServerError -> VacancyErrorState()
+                VacancyDetailsUiState.ServerError -> VacancyErrorState()
 
-                is VacancyUiState.Content -> {
+                is VacancyDetailsUiState.Content -> {
                     VacancyContentState(
                         vacancy = state.vacancy,
                         onPhoneClick = onPhoneClick,

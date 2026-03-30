@@ -17,11 +17,11 @@ import ru.practicum.android.diploma.core.domain.model.Salary
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.core.presentation.components.TopBarIcon
-import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyUiState
+import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsUiState
 
 @Composable
 fun VacancyScreenContent(
-    state: VacancyUiState,
+    state: VacancyDetailsUiState,
     onBackClick: () -> Unit,
     onFavouriteClick: () -> Unit,
     onShareClick: () -> Unit,
@@ -33,8 +33,8 @@ fun VacancyScreenContent(
         modifier = modifier.fillMaxSize(),
         topBar = {
             when (state) {
-                is VacancyUiState.Content,
-                is VacancyUiState.NotFound -> {
+                is VacancyDetailsUiState.Content,
+                is VacancyDetailsUiState.NotFound -> {
                     AppTopBar(
                         title = stringResource(R.string.screen_vacancy),
                         onNavigationIcon = onBackClick,
@@ -43,7 +43,7 @@ fun VacancyScreenContent(
                             onClick = onShareClick
                         ),
                         action2 = TopBarIcon(
-                            iconResId = if ((state as? VacancyUiState.Content)?.isFavorite == true)
+                            iconResId = if ((state as? VacancyDetailsUiState.Content)?.isFavorite == true)
                                 R.drawable.ic_favorites_on_24
                             else
                                 R.drawable.ic_favorites_off_24,
@@ -52,8 +52,8 @@ fun VacancyScreenContent(
                     )
                 }
 
-                is VacancyUiState.Loading,
-                is VacancyUiState.ServerError -> {
+                is VacancyDetailsUiState.Loading,
+                is VacancyDetailsUiState.ServerError -> {
                     AppTopBar(
                         title = stringResource(R.string.screen_vacancy),
                         onNavigationIcon = onBackClick
@@ -68,13 +68,13 @@ fun VacancyScreenContent(
         Surface(modifier = Modifier.padding(paddingValues)) {
             when (state) {
 
-                VacancyUiState.Loading -> VacancyLoadingIndicator()
+                VacancyDetailsUiState.Loading -> VacancyLoadingIndicator()
 
-                VacancyUiState.NotFound -> VacancyEmptyState()
+                VacancyDetailsUiState.NotFound -> VacancyEmptyState()
 
-                VacancyUiState.ServerError -> VacancyErrorState()
+                VacancyDetailsUiState.ServerError -> VacancyErrorState()
 
-                is VacancyUiState.Content -> {
+                is VacancyDetailsUiState.Content -> {
                     VacancyContentState(
                         vacancy = state.vacancy,
                         onPhoneClick = onPhoneClick,
@@ -127,7 +127,7 @@ private val mockVacancy = Vacancy(
 fun VacancyScreenContentPreview_Content() {
     DiplomaTheme {
         VacancyScreenContent(
-            state = VacancyUiState.Content(
+            state = VacancyDetailsUiState.Content(
                 vacancy = mockVacancy, // создаёшь фейковые данные
                 isFavorite = true
             ),
@@ -146,7 +146,7 @@ fun VacancyScreenContentPreview_Content() {
 fun VacancyScreenContentPreview_Loading() {
     DiplomaTheme {
         VacancyScreenContent(
-            state = VacancyUiState.Loading,
+            state = VacancyDetailsUiState.Loading,
             onBackClick = {},
             onFavouriteClick = {},
             onShareClick = {},
@@ -162,7 +162,7 @@ fun VacancyScreenContentPreview_Loading() {
 fun VacancyScreenContentPreview_Error() {
     DiplomaTheme {
         VacancyScreenContent(
-            state = VacancyUiState.ServerError,
+            state = VacancyDetailsUiState.ServerError,
             onBackClick = {},
             onFavouriteClick = {},
             onShareClick = {},
@@ -178,7 +178,7 @@ fun VacancyScreenContentPreview_Error() {
 fun VacancyScreenContentPreview_Empty() {
     DiplomaTheme {
         VacancyScreenContent(
-            state = VacancyUiState.NotFound,
+            state = VacancyDetailsUiState.NotFound,
             onBackClick = {},
             onFavouriteClick = {},
             onShareClick = {},

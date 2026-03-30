@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.app.di
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.practicum.android.diploma.app.navigation.NavigationViewModel
-import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyViewModel
+import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsViewModel
 
 /**
  * Модуль Koin, отвечающий за зависимости UI и ViewModel
@@ -14,8 +14,8 @@ val presentationModule = module {
         NavigationViewModel()
     }
 
-    viewModel<VacancyViewModel> { (vacancyId: String) ->
-        VacancyViewModel(
+    viewModel<VacancyDetailsViewModel> { (vacancyId: String) ->
+        VacancyDetailsViewModel(
             interactor = get(),
             vacancyId = vacancyId
         )
