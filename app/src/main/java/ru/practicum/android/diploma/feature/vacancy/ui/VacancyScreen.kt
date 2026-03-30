@@ -1,25 +1,16 @@
 package ru.practicum.android.diploma.feature.vacancy.ui
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import org.koin.androidx.compose.koinViewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.core.presentation.components.TopBarIcon
-import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyUiEvent
 import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyUiState
-import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyViewModel
 
 @Composable
 fun VacancyScreen(
