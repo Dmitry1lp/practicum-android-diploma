@@ -3,7 +3,8 @@ package ru.practicum.android.diploma.feature.search.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +23,8 @@ fun Chip(
 ) {
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(AppDimensions.Chip.cornerRadius))
+            .wrapContentSize()
+            .clip(CircleShape)
             .background(MaterialTheme.colorScheme.primary),
         contentAlignment = Alignment.Center
     ) {
