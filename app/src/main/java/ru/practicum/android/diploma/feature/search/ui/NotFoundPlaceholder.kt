@@ -27,7 +27,7 @@ fun NotFoundPlaceholder(
         contentAlignment = Alignment.Center
     ) {
         StateInfo(
-            image = R.drawable.ic_placeholder_not_found,
+            image = R.drawable.img_placeholder_not_found,
             text = stringResource(R.string.error_vacancies_list),
             textAlign = TextAlign.Center,
             lineHeight = 16.sp
@@ -37,7 +37,7 @@ fun NotFoundPlaceholder(
 
 @Preview(showBackground = true)
 @Composable
-fun NotFoundPlaceholderPreview() {
+private fun NotFoundPlaceholderPreview() {
     DiplomaTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             NotFoundPlaceholder()

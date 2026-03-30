@@ -15,7 +15,7 @@ import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.StateInfo
 
 @Composable
-fun NoInternetPlaceholder(
+fun NotInternetPlaceholder(
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -25,7 +25,7 @@ fun NoInternetPlaceholder(
         contentAlignment = Alignment.Center
     ) {
         StateInfo(
-            image = R.drawable.ic_placeholder_not_internet,
+            image = R.drawable.img_placeholder_not_internet,
             text = stringResource(R.string.error_no_internet)
         )
     }
@@ -33,10 +33,10 @@ fun NoInternetPlaceholder(
 
 @Preview(showBackground = true)
 @Composable
-fun NoInternetPlaceholderPreview() {
+private fun NotInternetPlaceholderPreview() {
     DiplomaTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            NoInternetPlaceholder()
+            NotInternetPlaceholder()
         }
     }
 }

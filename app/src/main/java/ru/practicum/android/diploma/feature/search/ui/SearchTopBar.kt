@@ -33,7 +33,7 @@ fun SearchTopBar() {
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_filter),
-                    contentDescription = "Filter Icon",
+                    contentDescription = stringResource(R.string.cd_filter),
                     tint = MaterialTheme.colorScheme.onBackground
                 )
             }
@@ -43,7 +43,7 @@ fun SearchTopBar() {
 
 @Preview(showBackground = true)
 @Composable
-fun SearchTopBarPreview() {
+private fun SearchTopBarPreview() {
     DiplomaTheme() {
         Surface {
             SearchTopBar()

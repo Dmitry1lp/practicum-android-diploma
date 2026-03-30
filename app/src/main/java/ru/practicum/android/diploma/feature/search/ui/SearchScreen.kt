@@ -71,7 +71,7 @@ fun SearchScreen(
 
                     VacancyState.Empty -> NotFoundPlaceholder(modifier = Modifier.fillMaxSize())
 
-                    VacancyState.ErrorInternet -> NoInternetPlaceholder(modifier = Modifier.fillMaxSize())
+                    VacancyState.ErrorInternet -> NotInternetPlaceholder(modifier = Modifier.fillMaxSize())
 
                     VacancyState.ErrorFound -> NotFoundPlaceholder(modifier = Modifier.fillMaxSize())
                 }

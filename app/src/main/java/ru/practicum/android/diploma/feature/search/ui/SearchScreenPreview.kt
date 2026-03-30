@@ -65,13 +65,13 @@ fun SearchScreenPreview(
                     VacancyState.Empty -> {
                         if (state.searchText.isEmpty()) {
                             Image(
-                                painter = painterResource(id = R.drawable.ic_search_screen),
+                                painter = painterResource(id = R.drawable.img_search_screen),
                                 contentDescription = "Search Placeholder"
                             )
                         }
                     }
 
-                    VacancyState.ErrorInternet -> NoInternetPlaceholder()
+                    VacancyState.ErrorInternet -> NotInternetPlaceholder()
                     VacancyState.ErrorFound -> NotFoundPlaceholder()
                 }
             }
