@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.app.di
 
+import android.content.Context
 import androidx.room.Room
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -7,6 +8,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.BuildConfig
+import ru.practicum.android.diploma.BuildConfig.DIPLOMA_PREFERENCES
 import ru.practicum.android.diploma.core.config.ApiConfig
 import ru.practicum.android.diploma.core.config.DatabaseConfig
 import ru.practicum.android.diploma.core.data.database.dao.FavoritesDao
@@ -75,7 +77,11 @@ val dataModule = module {
     }
 
     single<FiltersRepository> {
-        FiltersRepositoryImpl(get())
+        FiltersRepositoryImpl(get(), get())
+    }
+
+    single {
+        androidContext().getSharedPreferences(DIPLOMA_PREFERENCES, Context.MODE_PRIVATE)
     }
 
 }

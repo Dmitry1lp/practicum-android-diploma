@@ -5,4 +5,6 @@ import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 
 interface FiltersInteractor {
     fun getIndustries(): Flow<Pair<List<FilterIndustry>?, String?>>
+
+    fun getFiltersSetting(): FiltersSettings?
 }

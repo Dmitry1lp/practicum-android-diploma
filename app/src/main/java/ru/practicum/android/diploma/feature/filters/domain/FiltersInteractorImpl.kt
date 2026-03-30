@@ -16,4 +16,8 @@ class FiltersInteractorImpl(
             }
         }
     }
+
+    override fun getFiltersSetting(): FiltersSettings? {
+        return repository.getFiltersSetting()
+    }
 }

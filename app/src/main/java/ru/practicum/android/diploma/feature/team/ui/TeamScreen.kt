@@ -20,17 +20,23 @@ import ru.practicum.android.diploma.app.ui.theme.AppDimensions.paddingVeryBig
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
+import ru.practicum.android.diploma.core.presentation.components.TopBarIcon
 
 @Composable
 fun TeamScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     val developers = stringArrayResource(R.array.developers)
 
     Scaffold(
         topBar = {
             AppTopBar(
-                title = stringResource(R.string.nav_team)
+                title = stringResource(R.string.nav_team),
+                action1 = TopBarIcon(
+                    R.drawable.ic_main_24,
+                    onClick = onClick
+                )
             )
         }
     ) { paddingValues ->
@@ -61,7 +67,7 @@ fun TeamScreen(
 @Composable
 private fun TeamScreenPreviewLightMode() {
     DiplomaTheme(false) {
-        TeamScreen()
+        TeamScreen(onClick = {})
     }
 }
 
@@ -69,6 +75,6 @@ private fun TeamScreenPreviewLightMode() {
 @Composable
 private fun TeamScreenPreviewDarkMode() {
     DiplomaTheme(true) {
-        TeamScreen()
+        TeamScreen(onClick = {})
     }
 }
