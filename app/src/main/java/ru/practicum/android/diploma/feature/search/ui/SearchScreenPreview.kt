@@ -73,6 +73,7 @@ fun SearchScreenPreview(
 
                     VacancyState.ErrorInternet -> NotInternetPlaceholder()
                     VacancyState.ErrorFound -> NotFoundPlaceholder()
+                    VacancyState.Idle -> {}
                 }
             }
         }

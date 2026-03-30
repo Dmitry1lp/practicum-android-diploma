@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.app.di
 
+import androidx.room.Room
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -11,6 +12,10 @@ import ru.practicum.android.diploma.core.config.DatabaseConfig
 import ru.practicum.android.diploma.core.data.database.dao.FavoritesDao
 import ru.practicum.android.diploma.core.data.database.db.AppDatabase
 import ru.practicum.android.diploma.core.data.network.api.VacancyApi
+import ru.practicum.android.diploma.core.data.network.client.NetworkClient
+import ru.practicum.android.diploma.core.data.network.client.RetrofitNetworkClient
+import ru.practicum.android.diploma.feature.search.data.repository.VacancyRepositoryImpl
+import ru.practicum.android.diploma.feature.search.domain.repository.VacancyRepository
 import ru.practicum.android.diploma.feature.search.data.repository.VacancyRepositoryImpl
 import ru.practicum.android.diploma.feature.search.domain.repository.VacancyRepository
 import ru.practicum.android.diploma.core.domain.repository.FavoritesRepository
@@ -51,6 +56,12 @@ val dataModule = module {
         get<Retrofit>().create(VacancyApi::class.java)
     }
 
+    single<NetworkClient> {
+        RetrofitNetworkClient(
+            get<VacancyApi>()
+        )
+    }
+
     single<VacancyDetailsRepository> {
         VacancyDetailsRepositoryImpl(
             networkClient = get(),
@@ -79,4 +90,5 @@ val dataModule = module {
             networkClient = get(),
         )
     }
+
 }
