@@ -12,6 +12,7 @@ object AppDimensions {
     val paddingBig = 24.dp
     val paddingMedium = 16.dp
     val paddingSmall = 8.dp
+    val paddingVerySmall = 6.dp
 
     val teamScreenPadding = PaddingValues(top = paddingBig, start = paddingMedium, end = paddingMedium)
 

@@ -2,12 +2,12 @@ package ru.practicum.android.diploma.feature.vacancy.domain
 
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 
-interface VacancyRepository {
+interface VacancyDetailsRepository {
 
     /**
      * функция для получения вакансии по Api
      */
-    suspend fun getVacancy(id: String): VacancyResult
+    suspend fun getVacancy(id: String): VacancyDetailsResult
 
     /**
      * функция для добавления вакансии в Избранные (далее реализация в Фиче Избранные)

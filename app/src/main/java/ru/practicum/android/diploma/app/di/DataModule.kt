@@ -18,6 +18,8 @@ import ru.practicum.android.diploma.feature.filters.data.FiltersRepositoryImpl
 import ru.practicum.android.diploma.feature.filters.domain.FiltersRepository
 import ru.practicum.android.diploma.core.domain.repository.FavoritesRepository
 import ru.practicum.android.diploma.feature.favorite.data.FavoritesRepositoryImpl
+import ru.practicum.android.diploma.feature.vacancy.data.VacancyDetailsRepositoryImpl
+import ru.practicum.android.diploma.feature.vacancy.domain.VacancyDetailsRepository
 
 /**
  * Модуль Koin, отвечающий за зависимости Repository и Data sources
@@ -56,6 +58,12 @@ val dataModule = module {
         get<Retrofit>().create(VacancyApi::class.java)
     }
 
+    single<VacancyDetailsRepository> {
+        VacancyDetailsRepositoryImpl(
+            networkClient = get(),
+            favoritesDataSource = get()
+        )
+    }
     single<AppDatabase> {
         Room.databaseBuilder(
             androidContext(),
