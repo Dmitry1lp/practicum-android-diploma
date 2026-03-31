@@ -1,3 +1,47 @@
 <resources>
-    <string name="app_name">Practicum-Android-Diploma</string>
+    <string name="app_name" translatable="false">Practicum-Android-Diploma</string>
+    <string name="nav_home">Главная</string>
+    <string name="nav_favorites">Избранное</string>
+    <string name="nav_team">Команда</string>
+    <string name="screen_vacancy">Вакансия</string>
+    <string name="screen_vacancy_search">Поиск вакансий</string>
+    <string name="screen_filter_settings">Настройки фильтрации</string>
+    <string name="screen_work_location">Выбор места работы</string>
+    <string name="screen_select_region">Выбор региона</string>
+    <string name="screen_select_industry">Выбор отрасли</string>
+    <string name="screen_country">Выбор страны</string>
+    <string name="screen_favorites">Избранное</string>
+    <string name="error_vacancies_list">Не удалось получить список вакансий</string>
+    <string name="error_no_internet">Нет интернета</string>
+    <string name="error_vacancy_not_found">Вакансия не найдена или удалена</string>
+    <string name="error_region_not_found">Такого региона нет</string>
+    <string name="error_list_fetch">Не удалось получить список</string>
+    <string name="error_server">Ошибка сервера</string>
+    <string name="error_empty_list">Список пуст</string>
+    <string name="hint_search_vacancy">Введите запрос</string>
+    <string name="hint_search_region">Введите регион</string>
+    <string name="hint_search_industry">Введите отрасль</string>
+    <string name="hint_salary_amount">Введите сумму</string>
+    <string name="label_expected_salary">Ожидаемая зарплата</string>
+    <string name="filter_work_location">Место работы</string>
+    <string name="filter_industry">Отрасль</string>
+    <string name="filter_country">Страна</string>
+    <string name="filter_region">Регион</string>
+    <string name="checkbox_hide_without_salary">Не показывать без зарплаты</string>
+    <string name="cd_add_to_favorites">Добавить в избранное</string>
+    <string name="cd_remove_from_favorites">Удалить из избранного</string>
+    <string name="cd_share">Поделиться</string>
+    <string name="cd_filter">Фильтр</string>
+    <string name="cd_back">Назад</string>
+    <string name="button_choose">Выбрать</string>
+    <string name="button_apply">Применить</string>
+    <string name="button_reset">Сбросить</string>
+    <string name="about_team">Над приложением работали</string>
+    <string name="no_vacancies_found">Таких вакансий нет</string>
+    <plurals name="vacancies_found">
+        <item quantity="one">Найдена %d вакансия</item>
+        <item quantity="few">Найдено %d вакансии</item>
+        <item quantity="many">Найдено %d вакансий</item>
+        <item quantity="other">Найдено %d вакансий</item>
+    </plurals>
 </resources>
