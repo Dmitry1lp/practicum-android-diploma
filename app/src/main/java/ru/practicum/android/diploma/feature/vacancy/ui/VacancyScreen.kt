@@ -36,10 +36,11 @@ fun VacancyScreen(
                             onClick = onShareClick
                         ),
                         action2 = TopBarIcon(
-                            iconResId = if ((state as? VacancyDetailsUiState.Content)?.isFavorite == true)
+                            iconResId = if ((state as? VacancyDetailsUiState.Content)?.isFavorite == true) {
                                 R.drawable.ic_favorites_on_24
-                            else
-                                R.drawable.ic_favorites_off_24,
+                            } else {
+                                R.drawable.ic_favorites_off_24
+                                   },
                             onClick = onFavouriteClick
                         )
                     )
@@ -59,9 +60,7 @@ fun VacancyScreen(
     ) { paddingValues ->
 
         Surface(modifier = Modifier.padding(paddingValues)) {
-
             when (state) {
-
                 VacancyDetailsUiState.Loading -> VacancyLoadingIndicator()
 
                 VacancyDetailsUiState.NotFound -> VacancyEmptyState()

@@ -1,28 +1,27 @@
 package ru.practicum.android.diploma.feature.vacancy.ui
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
-import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.Address
 import ru.practicum.android.diploma.core.domain.model.Contacts
 import ru.practicum.android.diploma.core.domain.model.Employer
 import ru.practicum.android.diploma.core.domain.model.Salary
 import ru.practicum.android.diploma.core.domain.model.Vacancy
-import ru.practicum.android.diploma.core.utils.toLocalizedString
-import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyCardData
+import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyAddress
+import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyCompanyCard
+import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyCompanyInfo
+import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyConditions
+import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyContacts
+import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyDescription
+import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyHeader
+import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancySalary
+import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancySkills
 
 @Composable
 fun VacancyContentState(
@@ -35,206 +34,33 @@ fun VacancyContentState(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(AppDimensions.paddingMedium),
     ) {
+        item { VacancyHeader(vacancy) }
+        item { VacancySalary(vacancy) }
+        item { VacancyCompanyCard(vacancy) }
+        item { VacancyCompanyInfo(vacancy) }
 
-        // название вакансии
-        item {
-            Text(
-                text = vacancy.name,
-                style = AppTypography.titleLarge
-            )
+        vacancy.address?.let {
+            item { VacancyAddress(it) }
         }
 
-        // зарплата
-        item{
-            Text(
-                text = vacancy.salary.toLocalizedString(),
-                style = AppTypography.titleMedium
-            )
-        }
+        item { VacancyConditions(vacancy) }
+        item { VacancyDescription(vacancy) }
 
-        // Card компании
-        item {
-            VacancyCard(
-                modifier = Modifier.padding(top = AppDimensions.paddingMedium),
-                data = VacancyCardData(
-                    logoUrl = vacancy.employer.logoUrl,
-                    industry = vacancy.industry,
-                    location = vacancy.address?.city
-                )
-            )
-        }
-
-        // название компании
-        item {
-            // заголовок
-            Text(
-                modifier = Modifier.padding(top = AppDimensions.paddingMedium),
-                text = stringResource(R.string.vacancy_company_title),
-                style = AppTypography.titleMedium
-            )
-
-            Text(
-                text = vacancy.employer.name,
-                style = AppTypography.bodyLarge
-            )
-        }
-
-        // адрес
-        vacancy.address?.let { address ->
-            item {
-                // заголовок
-                Text(
-                    modifier = Modifier.padding(top = AppDimensions.paddingMedium),
-                    text = stringResource(R.string.vacancy_address),
-                    style = AppTypography.titleMedium
-                )
-                Text(
-                    text = listOfNotNull(
-                        address.city,
-                        address.street,
-                        address.building
-                    ).joinToString(", "),
-                    style = AppTypography.bodyLarge
-                )
-            }
-        }
-
-        // условия
-        val experience = vacancy.experience?.takeIf { it.isNotBlank() }
-        val employmentType = vacancy.employmentType?.takeIf { it.isNotBlank() }
-        val schedule = vacancy.schedule?.takeIf { it.isNotBlank() }
-
-        if (experience != null || employmentType != null || schedule != null) {
-            // заголовок условий
-            item {
-                Text(
-                    modifier = Modifier.padding(top = AppDimensions.paddingMedium),
-                    text = stringResource(R.string.vacancy_required_experience),
-                    style = AppTypography.titleSmall
-                )
-            }
-
-            item {
-
-                // experience
-                experience?.let {
-                    Text(
-                        text = it,
-                        style = AppTypography.bodyMedium
-                    )
-                }
-
-                // employmentType + schedule в строке
-                val employmentType = vacancy.employmentType?.takeIf { it.isNotBlank() }
-                val schedule = vacancy.schedule?.takeIf { it.isNotBlank() }
-
-                val rowText = listOfNotNull(
-                    employmentType,
-                    schedule
-                ).joinToString(". ")
-
-                if (rowText.isNotBlank()) {
-                    Text(
-                        text = rowText,
-                        style = AppTypography.bodyMedium
-                    )
-                }
-            }
-        }
-
-        // заголовок описания вакансии
-        item {
-            Text(
-                modifier = Modifier.padding(top = AppDimensions.paddingVeryBig),
-                text = stringResource(R.string.vacancy_description),
-                style = AppTypography.titleMedium
-            )
-        }
-
-        // описание вакансии
-        item {
-            Text(
-                modifier = Modifier.padding(top = AppDimensions.paddingMedium),
-                text = vacancy.description,
-                style = AppTypography.bodyLarge
-            )
-        }
-
-        // навыки
         if (vacancy.skills.isNotEmpty()) {
-
-            // заголовок ключевые навыки
-            item {
-                Text(
-                    modifier = Modifier.padding(top = AppDimensions.paddingBig),
-                    text = stringResource(R.string.vacancy_key_skills),
-                    style = AppTypography.titleMedium
-                )
-            }
-
-            item {
-                Column(
-                    modifier = Modifier.padding(top = AppDimensions.paddingMedium)
-                ) {
-                    vacancy.skills.forEach { skill ->
-                        Row {
-                            Text(
-                                text = "•",
-                                style = AppTypography.bodyMedium,
-                                modifier = Modifier.padding(end = AppDimensions.paddingVerySmall)
-                            )
-                            Text(
-                                text = skill,
-                                style = AppTypography.bodyMedium
-                            )
-                        }
-                    }
-                }
-            }
+            item { VacancySkills(vacancy.skills) }
         }
 
-        // контакты
-        vacancy.contacts?.let { contacts ->
-
-            // заголовок контакты
+        vacancy.contacts?.let {
             item {
-                Text(
-                    modifier = Modifier.padding(top = AppDimensions.paddingBig),
-                    text = stringResource(R.string.vacancy_contacts),
-                    style = AppTypography.titleMedium
+                VacancyContacts(
+                    contacts = it,
+                    onPhoneClick = onPhoneClick,
+                    onEmailClick = onEmailClick
                 )
-            }
-
-            item {
-                Text(
-                    text = contacts.name,
-                    style = AppTypography.bodyLarge
-                )
-
-                contacts.email.let { email ->
-                    Text(
-                        text = email,
-                        style = AppTypography.bodyLarge,
-                        modifier = Modifier.clickable {
-                            onEmailClick(email)
-                        }
-                    )
-                }
-
-                contacts.phoneNumbers.forEach { phone ->
-                    Text(
-                        text = phone,
-                        style = AppTypography.bodyLarge,
-                        modifier = Modifier.clickable {
-                            onPhoneClick(phone)
-                        }
-                    )
-                }
             }
         }
     }
 }
-
 
 private const val MOCK_LOWER_BOUND = 50000
 private const val MOCK_UPPER_BOUND = 100_000

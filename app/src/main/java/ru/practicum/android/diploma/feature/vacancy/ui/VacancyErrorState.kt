@@ -10,8 +10,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.presentation.components.StateInfo
 
 @Composable
-fun VacancyErrorState(
-) {
+fun VacancyErrorState() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center

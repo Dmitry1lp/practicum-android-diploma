@@ -10,8 +10,7 @@ import androidx.compose.ui.Modifier
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 
 @Composable
-fun VacancyLoadingIndicator(
-) {
+fun VacancyLoadingIndicator() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
