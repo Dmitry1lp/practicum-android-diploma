@@ -47,14 +47,13 @@ fun VacancyScreen(
                 }
 
                 is VacancyDetailsUiState.Loading,
-                is VacancyDetailsUiState.ServerError -> {
+                is VacancyDetailsUiState.ServerError,
+                is VacancyDetailsUiState.NetworkError -> {
                     AppTopBar(
                         title = stringResource(R.string.screen_vacancy),
                         onNavigationIcon = onBackClick
                     )
                 }
-
-                else -> {}
             }
         }
     ) { paddingValues ->
@@ -67,6 +66,8 @@ fun VacancyScreen(
 
                 VacancyDetailsUiState.ServerError -> VacancyErrorState()
 
+                VacancyDetailsUiState.NetworkError -> VacancyErrorState()
+
                 is VacancyDetailsUiState.Content -> {
                     VacancyContentState(
                         vacancy = state.vacancy,
@@ -74,8 +75,6 @@ fun VacancyScreen(
                         onEmailClick = onEmailClick
                     )
                 }
-
-                else -> {}
             }
         }
     }

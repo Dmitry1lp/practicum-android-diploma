@@ -54,14 +54,13 @@ fun VacancyScreenContent(
                 }
 
                 is VacancyDetailsUiState.Loading,
-                is VacancyDetailsUiState.ServerError -> {
+                is VacancyDetailsUiState.ServerError,
+                is VacancyDetailsUiState.NetworkError -> {
                     AppTopBar(
                         title = stringResource(R.string.screen_vacancy),
                         onNavigationIcon = onBackClick
                     )
                 }
-
-                else -> {}
             }
         }
     ) { paddingValues ->
@@ -74,6 +73,8 @@ fun VacancyScreenContent(
 
                 VacancyDetailsUiState.ServerError -> VacancyErrorState()
 
+                VacancyDetailsUiState.NetworkError -> VacancyErrorState()
+
                 is VacancyDetailsUiState.Content -> {
                     VacancyContentState(
                         vacancy = state.vacancy,
@@ -81,8 +82,6 @@ fun VacancyScreenContent(
                         onEmailClick = onEmailClick
                     )
                 }
-
-                else -> {}
             }
         }
     }
@@ -124,7 +123,7 @@ private val mockVacancy = Vacancy(
 
 @Preview(showBackground = true, heightDp = 1200)
 @Composable
-fun VacancyScreenContentPreview_Content() {
+private fun VacancyScreenContentPreview_Content() {
     DiplomaTheme {
         VacancyScreenContent(
             state = VacancyDetailsUiState.Content(

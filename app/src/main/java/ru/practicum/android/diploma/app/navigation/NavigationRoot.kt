@@ -180,8 +180,6 @@ private fun appEntryProvider(
             onPhoneClick = viewModel::onPhoneCall,
             onEmailClick = viewModel::onEmailClick
         )
-
-        ScreenPlaceholder(route::class.simpleName)
     }
 
     entry<Route.Filters> {

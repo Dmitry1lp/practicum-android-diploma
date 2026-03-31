@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.feature.vacancy.ui.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,6 +9,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.core.domain.model.Contacts
+import ru.practicum.android.diploma.core.utils.antiRepetitionClick
 
 @Composable
 fun VacancyContacts(
@@ -27,13 +27,13 @@ fun VacancyContacts(
 
     Text(
         text = contacts.email,
-        modifier = Modifier.clickable { onEmailClick(contacts.email) }
+        modifier = Modifier.antiRepetitionClick { onEmailClick(contacts.email) }
     )
 
     contacts.phoneNumbers.forEach { phone ->
         Text(
             text = phone,
-            modifier = Modifier.clickable { onPhoneClick(phone) }
+            modifier = Modifier.antiRepetitionClick { onPhoneClick(phone) }
         )
     }
 }

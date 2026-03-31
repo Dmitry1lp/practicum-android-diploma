@@ -98,7 +98,7 @@ private val mockVacancy = Vacancy(
 
 @Preview(showBackground = true, heightDp = 1200)
 @Composable
-fun VacancyContentStatePreview() {
+private fun VacancyContentStatePreview() {
     DiplomaTheme {
         VacancyContentState(
             vacancy = mockVacancy,
