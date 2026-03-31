@@ -6,7 +6,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.domain.model.VacancyQuery
 import ru.practicum.android.diploma.feature.search.data.models.Resource
 import ru.practicum.android.diploma.feature.search.domain.repository.VacancyRepository
@@ -16,34 +18,47 @@ class SearchViewModel(
 ) : ViewModel() {
     private var searchJob: Job? = null
     private var latestSearchText: String = ""
+    private var currentPage = 1
+    private var maxPages = 1
+    private var totalFound = 0
+    private val loadedVacancies = mutableListOf<Vacancy>()
 
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState = _uiState.asStateFlow()
 
     private suspend fun performSearch(queryText: String) {
         if (queryText.isEmpty()) {
-            _uiState.value = _uiState.value.copy(
-                vacancyState = VacancyState.Empty,
-            )
+            _uiState.value = _uiState.value.copy(vacancyState = VacancyState.Empty)
             return
         }
 
-        _uiState.value = _uiState.value.copy(
-            vacancyState = VacancyState.Loading,
-        )
+        _uiState.value = _uiState.value.copy(vacancyState = VacancyState.Loading)
 
-        val result = vacancyRepository.searchVacancies(
-            VacancyQuery(text = queryText)
-        )
+        loadedVacancies.clear()
+        currentPage = 1
+        maxPages = 1
 
-        val newState = when (result) {
-            is Resource.Success -> if (result.data.isEmpty()) VacancyState.Empty else VacancyState.Content(result.data)
-            is Resource.Error -> VacancyState.ErrorFound
+        val query = VacancyQuery(text = queryText, page = currentPage)
+        when (val result = vacancyRepository.searchVacancies(query)) {
+            is Resource.Success -> {
+                val (vacancies, totalPages, found) = result.data
+
+                loadedVacancies.addAll(vacancies)
+                maxPages = totalPages
+                totalFound = found
+
+                val newState =
+                    if (vacancies.isEmpty()) VacancyState.Empty else VacancyState.Content(loadedVacancies.toList())
+                _uiState.value = _uiState.value.copy(
+                    vacancyState = newState,
+                    totalFound = totalFound
+                )
+            }
+
+            is Resource.Error -> {
+                _uiState.value = _uiState.value.copy(vacancyState = VacancyState.ErrorFound)
+            }
         }
-
-        _uiState.value = _uiState.value.copy(
-            vacancyState = newState,
-        )
     }
 
     // функция которая будет использоваться при изменении текста чтобы не было конфликтов запросов
@@ -74,6 +89,49 @@ class SearchViewModel(
         searchJob?.cancel()
         latestSearchText = ""
         _uiState.value = SearchUiState()
+    }
+
+    fun loadNextPage() {
+        val queryText = _uiState.value.searchText
+
+        if (queryText.isEmpty()) return
+        if (_uiState.value.isNextPageLoading || currentPage >= maxPages) return
+
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(isNextPageLoading = true)
+            }
+
+            val query = VacancyQuery(
+                text = queryText,
+                page = currentPage
+            )
+
+            when (val result = vacancyRepository.searchVacancies(query)) {
+                is Resource.Success -> {
+                    val (vacancies, totalPages) = result.data
+
+                    loadedVacancies.addAll(vacancies)
+
+                    _uiState.update {
+                        it.copy(
+                            vacancyState = VacancyState.Content(loadedVacancies.toList())
+                        )
+                    }
+
+                    currentPage++
+                    maxPages = totalPages
+                }
+                is Resource.Error -> {
+                    _uiState.update {
+                        it.copy(vacancyState = VacancyState.ErrorFound)
+                    }
+                }
+            }
+            _uiState.update {
+                it.copy(isNextPageLoading = false)
+            }
+        }
     }
 
     companion object {
