@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.feature.search.data.repository
 
+import android.util.Log
 import ru.practicum.android.diploma.core.data.network.buildVacancyQuery
 import ru.practicum.android.diploma.core.data.network.client.NetworkClient
 import ru.practicum.android.diploma.core.data.network.dto.Request
@@ -14,7 +15,7 @@ import ru.practicum.android.diploma.feature.search.domain.repository.VacancyRepo
 class VacancyRepositoryImpl(
     private val networkClient: NetworkClient
 ) : VacancyRepository {
-    override suspend fun searchVacancies(query: VacancyQuery): Resource<List<Vacancy>> {
+    override suspend fun searchVacancies(query: VacancyQuery): Resource<Triple<List<Vacancy>, Int, Int>> {
         val params = buildVacancyQuery(query)
 
         val response = networkClient.doRequest(
@@ -23,16 +24,15 @@ class VacancyRepositoryImpl(
 
         return when (response.resultCode) {
             RESULT_OK -> {
-                val vacancyResponse = response as? VacancyResponseDto
+                val dto = response as? VacancyResponseDto
                     ?: return Resource.Error(RESULT_FAIL)
 
-                val vacancies = vacancyResponse.items.map { it.toDomain() }
+                val vacancies = dto.items.map { it.toDomain() }
 
-                if (vacancies.isEmpty()) {
-                    Resource.Error(RESULT_FAIL)
-                } else {
-                    Resource.Success(vacancies)
-                }
+                Log.d("API_RESPONSE", "page = ${dto.page}, pages = ${dto.pages}")
+                Log.d("API_RESPONSE", "vacancies = $vacancies")
+
+                Resource.Success(Triple(vacancies, dto.pages, dto.found))
             }
 
             else -> Resource.Error(RESULT_FAIL)

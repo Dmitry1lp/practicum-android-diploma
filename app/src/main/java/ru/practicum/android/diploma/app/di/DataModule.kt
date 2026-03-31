@@ -89,5 +89,4 @@ val dataModule = module {
             networkClient = get(),
         )
     }
-
 }

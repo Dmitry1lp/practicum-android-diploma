@@ -122,6 +122,7 @@ class SearchViewModel(
                     currentPage++
                     maxPages = totalPages
                 }
+
                 is Resource.Error -> {
                     _uiState.update {
                         it.copy(vacancyState = VacancyState.ErrorFound)
