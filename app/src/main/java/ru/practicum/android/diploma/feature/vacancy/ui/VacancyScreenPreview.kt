@@ -47,7 +47,7 @@ fun VacancyScreenContent(
                                 R.drawable.ic_favorites_on_24
                             } else {
                                 R.drawable.ic_favorites_off_24
-                                   },
+                            },
                             onClick = onFavouriteClick
                         )
                     )
