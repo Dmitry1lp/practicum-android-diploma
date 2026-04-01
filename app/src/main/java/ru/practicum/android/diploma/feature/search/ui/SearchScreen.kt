@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.feature.search.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
@@ -29,58 +30,61 @@ fun SearchScreen(
     Scaffold(
         topBar = {
             SearchTopBar()
+        }
+    ) { paddingValues ->
+        val chipText = getChipText(state.vacancyState, state.totalFound)
+
+        Column(
+            modifier = Modifier.padding(paddingValues)
+        ) {
             SearchBar(
                 text = state.searchText,
                 isClearVisible = state.isClearTextVisible,
                 onTextChange = onSearchTextChanged,
                 onClearClick = onClearClick
             )
-        }
-    ) { paddingValues ->
-        val chipText = getChipText(state.vacancyState, state.totalFound)
 
-        Box(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize(),
-            contentAlignment = Alignment.TopCenter
-        ) {
-            // Контент: список или плейсхолдер
-            when (val stateContent = state.vacancyState) {
-                VacancyState.Loading -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.TopCenter
+            ) {
+                // Контент: список или плейсхолдер
+                when (val stateContent = state.vacancyState) {
+                    VacancyState.Loading -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
 
-                is VacancyState.Content -> VacancyList(
-                    vacancies = stateContent.vacancies,
-                    onVacancyClick = onVacancyClick,
-                    onLoadNextPage = onLoadNextPage,
-                    isLoadingNextPage = state.isNextPageLoading,
-                    modifier = Modifier.fillMaxSize()
-                )
+                    is VacancyState.Content -> VacancyList(
+                        vacancies = stateContent.vacancies,
+                        onVacancyClick = onVacancyClick,
+                        onLoadNextPage = onLoadNextPage,
+                        isLoadingNextPage = state.isNextPageLoading,
+                        modifier = Modifier.fillMaxSize()
+                    )
 
-                VacancyState.Idle -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = painterResource(R.drawable.img_search_screen),
-                            contentDescription = null
-                        )
+                    VacancyState.Idle -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                painter = painterResource(R.drawable.img_search_screen),
+                                contentDescription = null
+                            )
+                        }
                     }
+
+                    VacancyState.Empty -> NotFoundPlaceholder(modifier = Modifier.fillMaxSize())
+
+                    VacancyState.ErrorInternet -> NotInternetPlaceholder(modifier = Modifier.fillMaxSize())
+
+                    VacancyState.ErrorFound -> NotFoundPlaceholder(modifier = Modifier.fillMaxSize())
                 }
 
-                VacancyState.Empty -> NotFoundPlaceholder(modifier = Modifier.fillMaxSize())
-
-                VacancyState.ErrorInternet -> NotInternetPlaceholder(modifier = Modifier.fillMaxSize())
-
-                VacancyState.ErrorFound -> NotFoundPlaceholder(modifier = Modifier.fillMaxSize())
-            }
-
-            chipText?.let { text ->
-                Chip(
-                    text = text,
-                    modifier = Modifier.padding(4.dp)
-                )
+                chipText?.let { text ->
+                    Chip(
+                        text = text,
+                        modifier = Modifier.padding(4.dp)
+                    )
+                }
             }
         }
     }
