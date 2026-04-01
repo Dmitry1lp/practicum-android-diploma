@@ -2,6 +2,7 @@
 
 package ru.practicum.android.diploma.core.presentation.components
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 
 @Composable
@@ -24,7 +26,7 @@ fun AppTopBar(
     action2: TopBarIcon? = null
 ) {
     TopAppBar(
-        modifier = modifier,
+        modifier = modifier.padding(end = AppDimensions.endPaddingTopBar),
         title = {
             Text(
                 text = title,
@@ -72,6 +74,6 @@ fun AppTopBar(
 
 data class TopBarIcon(
     val iconResId: Int,
-    val onClick: () -> Unit,
-    val contentDescription: String? = null
+    val contentDescription: String? = null,
+    val onClick: () -> Unit
 )
