@@ -21,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
@@ -32,7 +31,6 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
-import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
 import ru.practicum.android.diploma.feature.search.ui.SearchScreen
@@ -220,28 +218,6 @@ private fun ScreenPlaceholder(
             text = "placeholder\n$text",
             color = Color.White,
             style = AppTypography.titleLarge
-        )
-    }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun NavigationRootPreviewMode() {
-    DiplomaTheme {
-        NavigationRoot(
-            modifier = Modifier.fillMaxSize(),
-            navigationViewModel = remember { NavigationViewModel() }
-        )
-    }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun NavigationRootPreviewDarkMode() {
-    DiplomaTheme(true) {
-        NavigationRoot(
-            modifier = Modifier.fillMaxSize(),
-            navigationViewModel = remember { NavigationViewModel() }
         )
     }
 }
