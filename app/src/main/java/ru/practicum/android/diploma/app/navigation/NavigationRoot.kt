@@ -3,7 +3,6 @@
 package ru.practicum.android.diploma.app.navigation
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -21,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
@@ -150,14 +150,14 @@ private fun appEntryProvider(
 
                     is VacancyDetailsUiEvent.OpenEmailTo -> {
                         val intent = Intent(Intent.ACTION_SENDTO).apply {
-                            data = Uri.parse("mailto:${event.email}")
+                            data = "mailto:${event.email}".toUri()
                         }
                         context.startActivity(intent)
                     }
 
                     is VacancyDetailsUiEvent.OpenPhoneCall -> {
                         val intent = Intent(Intent.ACTION_DIAL).apply {
-                            data = Uri.parse("tel:${event.phone}")
+                            data = "tel:${event.phone}".toUri()
                         }
                         context.startActivity(intent)
                     }
