@@ -15,6 +15,10 @@ class VacancyDetailsRepositoryImpl(
 ) : VacancyDetailsRepository {
 
     override suspend fun getVacancy(id: String): VacancyDetailsResult {
+        favoritesRepository.getVacancy(id)?.let { vacancy ->
+            return VacancyDetailsResult.Success(vacancy)
+        }
+
         val response = networkClient.doRequest(
             Request.VacancyDetailsRequest(id)
         )
@@ -28,6 +32,7 @@ class VacancyDetailsRepositoryImpl(
                     VacancyDetailsResult.ServerError(SUCCESS)
                 }
             }
+
             NOT_FOUND -> VacancyDetailsResult.NotFound
             else -> VacancyDetailsResult.NetworkError
         }
