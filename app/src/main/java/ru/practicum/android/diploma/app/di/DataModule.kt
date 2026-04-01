@@ -14,8 +14,6 @@ import ru.practicum.android.diploma.core.data.database.db.AppDatabase
 import ru.practicum.android.diploma.core.data.network.api.VacancyApi
 import ru.practicum.android.diploma.core.data.network.client.NetworkClient
 import ru.practicum.android.diploma.core.data.network.client.RetrofitNetworkClient
-import ru.practicum.android.diploma.core.data.network.client.NetworkClient
-import ru.practicum.android.diploma.core.data.network.client.RetrofitNetworkClient
 import ru.practicum.android.diploma.feature.filters.data.FiltersRepositoryImpl
 import ru.practicum.android.diploma.feature.filters.domain.FiltersRepository
 import ru.practicum.android.diploma.core.domain.repository.FavoritesRepository
