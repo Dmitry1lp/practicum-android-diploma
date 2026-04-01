@@ -55,8 +55,8 @@ fun ThumbnailListItem(
                 .clip(shape),
             model = model,
             contentDescription = imageContentDescription,
-            placeholder = painterResource(R.drawable.placeholder_32),
-            error = painterResource(R.drawable.placeholder_32),
+            placeholder = painterResource(R.drawable.ic_placeholder_32),
+            error = painterResource(R.drawable.ic_placeholder_32),
             contentScale = ContentScale.Crop
         )
 

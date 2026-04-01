@@ -7,6 +7,7 @@ import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -51,7 +52,6 @@ private val bottomNavItems = listOf<BottomNavItem>(
 fun NavigationRoot(
     modifier: Modifier = Modifier,
     navigationViewModel: NavigationViewModel = koinViewModel()
-
 ) {
     val topLevelBackStack = navigationViewModel.backStack
     val entryProvider = remember(topLevelBackStack) {
@@ -59,6 +59,7 @@ fun NavigationRoot(
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(),
         bottomBar = {
             if (topLevelBackStack.shouldDrawBottomNavBar()) {
                 BottomNavigationBar(
@@ -108,26 +109,6 @@ private fun appEntryProvider(
     }
 
     entry<Route.Search> {
-        /*
-         * - Получение ViewModel происходит через функцию koinViewModel() внутри entry{}
-         * - НЕ СОЗДАВАТЬ ViewModel внутри NavigationRoot() или внутри экранов
-         * - Экраны не должны принимать в качестве аргумента ViewModel
-         *      и вместо этого должны принимать в качестве аргументов
-         *      все необходимые состояния state и коллбэки
-         * - Для перемещения на другой экран используется topLevelBackStack и метод add():
-         *      например, topLevelBackStack.add(Route.Search)
-         * - Для перемещения назад используется topLevelBackStack и метод removeLast()
-         *
-         * Пример реализации:
-         *
-         * val viewmodel: SearchViewModel = koinViewModel()
-         *
-         * SearchScreen(
-         *     state = viewmodel.state,
-         *     onQueryChange = viewmodel::onQueryChange,
-         *     onVacancyClick = { id -> topLevelBackStack.add(Route.Vacancy(id)) }
-         * )
-         */
         val viewModel: SearchViewModel = koinViewModel()
 
         val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -245,8 +226,8 @@ private fun ScreenPlaceholder(
 
 @Preview(showSystemUi = true)
 @Composable
-fun NavigationRootPreviewLightMode() {
-    DiplomaTheme(false) {
+private fun NavigationRootPreviewMode() {
+    DiplomaTheme {
         NavigationRoot(
             modifier = Modifier.fillMaxSize(),
             navigationViewModel = remember { NavigationViewModel() }
@@ -256,7 +237,7 @@ fun NavigationRootPreviewLightMode() {
 
 @Preview(showSystemUi = true)
 @Composable
-fun NavigationRootPreviewDarkMode() {
+private fun NavigationRootPreviewDarkMode() {
     DiplomaTheme(true) {
         NavigationRoot(
             modifier = Modifier.fillMaxSize(),

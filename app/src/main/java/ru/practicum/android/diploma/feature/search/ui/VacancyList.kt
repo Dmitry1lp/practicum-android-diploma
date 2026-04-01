@@ -6,19 +6,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.presentation.components.VacancyItem
-import ru.practicum.android.diploma.core.presentation.model.VacancyItemData
-import ru.practicum.android.diploma.core.utils.toLocalizedString
+import ru.practicum.android.diploma.core.presentation.model.toItemData
 
 @Composable
 fun VacancyList(
@@ -73,16 +72,4 @@ fun VacancyList(
             }
         }
     }
-}
-
-@Composable
-private fun Vacancy.toItemData(): VacancyItemData {
-    return VacancyItemData(
-        id = id,
-        name = name,
-        location = address?.city.orEmpty(),
-        imageUrl = employer.logoUrl.orEmpty(),
-        industry = industry,
-        salary = salary.toLocalizedString()
-    )
 }
