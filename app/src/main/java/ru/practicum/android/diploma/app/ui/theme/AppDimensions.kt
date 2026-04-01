@@ -32,7 +32,6 @@ object AppDimensions {
     }
 
     object Chip {
-        val cornerRadius = 12.dp
         val contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
     }
 

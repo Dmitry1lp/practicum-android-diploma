@@ -10,7 +10,7 @@
     <string name="screen_select_region">Выбор региона</string>
     <string name="screen_select_industry">Выбор отрасли</string>
     <string name="screen_favorites">Избранное</string>
-    <string name="error_vacancies_list">Не удалось получить список вакансий</string>
+    <string name="error_vacancies_list">Не удалось получить\n\n список вакансий</string>
     <string name="error_no_internet">Нет интернета</string>
     <string name="error_vacancy_not_found">Вакансия не найдена или\nудалена</string>
     <string name="error_region_not_found">Такого региона нет</string>

@@ -15,12 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -34,6 +36,8 @@ import ru.practicum.android.diploma.feature.filters.presentation.Actions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
+import ru.practicum.android.diploma.feature.search.ui.SearchScreen
+import ru.practicum.android.diploma.feature.search.ui.SearchViewModel
 import ru.practicum.android.diploma.feature.filters.ui.FiltersScreen
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
 import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsUiEvent
@@ -50,6 +54,7 @@ private val bottomNavItems = listOf<BottomNavItem>(
 fun NavigationRoot(
     modifier: Modifier = Modifier,
     navigationViewModel: NavigationViewModel = koinViewModel()
+
 ) {
     val topLevelBackStack = navigationViewModel.backStack
     val entryProvider = remember(topLevelBackStack) {
@@ -106,7 +111,6 @@ private fun appEntryProvider(
     }
 
     entry<Route.Search> {
-        // TODO(feature-team): интегрировать SearchScreen и SearchViewModel
         /*
          * - Получение ViewModel происходит через функцию koinViewModel() внутри entry{}
          * - НЕ СОЗДАВАТЬ ViewModel внутри NavigationRoot() или внутри экранов
@@ -127,9 +131,19 @@ private fun appEntryProvider(
          *     onVacancyClick = { id -> topLevelBackStack.add(Route.Vacancy(id)) }
          * )
          */
-        ScreenPlaceholder(it::class.simpleName) {
-            topLevelBackStack.add(Route.Vacancy("Dmitrii"))
-        }
+        val viewModel: SearchViewModel = koinViewModel()
+
+        val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+        SearchScreen(
+            state = state,
+            onSearchTextChanged = viewModel::onSearchTextChanged,
+            onClearClick = viewModel::onClearTextClicked,
+            onVacancyClick = { vacancy ->
+                topLevelBackStack.add(Route.Vacancy(vacancy.id))
+            },
+            onLoadNextPage = viewModel::loadNextPage
+        )
     }
 
     entry<Route.Vacancy> { route ->
