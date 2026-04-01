@@ -46,16 +46,18 @@ fun StateInfo(
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
-        Text(
-            modifier = modifier
-                .padding(top = AppDimensions.paddingMedium)
-                .padding(horizontal = AppDimensions.StateInfo.paddingText),
-            text = text,
-            style = AppTypography.titleMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-            textAlign = textAlign,
-            lineHeight = lineHeight ?: TextUnit.Unspecified
-        )
+        if (text.isNotEmpty()) {
+            Text(
+                modifier = modifier
+                    .padding(top = AppDimensions.paddingMedium)
+                    .padding(horizontal = AppDimensions.StateInfo.paddingText),
+                text = text,
+                style = AppTypography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground,
+                textAlign = textAlign,
+                lineHeight = lineHeight ?: TextUnit.Unspecified
+            )
+        }
     }
 }
 
