@@ -7,6 +7,7 @@ import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -50,7 +51,6 @@ private val bottomNavItems = listOf<BottomNavItem>(
 fun NavigationRoot(
     modifier: Modifier = Modifier,
     navigationViewModel: NavigationViewModel = koinViewModel()
-
 ) {
     val topLevelBackStack = navigationViewModel.backStack
     val entryProvider = remember(topLevelBackStack) {
@@ -58,6 +58,7 @@ fun NavigationRoot(
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(),
         bottomBar = {
             if (topLevelBackStack.shouldDrawBottomNavBar()) {
                 BottomNavigationBar(
@@ -224,8 +225,8 @@ private fun ScreenPlaceholder(
 
 @Preview(showSystemUi = true)
 @Composable
-fun NavigationRootPreviewLightMode() {
-    DiplomaTheme(false) {
+private fun NavigationRootPreviewMode() {
+    DiplomaTheme {
         NavigationRoot(
             modifier = Modifier.fillMaxSize(),
             navigationViewModel = remember { NavigationViewModel() }
@@ -235,7 +236,7 @@ fun NavigationRootPreviewLightMode() {
 
 @Preview(showSystemUi = true)
 @Composable
-fun NavigationRootPreviewDarkMode() {
+private fun NavigationRootPreviewDarkMode() {
     DiplomaTheme(true) {
         NavigationRoot(
             modifier = Modifier.fillMaxSize(),
