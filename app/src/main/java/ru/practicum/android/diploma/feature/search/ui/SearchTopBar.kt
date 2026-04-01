@@ -26,7 +26,7 @@ fun SearchTopBar() {
 @Preview(showBackground = true)
 @Composable
 private fun SearchTopBarPreview() {
-    DiplomaTheme() {
+    DiplomaTheme {
         Surface {
             SearchTopBar()
         }
