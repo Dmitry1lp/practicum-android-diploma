@@ -55,7 +55,7 @@ fun AppSearchBar(
                 }
             } else {
                 Icon(
-                    painterResource(R.drawable.ic_search),
+                    painterResource(R.drawable.ic_search_18),
                     tint = MaterialTheme.colorScheme.onSecondary,
                     contentDescription = null
                 )

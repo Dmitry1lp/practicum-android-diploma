@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -108,26 +107,6 @@ private fun appEntryProvider(
     }
 
     entry<Route.Search> {
-        /*
-         * - Получение ViewModel происходит через функцию koinViewModel() внутри entry{}
-         * - НЕ СОЗДАВАТЬ ViewModel внутри NavigationRoot() или внутри экранов
-         * - Экраны не должны принимать в качестве аргумента ViewModel
-         *      и вместо этого должны принимать в качестве аргументов
-         *      все необходимые состояния state и коллбэки
-         * - Для перемещения на другой экран используется topLevelBackStack и метод add():
-         *      например, topLevelBackStack.add(Route.Search)
-         * - Для перемещения назад используется topLevelBackStack и метод removeLast()
-         *
-         * Пример реализации:
-         *
-         * val viewmodel: SearchViewModel = koinViewModel()
-         *
-         * SearchScreen(
-         *     state = viewmodel.state,
-         *     onQueryChange = viewmodel::onQueryChange,
-         *     onVacancyClick = { id -> topLevelBackStack.add(Route.Vacancy(id)) }
-         * )
-         */
         val viewModel: SearchViewModel = koinViewModel()
 
         val state by viewModel.uiState.collectAsStateWithLifecycle()

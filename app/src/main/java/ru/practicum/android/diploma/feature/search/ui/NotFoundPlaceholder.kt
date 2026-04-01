@@ -27,7 +27,7 @@ fun NotFoundPlaceholder(
         contentAlignment = Alignment.Center
     ) {
         StateInfo(
-            image = R.drawable.img_placeholder_not_found,
+            image = R.drawable.img_fetch_error,
             text = stringResource(R.string.error_vacancies_list),
             textAlign = TextAlign.Center,
             lineHeight = 16.sp
