@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.toImmutableList
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.presentation.components.StateInfo
@@ -52,7 +53,7 @@ fun SearchScreen(
                     VacancyState.Loading -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
 
                     is VacancyState.Content -> VacancyList(
-                        vacancies = stateContent.vacancies,
+                        vacancies = stateContent.vacancies.toImmutableList(),
                         onVacancyClick = onVacancyClick,
                         onLoadNextPage = onLoadNextPage,
                         isLoadingNextPage = state.isNextPageLoading,
