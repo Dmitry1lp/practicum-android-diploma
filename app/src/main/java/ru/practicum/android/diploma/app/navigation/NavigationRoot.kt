@@ -29,6 +29,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
@@ -126,7 +127,7 @@ private fun appEntryProvider(
     entry<Route.Vacancy> { route ->
         val vacancyId = route.id
 
-        val viewModel: VacancyDetailsViewModel = koinViewModel()
+        val viewModel: VacancyDetailsViewModel = koinViewModel( parameters = { parametersOf(vacancyId) })
 
         val state by viewModel.state.collectAsState()
 

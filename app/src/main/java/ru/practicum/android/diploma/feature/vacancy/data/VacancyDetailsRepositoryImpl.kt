@@ -5,12 +5,13 @@ import ru.practicum.android.diploma.core.data.network.dto.Request
 import ru.practicum.android.diploma.core.data.network.dto.VacancyDetailDto
 import ru.practicum.android.diploma.core.data.network.dto.toDomain
 import ru.practicum.android.diploma.core.domain.model.Vacancy
+import ru.practicum.android.diploma.core.domain.repository.FavoritesRepository
 import ru.practicum.android.diploma.feature.vacancy.domain.VacancyDetailsRepository
 import ru.practicum.android.diploma.feature.vacancy.domain.VacancyDetailsResult
 
 class VacancyDetailsRepositoryImpl(
     private val networkClient: NetworkClient,
-    private val favoritesDataSource: FavoritesDataSource // интерфейс заглушка от Избранных вакансий
+    private val favoritesRepository: FavoritesRepository
 ) : VacancyDetailsRepository {
 
     override suspend fun getVacancy(id: String): VacancyDetailsResult {
@@ -33,15 +34,15 @@ class VacancyDetailsRepositoryImpl(
     }
 
     override suspend fun addToFavourites(vacancy: Vacancy) {
-        favoritesDataSource.insert(vacancy)
+        favoritesRepository.insert(vacancy)
     }
 
     override suspend fun removeFromFavorites(id: String) {
-        favoritesDataSource.delete(id)
+        favoritesRepository.delete(id)
     }
 
     override suspend fun isFavorite(id: String): Boolean {
-        return favoritesDataSource.isFavorite(id)
+        return favoritesRepository.isFavorite(id)
     }
 
     companion object {

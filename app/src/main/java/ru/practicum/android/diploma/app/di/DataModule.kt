@@ -63,7 +63,7 @@ val dataModule = module {
     single<VacancyDetailsRepository> {
         VacancyDetailsRepositoryImpl(
             networkClient = get(),
-            favoritesDataSource = get()
+            favoritesRepository = get()
         )
     }
     single<AppDatabase> {
