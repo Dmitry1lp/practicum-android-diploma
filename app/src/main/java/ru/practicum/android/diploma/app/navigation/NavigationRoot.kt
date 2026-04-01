@@ -127,7 +127,7 @@ private fun appEntryProvider(
     entry<Route.Vacancy> { route ->
         val vacancyId = route.id
 
-        val viewModel: VacancyDetailsViewModel = koinViewModel( parameters = { parametersOf(vacancyId) })
+        val viewModel: VacancyDetailsViewModel = koinViewModel(parameters = { parametersOf(vacancyId) })
 
         val state by viewModel.state.collectAsState()
 
