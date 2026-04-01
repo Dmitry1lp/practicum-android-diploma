@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.feature.search.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -12,12 +11,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.domain.model.Vacancy
+import ru.practicum.android.diploma.core.presentation.components.StateInfo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,15 +60,9 @@ fun SearchScreen(
                     )
 
                     VacancyState.Idle -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Image(
-                                painter = painterResource(R.drawable.img_search_screen),
-                                contentDescription = null
-                            )
-                        }
+                        StateInfo(
+                            image = R.drawable.img_search_screen
+                        )
                     }
 
                     VacancyState.Empty -> NotFoundPlaceholder(modifier = Modifier.fillMaxSize())

@@ -26,7 +26,8 @@ fun AppTopBar(
     action2: TopBarIcon? = null
 ) {
     TopAppBar(
-        modifier = modifier.padding(end = AppDimensions.endPaddingTopBar),
+        modifier = modifier
+            .padding(end = AppDimensions.endPaddingTopBar),
         title = {
             Text(
                 text = title,
