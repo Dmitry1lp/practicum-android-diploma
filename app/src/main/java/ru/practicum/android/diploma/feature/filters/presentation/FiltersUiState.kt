@@ -20,5 +20,7 @@ data class FiltersActions(
     val onIndustriesScreen: () -> Unit = {},
     val onSalaryTextChange: (String) -> Unit = {},
     val onCheckBox: () -> Unit = {},
-    val onSearchTextChange: (String) -> Unit = {}
+    val onSearchTextChange: (String) -> Unit = {},
+    val onSaveSettings: () -> Unit = {},
+    val onClearSettings: () -> Unit = {}
 )

@@ -180,7 +180,12 @@ private fun appEntryProvider(
                 onIndustriesScreen = viewModel::onIndustriesScreen,
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
                 onSearchTextChange = { viewModel.onSearchTextChange(it) },
-                onCheckBox = viewModel::onCheckBox
+                onCheckBox = viewModel::onCheckBox,
+                onSaveSettings = {
+                    viewModel.saveSettings()
+                    topLevelBackStack.removeLast()
+                },
+                onClearSettings = viewModel::clearSettings
             )
         )
     }

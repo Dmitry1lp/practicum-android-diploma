@@ -69,7 +69,7 @@ fun FilteringSettingsScreen(
                             .fillMaxWidth()
                             .height(AppDimensions.FiltersScreen.heightButton),
                         shape = RoundedCornerShape(AppDimensions.FiltersScreen.cornerRadius),
-                        onClick = {}
+                        onClick = actions.onSaveSettings
                     ) {
                         Text(
                             text = stringResource(R.string.button_apply),
@@ -80,10 +80,7 @@ fun FilteringSettingsScreen(
                         modifier = Modifier
                             .padding(AppDimensions.FiltersScreen.resetButtonPadding)
                             .align(Alignment.CenterHorizontally)
-                            .clickable(onClick = {
-                                if (state.isCheckBox) actions.onCheckBox()
-                                actions.onSalaryTextChange("")
-                            }),
+                            .clickable(onClick = actions.onClearSettings),
                         text = stringResource(R.string.button_reset),
                         style = AppTypography.titleSmall,
                         color = Red

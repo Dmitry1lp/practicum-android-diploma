@@ -20,4 +20,12 @@ class FiltersInteractorImpl(
     override fun getFiltersSetting(): FiltersSettings? {
         return repository.getFiltersSetting()
     }
+
+    override fun saveFiltersSetting(settings: FiltersSettings) {
+        repository.saveFiltersSetting(settings)
+    }
+
+    override fun clearSettings() {
+        repository.clearSettings()
+    }
 }
