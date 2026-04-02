@@ -9,11 +9,10 @@
     <string name="screen_work_location">Выбор места работы</string>
     <string name="screen_select_region">Выбор региона</string>
     <string name="screen_select_industry">Выбор отрасли</string>
-    <string name="screen_country">Выбор страны</string>
     <string name="screen_favorites">Избранное</string>
-    <string name="error_vacancies_list">Не удалось получить список вакансий</string>
+    <string name="error_vacancies_list">Не удалось получить\n\n список вакансий</string>
     <string name="error_no_internet">Нет интернета</string>
-    <string name="error_vacancy_not_found">Вакансия не найдена или удалена</string>
+    <string name="error_vacancy_not_found">Вакансия не найдена или\nудалена</string>
     <string name="error_region_not_found">Такого региона нет</string>
     <string name="error_list_fetch">Не удалось получить список</string>
     <string name="error_server">Ошибка сервера</string>
@@ -44,4 +43,22 @@
         <item quantity="many">Найдено %d вакансий</item>
         <item quantity="other">Найдено %d вакансий</item>
     </plurals>
+    <string-array name="developers">
+        <item>Дмитрий Крылов</item>
+        <item>Дмитрий Перов</item>
+        <item>Иван Свиридов</item>
+        <item>Сергей Аникин</item>
+    </string-array>
+    <string name="vacancy_salary_not_specified">Зарплата не указана</string>
+    <string name="vacancy_salary_from">От %1$s %2$s</string>
+    <string name="vacancy_salary_to">До %1$s %2$s</string>
+    <string name="vacancy_salary_range">От %1$s до %2$s %3$s</string>
+    <string name="screen_select_country">Выбор страны</string>
+    <string name="vacancy_required_experience">Требуемый опыт</string>
+    <string name="vacancy_description">Описание вакансии</string>
+    <string name="vacancy_key_skills">Ключевые навыки</string>
+    <string name="vacancy_contacts">Контакты</string>
+    <string name="vacancy_website">Website</string>
+    <string name="vacancy_address">Адрес</string>
+    <string name="vacancy_company_title">Компания</string>
 </resources>

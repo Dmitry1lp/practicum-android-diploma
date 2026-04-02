@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.navigation3.ui)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
+    testImplementation(libs.koin.test.junit4)
     implementation(libs.coil.compose)
     implementation(libs.compose.material3)
     implementation(libs.compose.activity)
@@ -70,6 +71,8 @@ dependencies {
     implementation(libs.compose.ui.preview)
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.manifest)
+    implementation(libs.kotlinx.collections.immutable)
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0")
 
     implementation(libs.gson)
     implementation(libs.retrofit)

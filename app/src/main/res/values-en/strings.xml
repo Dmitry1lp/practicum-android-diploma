@@ -42,4 +42,15 @@
         <item quantity="one">Found %d vacancy</item>
         <item quantity="other">Found %d vacancies</item>
     </plurals>
+    <string name="vacancy_salary_not_specified">Salary not specified</string>
+    <string name="vacancy_salary_from">From %1$s %2$s</string>
+    <string name="vacancy_salary_to">Up to %1$s %2$s</string>
+    <string name="vacancy_salary_range">From %1$s to %2$s %3$s</string>
+    <string name="vacancy_required_experience">Required experience</string>
+    <string name="vacancy_description">Vacancy description</string>
+    <string name="vacancy_key_skills">Vacancy key skills</string>
+    <string name="vacancy_contacts">Contacts</string>
+    <string name="vacancy_website">Website</string>
+    <string name="vacancy_address">Address</string>
+    <string name="vacancy_company_title">Company</string>
 </resources>
