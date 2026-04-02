@@ -12,6 +12,7 @@ object AppDimensions {
     val paddingSmall = 8.dp
     val paddingVerySmall = 6.dp
     val endPaddingTopBar = 4.dp
+    val paddingBottomStateInfo = 57.dp
 
     val teamScreenPadding = PaddingValues(top = paddingBig, start = paddingMedium, end = paddingMedium)
 
@@ -28,7 +29,6 @@ object AppDimensions {
 
     object FiltersScreen {
         val heightBoxInputField = 99.dp
-        val heightTextField = 51.dp
         val heightButton = 59.dp
         val cornerRadius = 12.dp
         val rowPaddingTextField = PaddingValues(vertical = paddingSmall, horizontal = paddingMedium)

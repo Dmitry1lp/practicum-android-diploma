@@ -12,13 +12,15 @@ import ru.practicum.android.diploma.core.presentation.components.TopBarIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchTopBar() {
+fun SearchTopBar(
+    onFiltersClick: () -> Unit
+) {
     AppTopBar(
         title = stringResource(R.string.screen_vacancy_search),
         action1 = TopBarIcon(
             iconResId = R.drawable.ic_filter_off_24,
             contentDescription = stringResource(R.string.cd_filter),
-            onClick = {}
+            onClick = onFiltersClick
         )
     )
 }
@@ -28,7 +30,7 @@ fun SearchTopBar() {
 private fun SearchTopBarPreview() {
     DiplomaTheme {
         Surface {
-            SearchTopBar()
+            SearchTopBar {}
         }
     }
 }

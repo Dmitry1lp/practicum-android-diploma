@@ -33,12 +33,12 @@ import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
-import ru.practicum.android.diploma.feature.filters.presentation.Actions
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
 import ru.practicum.android.diploma.feature.search.ui.SearchScreen
-import ru.practicum.android.diploma.feature.search.ui.SearchViewModel
+import ru.practicum.android.diploma.feature.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.feature.filters.ui.FiltersScreen
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
 import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsUiEvent
@@ -119,11 +119,11 @@ private fun appEntryProvider(
         SearchScreen(
             state = state,
             onSearchTextChanged = viewModel::onSearchTextChanged,
-            onClearClick = viewModel::onClearTextClicked,
             onVacancyClick = { vacancy ->
                 topLevelBackStack.add(Route.Vacancy(vacancy.id))
             },
-            onLoadNextPage = viewModel::loadNextPage
+            onLoadNextPage = viewModel::loadNextPage,
+            onFiltersClick = { topLevelBackStack.add(Route.Filters) }
         )
     }
 
@@ -184,7 +184,7 @@ private fun appEntryProvider(
         val viewModel: FiltersViewModel = koinViewModel()
         FiltersScreen(
             state = viewModel.state.collectAsState().value,
-            actions = Actions(
+            actions = FiltersActions(
                 onBackClick = { topLevelBackStack.removeLast() },
                 onIndustriesScreen = viewModel::onIndustriesScreen,
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },

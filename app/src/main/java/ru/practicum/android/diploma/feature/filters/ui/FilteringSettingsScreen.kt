@@ -22,14 +22,14 @@ import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.app.ui.theme.Red
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.presentation.Actions
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
 
 @Composable
 fun FilteringSettingsScreen(
     state: FiltersUiState,
     modifier: Modifier = Modifier,
-    actions: Actions
+    actions: FiltersActions
 ) {
     Scaffold(
         topBar = {
@@ -100,7 +100,7 @@ private fun FilteringSettingsScreenPreviewLightMode() {
     DiplomaTheme(false) {
         FilteringSettingsScreen(
             state = FiltersUiState(),
-            actions = Actions()
+            actions = FiltersActions()
         )
     }
 }
@@ -111,7 +111,7 @@ private fun FilteringSettingsScreenPreviewDarkMode() {
     DiplomaTheme(true) {
         FilteringSettingsScreen(
             state = FiltersUiState(),
-            actions = Actions()
+            actions = FiltersActions()
         )
     }
 }

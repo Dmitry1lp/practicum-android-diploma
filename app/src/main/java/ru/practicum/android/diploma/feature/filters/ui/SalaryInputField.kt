@@ -91,7 +91,6 @@ private fun SalaryTextField(
     BasicTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .height(AppDimensions.FiltersScreen.heightTextField)
             .background(
                 shape = RoundedCornerShape(AppDimensions.FiltersScreen.cornerRadius),
                 color = MaterialTheme.colorScheme.surfaceVariant

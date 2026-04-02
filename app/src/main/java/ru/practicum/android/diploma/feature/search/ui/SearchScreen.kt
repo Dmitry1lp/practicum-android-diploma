@@ -17,19 +17,22 @@ import androidx.compose.ui.unit.dp
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.presentation.components.StateInfo
+import ru.practicum.android.diploma.feature.search.presentation.SearchUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     state: SearchUiState,
     onSearchTextChanged: (String) -> Unit,
-    onClearClick: () -> Unit,
     onVacancyClick: (Vacancy) -> Unit,
-    onLoadNextPage: () -> Unit
+    onLoadNextPage: () -> Unit,
+    onFiltersClick: () -> Unit
 ) {
     Scaffold(
         contentWindowInsets = WindowInsets(),
-        topBar = { SearchTopBar() }
+        topBar = {
+            SearchTopBar { onFiltersClick() }
+        }
     ) { paddingValues ->
         val chipText = getChipText(state.vacancyState, state.totalFound)
 
@@ -38,9 +41,7 @@ fun SearchScreen(
         ) {
             SearchBar(
                 text = state.searchText,
-                isClearVisible = state.isClearTextVisible,
                 onTextChange = onSearchTextChanged,
-                onClearClick = onClearClick
             )
 
             Box(
