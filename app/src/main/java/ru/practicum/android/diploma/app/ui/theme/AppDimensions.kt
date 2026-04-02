@@ -6,17 +6,25 @@ import androidx.compose.ui.unit.dp
 
 object AppDimensions {
 
-    val heightTopBar = 64.dp
-
     val paddingVeryBig = 32.dp
     val paddingBig = 24.dp
     val paddingMedium = 16.dp
     val paddingSmall = 8.dp
     val paddingVerySmall = 6.dp
+    val endPaddingTopBar = 4.dp
 
     val teamScreenPadding = PaddingValues(top = paddingBig, start = paddingMedium, end = paddingMedium)
 
     val buttonContentPadding = PaddingValues(vertical = 20.dp, horizontal = 8.dp)
+
+    object AppSearchBar {
+        val paddings = PaddingValues(
+            vertical = paddingSmall,
+            horizontal = paddingMedium
+        )
+        val roundedCornerShape = 12.dp
+    }
+
 
     object FiltersScreen {
         val heightBoxInputField = 99.dp
@@ -54,7 +62,7 @@ object AppDimensions {
     }
 
     object StateInfo {
-        val contentGap = 16.dp
+        val paddingText = 46.dp
     }
 
     val loadingIndicatorSize = DpSize(48.dp, 48.dp)

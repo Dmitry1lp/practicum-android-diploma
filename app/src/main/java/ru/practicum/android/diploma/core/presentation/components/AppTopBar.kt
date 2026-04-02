@@ -2,7 +2,7 @@
 
 package ru.practicum.android.diploma.core.presentation.components
 
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,10 +27,11 @@ fun AppTopBar(
     action2: TopBarIcon? = null
 ) {
     TopAppBar(
-        modifier = modifier.height(AppDimensions.heightTopBar),
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background
+            containerColor = Color.Transparent
         ),
+        modifier = modifier
+            .padding(end = AppDimensions.endPaddingTopBar),
         title = {
             Text(
                 text = title,
@@ -78,6 +79,6 @@ fun AppTopBar(
 
 data class TopBarIcon(
     val iconResId: Int,
-    val onClick: () -> Unit,
-    val contentDescription: String? = null
+    val contentDescription: String? = null,
+    val onClick: () -> Unit
 )

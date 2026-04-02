@@ -19,18 +19,17 @@ fun NotInternetPlaceholder(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(24.dp),
         contentAlignment = Alignment.Center
     ) {
         StateInfo(
-            image = R.drawable.img_placeholder_not_internet,
+            image = R.drawable.img_no_internet,
             text = stringResource(R.string.error_no_internet)
         )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
