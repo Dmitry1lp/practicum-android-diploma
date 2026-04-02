@@ -31,6 +31,18 @@ sealed interface Route : NavKey {
     data object Filters : Route
 
     @Serializable
+    data object WorkLocationFilter : Route
+
+    @Serializable
+    data object CountryFilter : Route
+
+    @Serializable
+    data object RegionFilter : Route
+
+    @Serializable
+    data object IndustryFilter : Route
+
+    @Serializable
     data class Vacancy(val id: String) : Route
 
 }

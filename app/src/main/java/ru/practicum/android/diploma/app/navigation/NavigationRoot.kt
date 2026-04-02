@@ -184,4 +184,21 @@ private fun appEntryProvider(
             )
         )
     }
+
+    entry<Route.IndustryFilter> {
+        // TODO: Выбор отрасли
+    }
+
+    entry<Route.WorkLocationFilter> {
+        // TODO: Выбор места работы
+    }
+
+    entry<Route.RegionFilter> {
+        // TODO: Выбор региона
+    }
+
+    entry<Route.CountryFilter> {
+        // TODO: Выбор страны
+    }
+
 }
