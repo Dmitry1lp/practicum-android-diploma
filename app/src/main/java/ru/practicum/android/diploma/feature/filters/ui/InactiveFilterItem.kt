@@ -11,7 +11,6 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.LabelActionListItem
-import ru.practicum.android.diploma.core.utils.antiRepetitionClick
 
 @Composable
 fun InactiveFilterItem(
@@ -20,7 +19,8 @@ fun InactiveFilterItem(
     modifier: Modifier = Modifier
 ) {
     LabelActionListItem(
-        modifier = modifier.antiRepetitionClick { onClick() },
+        modifier = modifier,
+        onClick = onClick,
         leadingContent = {
             Text(
                 text = text,

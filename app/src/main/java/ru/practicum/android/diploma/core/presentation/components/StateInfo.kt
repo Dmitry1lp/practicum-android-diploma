@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,7 +32,8 @@ fun StateInfo(
     @DrawableRes image: Int,
     text: String = "",
     textAlign: TextAlign = TextAlign.Center,
-    lineHeight: TextUnit? = null
+    lineHeight: TextUnit? = null,
+    isPaddingBottom: Boolean = false
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -58,6 +60,7 @@ fun StateInfo(
                 lineHeight = lineHeight ?: TextUnit.Unspecified
             )
         }
+        if (isPaddingBottom) Spacer(modifier = modifier.padding(bottom = AppDimensions.paddingBottomStateInfo))
     }
 }
 

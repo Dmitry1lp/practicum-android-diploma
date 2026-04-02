@@ -20,7 +20,7 @@ data class VacancyDetailDto(
     val area: FilterAreaDto,
     val skills: List<String>,
     val url: String,
-    val industry: FilterIndustryDto
+    val industry: IndustryDto
 ) : Response()
 
 fun VacancyDetailDto.toDomain(): Vacancy = Vacancy(

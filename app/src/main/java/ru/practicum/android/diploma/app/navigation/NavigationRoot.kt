@@ -33,10 +33,13 @@ import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
 import ru.practicum.android.diploma.feature.search.ui.SearchScreen
-import ru.practicum.android.diploma.feature.search.ui.SearchViewModel
+import ru.practicum.android.diploma.feature.search.presentation.SearchViewModel
+import ru.practicum.android.diploma.feature.filters.ui.FiltersScreen
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
 import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsUiEvent
 import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsViewModel
@@ -116,11 +119,11 @@ private fun appEntryProvider(
         SearchScreen(
             state = state,
             onSearchTextChanged = viewModel::onSearchTextChanged,
-            onClearClick = viewModel::onClearTextClicked,
             onVacancyClick = { vacancy ->
                 topLevelBackStack.add(Route.Vacancy(vacancy.id))
             },
-            onLoadNextPage = viewModel::loadNextPage
+            onLoadNextPage = viewModel::loadNextPage,
+            onFiltersClick = { topLevelBackStack.add(Route.Filters) }
         )
     }
 
@@ -178,28 +181,17 @@ private fun appEntryProvider(
     }
 
     entry<Route.Filters> {
-        // TODO(feature-team): интегрировать FiltersScreen и FiltersViewModel
-        /*
-         * - Получение ViewModel происходит через функцию koinViewModel() внутри entry{}
-         * - НЕ СОЗДАВАТЬ ViewModel внутри NavigationRoot() или внутри экранов
-         * - Экраны не должны принимать в качестве аргумента ViewModel
-         *      и вместо этого должны принимать в качестве аргументов
-         *      все необходимые состояния state и коллбэки
-         * - Для перемещения на другой экран используется topLevelBackStack и метод add():
-         *      например, topLevelBackStack.add(Route.Search)
-         * - Для перемещения назад используется topLevelBackStack и метод removeLast()
-         *
-         * Пример реализации:
-         *
-         * val viewmodel: SearchViewModel = koinViewModel()
-         *
-         * SearchScreen(
-         *     state = viewmodel.state,
-         *     onQueryChange = viewmodel::onQueryChange,
-         *     onVacancyClick = { id -> topLevelBackStack.add(Route.Vacancy(id)) }
-         * )
-         */
-        ScreenPlaceholder(it::class.simpleName)
+        val viewModel: FiltersViewModel = koinViewModel()
+        FiltersScreen(
+            state = viewModel.state.collectAsState().value,
+            actions = FiltersActions(
+                onBackClick = { topLevelBackStack.removeLast() },
+                onIndustriesScreen = viewModel::onIndustriesScreen,
+                onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
+                onSearchTextChange = { viewModel.onSearchTextChange(it) },
+                onCheckBox = viewModel::onCheckBox
+            )
+        )
     }
 }
 

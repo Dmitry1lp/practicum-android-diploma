@@ -4,6 +4,8 @@ import org.koin.dsl.module
 import ru.practicum.android.diploma.feature.search.domain.interactor.SearchInteractor
 import ru.practicum.android.diploma.feature.search.domain.interactor.SearchInteractorImpl
 import ru.practicum.android.diploma.feature.vacancy.domain.VacancyDetailsInteractor
+import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
+import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractorImpl
 
 /**
  * Модуль Koin, отвечающий за зависимости Interactor/Usecases
@@ -17,4 +19,9 @@ val domainModule = module {
     single<SearchInteractor> {
         SearchInteractorImpl(get())
     }
+
+    factory<FiltersInteractor> {
+        FiltersInteractorImpl(get())
+    }
+
 }

@@ -12,16 +12,12 @@ import ru.practicum.android.diploma.core.presentation.components.AppSearchBar
 @Composable
 fun SearchBar(
     text: String,
-    isClearVisible: Boolean,
     onTextChange: (String) -> Unit,
-    onClearClick: () -> Unit
 ) {
     AppSearchBar(
         text = text,
         hint = stringResource(R.string.hint_search_vacancy),
-        isClearVisible = isClearVisible,
         onTextChange = onTextChange,
-        onClearClick = onClearClick
     )
 }
 
@@ -33,9 +29,7 @@ private fun SearchBarPreview() {
     DiplomaTheme {
         SearchBar(
             text = textState.value,
-            isClearVisible = textState.value.isNotEmpty(),
             onTextChange = { textState.value = it },
-            onClearClick = { textState.value = "" }
         )
     }
 }

@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.feature.search.ui
+package ru.practicum.android.diploma.feature.search.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +12,7 @@ import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.domain.model.VacancyQuery
 import ru.practicum.android.diploma.feature.search.data.models.Resource
 import ru.practicum.android.diploma.feature.search.domain.repository.VacancyRepository
+import ru.practicum.android.diploma.feature.search.ui.VacancyState
 
 class SearchViewModel(
     private val vacancyRepository: VacancyRepository
@@ -65,7 +66,6 @@ class SearchViewModel(
     fun onSearchTextChanged(text: String) {
         _uiState.value = _uiState.value.copy(
             searchText = text,
-            isClearTextVisible = text.isNotEmpty()
         )
 
         // дебаунс
@@ -82,13 +82,6 @@ class SearchViewModel(
                 )
             }
         }
-    }
-
-    // очистка текста
-    fun onClearTextClicked() {
-        searchJob?.cancel()
-        latestSearchText = ""
-        _uiState.value = SearchUiState()
     }
 
     fun loadNextPage() {

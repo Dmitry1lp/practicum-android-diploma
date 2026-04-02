@@ -29,7 +29,9 @@ fun TeamScreen(
 
     Scaffold(
         topBar = {
-            AppTopBar(title = stringResource(R.string.nav_team))
+            AppTopBar(
+                title = stringResource(R.string.nav_team)
+            )
         }
     ) { paddingValues ->
         Column(
