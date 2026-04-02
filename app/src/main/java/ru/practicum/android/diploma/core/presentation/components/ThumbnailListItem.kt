@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.core.presentation.components
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -47,7 +46,6 @@ fun ThumbnailListItem(
             .wrapContentHeight(),
         verticalAlignment = Alignment.Top
     ) {
-        Log.d("IMAGE_URL", model.toString())
         AsyncImage(
             modifier = Modifier
                 .size(AppDimensions.ThumbnailListItem.imageSize)
@@ -67,7 +65,6 @@ fun ThumbnailListItem(
             error = painterResource(R.drawable.ic_placeholder_32),
             contentScale = ContentScale.Fit,
             onError = {
-                Log.e("Coil", "Error loading image", it.result.throwable)
             }
         )
 
