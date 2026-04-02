@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
@@ -45,27 +47,16 @@ fun FavoritesScreen(
 }
 
 @Preview(showSystemUi = true)
+@PreviewLightDark
 @Composable
-private fun FavoritesScreenPreview() {
+private fun FavoritesScreenPreview(
+    @PreviewParameter(FavoritesUiStateProvider::class) state: FavoritesUiState
+) {
     DiplomaTheme {
         FavoritesScreen(
-            state = FavoritesUiState.Content(createList(VACANCIES_SHOWN)),
+            state = state,
             modifier = Modifier.fillMaxSize(),
             onVacancyClick = {}
         )
     }
 }
-
-@Preview(showSystemUi = true)
-@Composable
-private fun FavoritesScreenPreviewDark() {
-    DiplomaTheme(true) {
-        FavoritesScreen(
-            state = FavoritesUiState.FetchError,
-            modifier = Modifier.fillMaxSize(),
-            onVacancyClick = {}
-        )
-    }
-}
-
-private const val VACANCIES_SHOWN = 20

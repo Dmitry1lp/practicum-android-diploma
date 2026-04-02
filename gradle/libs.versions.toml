@@ -45,6 +45,9 @@ kotlinSerialization = "2.3.20"
 detekt = "1.23.8"
 detektTwitterComposeRules = "0.0.26"
 
+# KotlinX
+collections = "0.4.0"
+
 [libraries]
 
 # AndroidX
@@ -101,12 +104,15 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 
+# KotlinX
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "collections" }
+
 [plugins]
 
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "androidApplication" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization"}
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
 devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 convention-detekt = { id = "convention.detekt" }
-develop-properties = { id = "ru.practicum.android.diploma.plugins.developproperties"}
+develop-properties = { id = "ru.practicum.android.diploma.plugins.developproperties" }
