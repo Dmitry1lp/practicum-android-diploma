@@ -7,4 +7,8 @@ interface FiltersInteractor {
     fun getIndustries(): Flow<Pair<List<FilterIndustry>?, String?>>
 
     fun getFiltersSetting(): FiltersSettings?
+
+    fun saveFiltersSetting(settings: FiltersSettings)
+
+    fun clearSettings()
 }

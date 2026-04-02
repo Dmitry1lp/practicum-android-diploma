@@ -39,6 +39,22 @@ class FiltersViewModel(
         _state.update { it.copy(isCheckBox = !state.value.isCheckBox) }
     }
 
+    fun saveSettings() {
+        interactor.saveFiltersSetting(
+            FiltersSettings(
+                area = state.value.area,
+                industry = state.value.industry,
+                salaryText = state.value.salaryText,
+                isNotShowWithoutSalary = state.value.isCheckBox
+            )
+        )
+    }
+
+    fun clearSettings() {
+        interactor.clearSettings()
+        _state.value = FiltersUiState()
+    }
+
     private fun getIndustries() {
         viewModelScope.launch {
             interactor

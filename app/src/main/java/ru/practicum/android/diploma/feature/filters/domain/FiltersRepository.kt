@@ -12,4 +12,8 @@ interface FiltersRepository {
     fun getIndustries(): Flow<Resource<List<FilterIndustry>>>
 
     fun getFiltersSetting(): FiltersSettings?
+
+    fun saveFiltersSetting(settings: FiltersSettings)
+
+    fun clearSettings()
 }
