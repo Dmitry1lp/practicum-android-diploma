@@ -3,6 +3,7 @@
 package ru.practicum.android.diploma.app.navigation
 
 import android.content.Intent
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -71,7 +72,19 @@ fun NavigationRoot(
                 rememberViewModelStoreNavEntryDecorator()
             ),
             onBack = { topLevelBackStack.removeLast() },
-            entryProvider = entryProvider
+            entryProvider = entryProvider,
+            transitionSpec = {
+                NavigationTransitions.slideInHorizontally(rightToLeft = true) togetherWith
+                    NavigationTransitions.slideOutHorizontally(rightToLeft = false)
+            },
+            popTransitionSpec = {
+                NavigationTransitions.slideInHorizontally(rightToLeft = false) togetherWith
+                    NavigationTransitions.slideOutHorizontally(rightToLeft = true)
+            },
+            predictivePopTransitionSpec = {
+                NavigationTransitions.slideInHorizontally(rightToLeft = false) togetherWith
+                    NavigationTransitions.slideOutHorizontally(rightToLeft = true)
+            }
         )
     }
 }
