@@ -26,7 +26,6 @@ object AppDimensions {
         val roundedCornerShape = 12.dp
     }
 
-
     object FiltersScreen {
         val heightBoxInputField = 99.dp
         val heightButton = 59.dp
