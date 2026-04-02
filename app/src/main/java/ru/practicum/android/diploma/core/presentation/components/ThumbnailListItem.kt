@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.core.presentation.components
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -17,10 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
@@ -34,6 +37,7 @@ fun ThumbnailListItem(
     imageBorder: BorderStroke? = null,
     imageContentDescription: String? = null,
     content: @Composable () -> Unit
+
 ) {
     val shape = remember { RoundedCornerShape(AppDimensions.ThumbnailListItem.imageCornerRadius) }
 
@@ -43,6 +47,7 @@ fun ThumbnailListItem(
             .wrapContentHeight(),
         verticalAlignment = Alignment.Top
     ) {
+        Log.d("IMAGE_URL", model.toString())
         AsyncImage(
             modifier = Modifier
                 .size(AppDimensions.ThumbnailListItem.imageSize)
@@ -53,11 +58,17 @@ fun ThumbnailListItem(
                     )
                 }
                 .clip(shape),
-            model = model,
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(model)
+                .addHeader("User-Agent", "Mozilla/5.0")
+                .build(),
             contentDescription = imageContentDescription,
             placeholder = painterResource(R.drawable.ic_placeholder_32),
             error = painterResource(R.drawable.ic_placeholder_32),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Fit,
+            onError = {
+                Log.e("Coil", "Error loading image", it.result.throwable)
+            }
         )
 
         content()
