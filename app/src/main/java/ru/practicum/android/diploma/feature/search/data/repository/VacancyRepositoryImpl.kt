@@ -25,7 +25,10 @@ class VacancyRepositoryImpl(
         return when (response.resultCode) {
             RESULT_OK -> {
                 val dto = response as? VacancyResponseDto
-                    ?: return Resource.Error(RESULT_FAIL)
+                    ?: return Resource.Error(
+                        message = RESULT_FAIL,
+                        resultCode = response.resultCode
+                    )
 
                 val vacancies = dto.items.map { it.toDomain() }
 
@@ -35,7 +38,10 @@ class VacancyRepositoryImpl(
                 Resource.Success(Triple(vacancies, dto.pages, dto.found))
             }
 
-            else -> Resource.Error(RESULT_FAIL)
+            else -> Resource.Error(
+                message = RESULT_FAIL,
+                resultCode = response.resultCode
+            )
         }
     }
 
@@ -47,12 +53,18 @@ class VacancyRepositoryImpl(
         return when (response.resultCode) {
             RESULT_OK -> {
                 val dto = response as? VacancyDetailDto
-                    ?: return Resource.Error(RESULT_FAIL)
+                    ?: return Resource.Error(
+                        message = RESULT_FAIL,
+                        resultCode = response.resultCode
+                    )
 
                 Resource.Success(dto.toDomain())
             }
 
-            else -> Resource.Error(RESULT_FAIL)
+            else -> Resource.Error(
+                message = RESULT_FAIL,
+                resultCode = response.resultCode
+            )
         }
     }
 

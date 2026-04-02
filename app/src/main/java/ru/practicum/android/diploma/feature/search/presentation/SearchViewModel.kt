@@ -57,7 +57,14 @@ class SearchViewModel(
             }
 
             is Resource.Error -> {
-                _uiState.value = _uiState.value.copy(vacancyState = VacancyState.ErrorFound)
+                val newState = when (result.resultCode) {
+                    -1 -> VacancyState.ErrorInternet
+                    else -> VacancyState.ErrorFound
+                }
+
+                _uiState.value = _uiState.value.copy(
+                    vacancyState = newState
+                )
             }
         }
     }
@@ -78,7 +85,7 @@ class SearchViewModel(
                 performSearch(text)
             } else {
                 _uiState.value = _uiState.value.copy(
-                    vacancyState = VacancyState.Empty,
+                    vacancyState = VacancyState.Idle,
                 )
             }
         }
@@ -117,8 +124,13 @@ class SearchViewModel(
                 }
 
                 is Resource.Error -> {
+                    val newState = when (result.resultCode) {
+                        -1 -> VacancyState.ErrorInternet
+                        else -> VacancyState.ErrorFound
+                    }
+
                     _uiState.update {
-                        it.copy(vacancyState = VacancyState.ErrorFound)
+                        it.copy(vacancyState = newState)
                     }
                 }
             }
