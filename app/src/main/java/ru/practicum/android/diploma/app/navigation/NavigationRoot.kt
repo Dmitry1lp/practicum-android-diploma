@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -29,7 +30,8 @@ import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewM
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
-import ru.practicum.android.diploma.feature.filters.ui.FiltersScreen
+import ru.practicum.android.diploma.feature.filters.ui.screens.FiltersScreen
+import ru.practicum.android.diploma.feature.filters.ui.screens.IndustryFilterScreen
 import ru.practicum.android.diploma.feature.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.feature.search.ui.SearchScreen
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
@@ -46,7 +48,7 @@ private val bottomNavItems = listOf<BottomNavItem>(
 @Composable
 fun NavigationRoot(
     modifier: Modifier = Modifier,
-    navigationViewModel: NavigationViewModel = koinViewModel()
+    navigationViewModel: NavigationViewModel = koinViewModel(),
 ) {
     val topLevelBackStack = navigationViewModel.backStack
     val entryProvider = remember(topLevelBackStack) {
@@ -95,6 +97,8 @@ private fun TopLevelBackStack<NavKey>.shouldDrawBottomNavBar(): Boolean =
 private fun appEntryProvider(
     topLevelBackStack: TopLevelBackStack<NavKey>
 ) = entryProvider<NavKey> {
+
+
     entry<Route.Team> {
         TeamScreen(
             modifier = Modifier
@@ -186,13 +190,13 @@ private fun appEntryProvider(
 
     entry<Route.Filters> {
         val viewModel: FiltersViewModel = koinViewModel()
+
         FiltersScreen(
             state = viewModel.state.collectAsState().value,
             actions = FiltersActions(
                 onBackClick = { topLevelBackStack.removeLast() },
-                onIndustriesScreen = viewModel::onIndustriesScreen,
+                onIndustryFilter = { topLevelBackStack.add(Route.IndustryFilter) },
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
-                onSearchTextChange = { viewModel.onSearchTextChange(it) },
                 onCheckBox = viewModel::onCheckBox,
                 onSaveSettings = {
                     viewModel.saveSettings()
@@ -204,19 +208,29 @@ private fun appEntryProvider(
     }
 
     entry<Route.IndustryFilter> {
-        // TODO: Выбор отрасли
+        IndustryFilterScreen(
+            state = viewModel.state.collectAsState().value,
+            actions = FiltersActions(
+                onBackClick = { topLevelBackStack.removeLast() },
+                onSearchTextChange = viewModel::onSearchTextChange,
+                onIndustrySelected = {
+                    viewModel.onIndustrySelected(it)
+                    topLevelBackStack.removeLast()
+                }
+            )
+        )
     }
 
     entry<Route.WorkLocationFilter> {
         // TODO: Выбор места работы
     }
 
-    entry<Route.RegionFilter> {
-        // TODO: Выбор региона
-    }
-
     entry<Route.CountryFilter> {
         // TODO: Выбор страны
+    }
+
+    entry<Route.RegionFilter> {
+        // TODO: Выбор региона
     }
 
 }

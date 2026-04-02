@@ -17,10 +17,14 @@ data class FiltersUiState(
 
 data class FiltersActions(
     val onBackClick: () -> Unit = {},
-    val onIndustriesScreen: () -> Unit = {},
+    val onWorkLocationFilter: () -> Unit = {},
+    val onCountryFilter: () -> Unit = {},
+    val onRegionFilter: () -> Unit = {},
+    val onIndustryFilter: () -> Unit = {},
     val onSalaryTextChange: (String) -> Unit = {},
     val onCheckBox: () -> Unit = {},
     val onSearchTextChange: (String) -> Unit = {},
     val onSaveSettings: () -> Unit = {},
-    val onClearSettings: () -> Unit = {}
+    val onClearSettings: () -> Unit = {},
+    val onIndustrySelected: (FilterIndustry) -> Unit = {}
 )

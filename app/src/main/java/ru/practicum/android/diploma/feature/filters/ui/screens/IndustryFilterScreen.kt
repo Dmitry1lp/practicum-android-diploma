@@ -1,5 +1,7 @@
-package ru.practicum.android.diploma.feature.filters.ui
+package ru.practicum.android.diploma.feature.filters.ui.screens
 
+import android.util.Log
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,18 +35,21 @@ import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.core.presentation.components.StateInfo
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
+import ru.practicum.android.diploma.feature.filters.ui.ActivateButton
 
 @Composable
-fun IndustriesScreen(
+fun IndustryFilterScreen(
     modifier: Modifier = Modifier,
     state: FiltersUiState,
     actions: FiltersActions
 ) {
+    var selectedIndustry by remember { mutableStateOf<FilterIndustry?>(null) }
+
     Scaffold(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.screen_select_industry),
-                onNavigationIcon = actions.onIndustriesScreen
+                onNavigationIcon = actions.onBackClick
             )
         }
     ) { paddingValues ->
@@ -57,7 +62,25 @@ fun IndustriesScreen(
                 onTextChange = { actions.onSearchTextChange(it) }
             )
             if (state.industries.isNotEmpty()) {
-                ShowContent(state.industries)
+                Box(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    ShowContent(
+                        state.industries,
+                        selectedIndustry = selectedIndustry,
+                        onSelectionChange = { newIndustry ->
+                            selectedIndustry = newIndustry
+                        }
+                    )
+                }
+                selectedIndustry?.let {
+                    ActivateButton(
+                        text = stringResource(R.string.button_choose),
+                        onClick = { actions.onIndustrySelected(it) }
+                    )
+                }
             } else {
                 StateInfo(
                     image = R.drawable.img_error_list_fetch,
@@ -70,9 +93,11 @@ fun IndustriesScreen(
 }
 
 @Composable
-private fun ShowContent(industries: List<FilterIndustry>) {
-    var selectedOption by remember { mutableStateOf<FilterIndustry?>(null) }
-
+private fun ShowContent(
+    industries: List<FilterIndustry>,
+    selectedIndustry: FilterIndustry?,
+    onSelectionChange: (FilterIndustry) -> Unit
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -84,8 +109,8 @@ private fun ShowContent(industries: List<FilterIndustry>) {
                     .fillMaxWidth()
                     .height(AppDimensions.LabelActionListItem.itemHeight)
                     .selectable(
-                        selected = industry == selectedOption,
-                        onClick = { selectedOption = industry }
+                        selected = industry == selectedIndustry,
+                        onClick = { onSelectionChange(industry) }
                     )
                     .padding(horizontal = AppDimensions.paddingMedium),
                 verticalAlignment = Alignment.CenterVertically
@@ -98,7 +123,7 @@ private fun ShowContent(industries: List<FilterIndustry>) {
                     style = AppTypography.bodyLarge
                 )
                 RadioButton(
-                    selected = industry == selectedOption,
+                    selected = industry == selectedIndustry,
                     onClick = null,
                     colors = RadioButtonDefaults.colors(
                         selectedColor = Blue,
@@ -110,11 +135,12 @@ private fun ShowContent(industries: List<FilterIndustry>) {
     }
 }
 
+
 @Preview
 @Composable
-private fun IndustriesScreenPreviewLightMode() {
+private fun IndustryFilterScreenPreviewLightMode() {
     DiplomaTheme(false) {
-        IndustriesScreen(
+        IndustryFilterScreen(
             state = FiltersUiState(),
             actions = FiltersActions()
         )
@@ -123,9 +149,9 @@ private fun IndustriesScreenPreviewLightMode() {
 
 @Preview
 @Composable
-private fun IndustriesScreenPreviewDarkMode() {
+private fun IndustryFilterScreenPreviewDarkMode() {
     DiplomaTheme(true) {
-        IndustriesScreen(
+        IndustryFilterScreen(
             state = FiltersUiState(),
             actions = FiltersActions()
         )

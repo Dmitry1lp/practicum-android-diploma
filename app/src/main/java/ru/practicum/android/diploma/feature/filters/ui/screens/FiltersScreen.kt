@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.feature.filters.ui
+package ru.practicum.android.diploma.feature.filters.ui.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -24,9 +24,14 @@ import ru.practicum.android.diploma.app.ui.theme.Red
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
+import ru.practicum.android.diploma.feature.filters.ui.ActivateButton
+import ru.practicum.android.diploma.feature.filters.ui.HintedFilterItem
+import ru.practicum.android.diploma.feature.filters.ui.InactiveFilterItem
+import ru.practicum.android.diploma.feature.filters.ui.SalaryInputField
+import ru.practicum.android.diploma.feature.filters.ui.SwitchFilterItem
 
 @Composable
-fun FilteringSettingsScreen(
+fun FiltersScreen(
     state: FiltersUiState,
     modifier: Modifier = Modifier,
     actions: FiltersActions
@@ -46,10 +51,18 @@ fun FilteringSettingsScreen(
                 text = stringResource(R.string.filter_work_location),
                 onClick = {}
             )
-            InactiveFilterItem(
-                text = stringResource(R.string.filter_industry),
-                onClick = actions.onIndustriesScreen
-            )
+            if (state.industry.name.isEmpty()) {
+                InactiveFilterItem(
+                    text = stringResource(R.string.filter_industry),
+                    onClick = actions.onIndustryFilter
+                )
+            } else {
+                HintedFilterItem(
+                    hint = stringResource(R.string.filter_industry),
+                    text = state.industry.name,
+                    onClick = {}
+                )
+            }
             SalaryInputField(
                 text = state.salaryText,
                 onTextChange = actions.onSalaryTextChange
@@ -64,18 +77,10 @@ fun FilteringSettingsScreen(
                 Column(
                     modifier = Modifier.padding(horizontal = 17.dp)
                 ) {
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(AppDimensions.FiltersScreen.heightButton),
-                        shape = RoundedCornerShape(AppDimensions.FiltersScreen.cornerRadius),
+                    ActivateButton(
+                        text = stringResource(R.string.button_apply),
                         onClick = actions.onSaveSettings
-                    ) {
-                        Text(
-                            text = stringResource(R.string.button_apply),
-                            style = AppTypography.titleSmall
-                        )
-                    }
+                    )
                     Text(
                         modifier = Modifier
                             .padding(AppDimensions.FiltersScreen.resetButtonPadding)
@@ -93,9 +98,9 @@ fun FilteringSettingsScreen(
 
 @Preview
 @Composable
-private fun FilteringSettingsScreenPreviewLightMode() {
+private fun FiltersScreenPreviewLightMode() {
     DiplomaTheme(false) {
-        FilteringSettingsScreen(
+        FiltersScreen(
             state = FiltersUiState(),
             actions = FiltersActions()
         )
@@ -104,9 +109,9 @@ private fun FilteringSettingsScreenPreviewLightMode() {
 
 @Preview
 @Composable
-private fun FilteringSettingsScreenPreviewDarkMode() {
+private fun FiltersScreenPreviewDarkMode() {
     DiplomaTheme(true) {
-        FilteringSettingsScreen(
+        FiltersScreen(
             state = FiltersUiState(),
             actions = FiltersActions()
         )

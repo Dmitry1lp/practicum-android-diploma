@@ -2,6 +2,8 @@ package ru.practicum.android.diploma.feature.filters.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -11,7 +13,8 @@ import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
 import ru.practicum.android.diploma.feature.filters.domain.FiltersSettings
 
-class FiltersViewModel(
+@HiltViewModel
+class FiltersViewModel @Inject constructor(
     private val interactor: FiltersInteractor
 ) : ViewModel() {
 
@@ -21,10 +24,6 @@ class FiltersViewModel(
     init {
         getFiltersSettings()
         getIndustries()
-    }
-
-    fun onIndustriesScreen() {
-        _state.update { it.copy(onIndustriesScreen = !state.value.onIndustriesScreen) }
     }
 
     fun onSalaryTextChange(text: String) {
@@ -37,6 +36,10 @@ class FiltersViewModel(
 
     fun onCheckBox() {
         _state.update { it.copy(isCheckBox = !state.value.isCheckBox) }
+    }
+
+    fun onIndustrySelected(industry: FilterIndustry) {
+        _state.update { it.copy(industry = industry) }
     }
 
     fun saveSettings() {
