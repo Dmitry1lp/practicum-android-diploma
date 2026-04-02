@@ -12,7 +12,6 @@ import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.domain.model.VacancyQuery
 import ru.practicum.android.diploma.feature.search.data.models.Resource
 import ru.practicum.android.diploma.feature.search.domain.repository.VacancyRepository
-import ru.practicum.android.diploma.feature.search.presentation.SearchUiState
 import ru.practicum.android.diploma.feature.search.ui.VacancyState
 
 class SearchViewModel(
