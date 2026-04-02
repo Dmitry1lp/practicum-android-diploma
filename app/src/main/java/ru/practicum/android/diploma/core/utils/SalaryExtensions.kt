@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.core.utils
 
+import android.icu.util.Currency
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import ru.practicum.android.diploma.R
@@ -9,7 +10,7 @@ import ru.practicum.android.diploma.core.domain.model.Salary
 fun Salary?.toLocalizedString(): String {
     if (this == null) return stringResource(R.string.vacancy_salary_not_specified)
 
-    val currency = currency ?: ""
+    val currency = currency?.currencySign ?: ""
 
     return when {
         lowerBound == null && upperBound == null -> stringResource(
@@ -36,3 +37,6 @@ fun Salary?.toLocalizedString(): String {
         )
     }
 }
+
+private val String.currencySign: String
+    get() = Currency.getInstance(this).symbol

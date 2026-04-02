@@ -3,25 +3,18 @@
 package ru.practicum.android.diploma.app.navigation
 
 import android.content.Intent
-import android.net.Uri
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
@@ -31,15 +24,13 @@ import androidx.navigation3.ui.NavDisplay
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
-import ru.practicum.android.diploma.app.ui.theme.AppTypography
-import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
-import ru.practicum.android.diploma.feature.search.ui.SearchScreen
-import ru.practicum.android.diploma.feature.search.presentation.SearchViewModel
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
 import ru.practicum.android.diploma.feature.filters.ui.FiltersScreen
+import ru.practicum.android.diploma.feature.search.presentation.SearchViewModel
+import ru.practicum.android.diploma.feature.search.ui.SearchScreen
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
 import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsUiEvent
 import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsViewModel
@@ -155,14 +146,14 @@ private fun appEntryProvider(
 
                     is VacancyDetailsUiEvent.OpenEmailTo -> {
                         val intent = Intent(Intent.ACTION_SENDTO).apply {
-                            data = Uri.parse("mailto:${event.email}")
+                            data = "mailto:${event.email}".toUri()
                         }
                         context.startActivity(intent)
                     }
 
                     is VacancyDetailsUiEvent.OpenPhoneCall -> {
                         val intent = Intent(Intent.ACTION_DIAL).apply {
-                            data = Uri.parse("tel:${event.phone}")
+                            data = "tel:${event.phone}".toUri()
                         }
                         context.startActivity(intent)
                     }
@@ -191,49 +182,6 @@ private fun appEntryProvider(
                 onSearchTextChange = { viewModel.onSearchTextChange(it) },
                 onCheckBox = viewModel::onCheckBox
             )
-        )
-    }
-}
-
-@Composable
-private fun ScreenPlaceholder(
-    text: String?,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
-) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color.Red)
-            .clickable { onClick() },
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "placeholder\n$text",
-            color = Color.White,
-            style = AppTypography.titleLarge
-        )
-    }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun NavigationRootPreviewMode() {
-    DiplomaTheme {
-        NavigationRoot(
-            modifier = Modifier.fillMaxSize(),
-            navigationViewModel = remember { NavigationViewModel() }
-        )
-    }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun NavigationRootPreviewDarkMode() {
-    DiplomaTheme(true) {
-        NavigationRoot(
-            modifier = Modifier.fillMaxSize(),
-            navigationViewModel = remember { NavigationViewModel() }
         )
     }
 }

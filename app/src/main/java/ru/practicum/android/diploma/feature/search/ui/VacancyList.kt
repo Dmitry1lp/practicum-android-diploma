@@ -15,13 +15,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.presentation.components.VacancyItem
 import ru.practicum.android.diploma.core.presentation.model.toItemData
 
 @Composable
 fun VacancyList(
-    vacancies: List<Vacancy>,
+    vacancies: ImmutableList<Vacancy>,
     modifier: Modifier = Modifier,
     onLoadNextPage: () -> Unit,
     isLoadingNextPage: Boolean,
