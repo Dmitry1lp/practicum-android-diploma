@@ -28,15 +28,17 @@ import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.Blue
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
+import ru.practicum.android.diploma.core.presentation.components.AppSearchBar
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.presentation.Actions
+import ru.practicum.android.diploma.core.presentation.components.StateInfo
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
 
 @Composable
 fun IndustriesScreen(
     modifier: Modifier = Modifier,
     state: FiltersUiState,
-    actions: Actions
+    actions: FiltersActions
 ) {
     Scaffold(
         topBar = {
@@ -49,14 +51,19 @@ fun IndustriesScreen(
         Column(
             modifier = modifier.padding(paddingValues)
         ) {
-            SearchInputField(
+            AppSearchBar(
                 text = state.searchText,
+                hint = stringResource(R.string.hint_search_industry),
                 onTextChange = { actions.onSearchTextChange(it) }
             )
             if (state.industries.isNotEmpty()) {
                 ShowContent(state.industries)
             } else {
-                PlaceholderErrorListFetch()
+                StateInfo(
+                    image = R.drawable.img_error_list_fetch,
+                    text = stringResource(R.string.error_list_fetch),
+                    isPaddingBottom = true
+                )
             }
         }
     }
@@ -109,7 +116,7 @@ private fun IndustriesScreenPreviewLightMode() {
     DiplomaTheme(false) {
         IndustriesScreen(
             state = FiltersUiState(),
-            actions = Actions()
+            actions = FiltersActions()
         )
     }
 }
@@ -120,7 +127,7 @@ private fun IndustriesScreenPreviewDarkMode() {
     DiplomaTheme(true) {
         IndustriesScreen(
             state = FiltersUiState(),
-            actions = Actions()
+            actions = FiltersActions()
         )
     }
 }

@@ -24,18 +24,15 @@ class FiltersRepositoryImpl(
 
     override fun getIndustries(): Flow<Resource<List<FilterIndustry>>> = flow {
         val response = networkClient.doRequest(Request.IndustriesRequest)
-        when (response.resultCode) {
-            ERROR -> emit(Resource.Error(response.resultCode.toString()))
+        val resource = when (response.resultCode) {
+            ERROR -> Resource.Error(response.resultCode.toString())
             SUCCESS -> with(response as IndustriesResponse) {
-                emit(
-                    Resource.Success(
-                        industries.map { it.toDomain() }
-                    )
-                )
+                Resource.Success(industries.map { it.toDomain() })
             }
 
-            else -> emit(Resource.Error(response.resultCode.toString()))
+            else -> Resource.Error(response.resultCode.toString())
         }
+        emit(resource)
     }
 
     override fun getFiltersSetting(): FiltersSettings? {

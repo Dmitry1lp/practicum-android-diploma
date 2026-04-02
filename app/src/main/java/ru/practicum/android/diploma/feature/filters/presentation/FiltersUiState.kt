@@ -15,7 +15,7 @@ data class FiltersUiState(
     val errorMessage: String = ""
 )
 
-data class Actions(
+data class FiltersActions(
     val onBackClick: () -> Unit = {},
     val onIndustriesScreen: () -> Unit = {},
     val onSalaryTextChange: (String) -> Unit = {},

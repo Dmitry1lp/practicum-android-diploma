@@ -2,35 +2,48 @@
 
 package ru.practicum.android.diploma.app.navigation
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
-import ru.practicum.android.diploma.feature.filters.presentation.Actions
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
+import ru.practicum.android.diploma.feature.search.ui.SearchScreen
+import ru.practicum.android.diploma.feature.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.feature.filters.ui.FiltersScreen
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
+import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsUiEvent
+import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsViewModel
+import ru.practicum.android.diploma.feature.vacancy.ui.VacancyScreen
 
 private val bottomNavItems = listOf<BottomNavItem>(
     Route.Search,
@@ -49,6 +62,7 @@ fun NavigationRoot(
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(),
         bottomBar = {
             if (topLevelBackStack.shouldDrawBottomNavBar()) {
                 BottomNavigationBar(
@@ -98,65 +112,79 @@ private fun appEntryProvider(
     }
 
     entry<Route.Search> {
-        // TODO(feature-team): интегрировать SearchScreen и SearchViewModel
-        /*
-         * - Получение ViewModel происходит через функцию koinViewModel() внутри entry{}
-         * - НЕ СОЗДАВАТЬ ViewModel внутри NavigationRoot() или внутри экранов
-         * - Экраны не должны принимать в качестве аргумента ViewModel
-         *      и вместо этого должны принимать в качестве аргументов
-         *      все необходимые состояния state и коллбэки
-         * - Для перемещения на другой экран используется topLevelBackStack и метод add():
-         *      например, topLevelBackStack.add(Route.Search)
-         * - Для перемещения назад используется topLevelBackStack и метод removeLast()
-         *
-         * Пример реализации:
-         *
-         * val viewmodel: SearchViewModel = koinViewModel()
-         *
-         * SearchScreen(
-         *     state = viewmodel.state,
-         *     onQueryChange = viewmodel::onQueryChange,
-         *     onVacancyClick = { id -> topLevelBackStack.add(Route.Vacancy(id)) }
-         * )
-         */
-        ScreenPlaceholder(it::class.simpleName) {
-            topLevelBackStack.add(Route.Vacancy("Dmitrii"))
-        }
+        val viewModel: SearchViewModel = koinViewModel()
+
+        val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+        SearchScreen(
+            state = state,
+            onSearchTextChanged = viewModel::onSearchTextChanged,
+            onVacancyClick = { vacancy ->
+                topLevelBackStack.add(Route.Vacancy(vacancy.id))
+            },
+            onLoadNextPage = viewModel::loadNextPage,
+            onFiltersClick = { topLevelBackStack.add(Route.Filters) }
+        )
     }
 
     entry<Route.Vacancy> { route ->
         val vacancyId = route.id
 
-        // TODO(feature-team): интегрировать VacancyScreen и VacancyViewModel
-        /*
-         * - Получение ViewModel происходит через функцию koinViewModel() внутри entry{}
-         * - НЕ СОЗДАВАТЬ ViewModel внутри NavigationRoot() или внутри экранов
-         * - Экраны не должны принимать в качестве аргумента ViewModel
-         *      и вместо этого должны принимать в качестве аргументов
-         *      все необходимые состояния state и коллбэки
-         * - Для перемещения на другой экран используется topLevelBackStack и метод add():
-         *      например, topLevelBackStack.add(Route.Search)
-         * - Для перемещения назад используется topLevelBackStack и метод removeLast()
-         *
-         * Пример реализации:
-         *
-         * val viewmodel: SearchViewModel = koinViewModel()
-         *
-         * SearchScreen(
-         *     state = viewmodel.state,
-         *     onQueryChange = viewmodel::onQueryChange,
-         *     onVacancyClick = { id -> topLevelBackStack.add(Route.Vacancy(id)) }
-         * )
-         */
+        val viewModel: VacancyDetailsViewModel = koinViewModel(parameters = { parametersOf(vacancyId) })
 
-        ScreenPlaceholder(route::class.simpleName)
+        val state by viewModel.state.collectAsState()
+
+        val context = LocalContext.current
+
+        // загрузка данных
+        LaunchedEffect(vacancyId) {
+            viewModel.loadVacancy()
+        }
+
+        // обработка событий
+        LaunchedEffect(Unit) {
+            viewModel.events.collect { event ->
+                when (event) {
+                    is VacancyDetailsUiEvent.ShareVacancyLink -> {
+                        val intent = Intent(Intent.ACTION_SEND).apply {
+                            putExtra(Intent.EXTRA_TEXT, event.url)
+                            type = "text/plain"
+                        }
+                        context.startActivity(Intent.createChooser(intent, null))
+                    }
+
+                    is VacancyDetailsUiEvent.OpenEmailTo -> {
+                        val intent = Intent(Intent.ACTION_SENDTO).apply {
+                            data = Uri.parse("mailto:${event.email}")
+                        }
+                        context.startActivity(intent)
+                    }
+
+                    is VacancyDetailsUiEvent.OpenPhoneCall -> {
+                        val intent = Intent(Intent.ACTION_DIAL).apply {
+                            data = Uri.parse("tel:${event.phone}")
+                        }
+                        context.startActivity(intent)
+                    }
+                }
+            }
+        }
+
+        VacancyScreen(
+            state = state,
+            onBackClick = { topLevelBackStack.removeLast() },
+            onFavouriteClick = viewModel::onFavouriteClick,
+            onShareClick = viewModel::onShareClick,
+            onPhoneClick = viewModel::onPhoneCall,
+            onEmailClick = viewModel::onEmailClick
+        )
     }
 
     entry<Route.Filters> {
         val viewModel: FiltersViewModel = koinViewModel()
         FiltersScreen(
             state = viewModel.state.collectAsState().value,
-            actions = Actions(
+            actions = FiltersActions(
                 onBackClick = { topLevelBackStack.removeLast() },
                 onIndustriesScreen = viewModel::onIndustriesScreen,
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
@@ -190,8 +218,8 @@ private fun ScreenPlaceholder(
 
 @Preview(showSystemUi = true)
 @Composable
-fun NavigationRootPreviewLightMode() {
-    DiplomaTheme(false) {
+private fun NavigationRootPreviewMode() {
+    DiplomaTheme {
         NavigationRoot(
             modifier = Modifier.fillMaxSize(),
             navigationViewModel = remember { NavigationViewModel() }
@@ -201,7 +229,7 @@ fun NavigationRootPreviewLightMode() {
 
 @Preview(showSystemUi = true)
 @Composable
-fun NavigationRootPreviewDarkMode() {
+private fun NavigationRootPreviewDarkMode() {
     DiplomaTheme(true) {
         NavigationRoot(
             modifier = Modifier.fillMaxSize(),

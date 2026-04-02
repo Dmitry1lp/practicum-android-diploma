@@ -2,13 +2,13 @@ package ru.practicum.android.diploma.feature.vacancy.domain
 
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 
-class VacancyInteractor(
-    private val repository: VacancyRepository
+class VacancyDetailsInteractor(
+    private val repository: VacancyDetailsRepository
 ) {
     /**
      * загрузка вакансии
      */
-    suspend fun loadVacancy(id: String): VacancyResult {
+    suspend fun loadVacancy(id: String): VacancyDetailsResult {
         return repository.getVacancy(id)
     }
 

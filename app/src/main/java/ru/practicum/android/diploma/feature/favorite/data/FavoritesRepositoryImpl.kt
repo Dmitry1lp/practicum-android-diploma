@@ -10,7 +10,6 @@ import ru.practicum.android.diploma.core.domain.repository.FavoritesRepository
 class FavoritesRepositoryImpl(
     val favoritesDao: FavoritesDao
 ) : FavoritesRepository {
-
     override suspend fun getVacancy(id: String): Vacancy? = favoritesDao.getVacancy(id)?.toDomain()
 
     override suspend fun insert(vacancy: Vacancy) = favoritesDao.insert(vacancy.toEntity())

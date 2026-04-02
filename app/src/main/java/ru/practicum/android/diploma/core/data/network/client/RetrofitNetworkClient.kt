@@ -1,8 +1,6 @@
 package ru.practicum.android.diploma.core.data.network.client
 
 import android.util.Log
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.core.data.network.api.VacancyApi
 import ru.practicum.android.diploma.core.data.network.dto.AreasResponse
@@ -14,7 +12,7 @@ import java.io.IOException
 class RetrofitNetworkClient(
     private val api: VacancyApi
 ) : NetworkClient {
-    override suspend fun doRequest(request: Request): Response = withContext(Dispatchers.IO) {
+    override suspend fun doRequest(request: Request): Response =
         try {
             handleRequest(request)
         } catch (e: IOException) {
@@ -24,7 +22,6 @@ class RetrofitNetworkClient(
             Log.e(TAG, "HTTP error", e)
             Response().apply { resultCode = e.code() }
         }
-    }
 
     private suspend fun handleRequest(request: Request): Response {
         return when (request) {

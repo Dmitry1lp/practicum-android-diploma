@@ -5,15 +5,16 @@ import ru.practicum.android.diploma.core.data.network.dto.Request
 import ru.practicum.android.diploma.core.data.network.dto.VacancyDetailDto
 import ru.practicum.android.diploma.core.data.network.dto.toDomain
 import ru.practicum.android.diploma.core.domain.model.Vacancy
-import ru.practicum.android.diploma.feature.vacancy.domain.VacancyRepository
-import ru.practicum.android.diploma.feature.vacancy.domain.VacancyResult
+import ru.practicum.android.diploma.core.domain.repository.FavoritesRepository
+import ru.practicum.android.diploma.feature.vacancy.domain.VacancyDetailsRepository
+import ru.practicum.android.diploma.feature.vacancy.domain.VacancyDetailsResult
 
-class VacancyRepositoryImpl(
+class VacancyDetailsRepositoryImpl(
     private val networkClient: NetworkClient,
-    private val favoritesDataSource: FavoritesDataSource // интерфейс заглушка от Избранных вакансий
-) : VacancyRepository {
+    private val favoritesRepository: FavoritesRepository
+) : VacancyDetailsRepository {
 
-    override suspend fun getVacancy(id: String): VacancyResult {
+    override suspend fun getVacancy(id: String): VacancyDetailsResult {
         val response = networkClient.doRequest(
             Request.VacancyDetailsRequest(id)
         )
@@ -22,26 +23,26 @@ class VacancyRepositoryImpl(
             SUCCESS -> {
                 val dto = response as? VacancyDetailDto
                 if (dto != null) {
-                    VacancyResult.Success(dto.toDomain())
+                    VacancyDetailsResult.Success(dto.toDomain())
                 } else {
-                    VacancyResult.ServerError(SUCCESS)
+                    VacancyDetailsResult.ServerError(SUCCESS)
                 }
             }
-            NOT_FOUND -> VacancyResult.NotFound
-            else -> VacancyResult.NetworkError
+            NOT_FOUND -> VacancyDetailsResult.NotFound
+            else -> VacancyDetailsResult.NetworkError
         }
     }
 
     override suspend fun addToFavourites(vacancy: Vacancy) {
-        favoritesDataSource.insert(vacancy)
+        favoritesRepository.insert(vacancy)
     }
 
     override suspend fun removeFromFavorites(id: String) {
-        favoritesDataSource.delete(id)
+        favoritesRepository.delete(id)
     }
 
     override suspend fun isFavorite(id: String): Boolean {
-        return favoritesDataSource.isFavorite(id)
+        return favoritesRepository.isFavorite(id)
     }
 
     companion object {
