@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.feature.filters.domain
 
 import kotlinx.coroutines.flow.Flow
-import ru.practicum.android.diploma.core.domain.model.FilterArea
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.domain.model.Resource
