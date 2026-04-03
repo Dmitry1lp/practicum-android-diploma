@@ -37,9 +37,13 @@ fun LabelActionListItem(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        leadingContent()
         Box(
-            modifier = Modifier
+            modifier = modifier.weight(1f)
+        ) {
+            leadingContent()
+        }
+        Box(
+            modifier = modifier
                 .size(AppDimensions.LabelActionListItem.trailingContentSize)
                 .padding(AppDimensions.LabelActionListItem.trailingContentPadding),
             contentAlignment = Alignment.Center

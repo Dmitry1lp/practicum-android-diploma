@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.feature.filters.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +33,23 @@ class FiltersViewModel(
     }
 
     fun onSearchTextChange(text: String) {
-        _state.update { it.copy(searchText = text) }
+        filterIndustries(text)
+    }
+
+    fun filterIndustries(searchText: String) {
+        _state.update { currentState ->
+            val filtered = if (searchText.isBlank()) {
+                currentState.industries
+            } else {
+                currentState.industries.filter { industry ->
+                    industry.name.lowercase().contains(searchText.lowercase())
+                }
+            }
+            currentState.copy(
+                searchText = searchText,
+                filteredIndustries = filtered
+            )
+        }
     }
 
     fun onCheckBox() {
@@ -80,7 +97,7 @@ class FiltersViewModel(
     }
 
     private fun getFiltersSettings() {
-        val filtersSettings = interactor.getFiltersSetting()
+        val filtersSettings = interactor.getFiltersSettings()
         filtersSettings?.let {
             _state.update {
                 it.copy(
@@ -97,6 +114,7 @@ class FiltersViewModel(
         _state.update {
             it.copy(
                 industries = foundIndustries?.toImmutableList() ?: immutableListOf(),
+                filteredIndustries = foundIndustries?.toImmutableList() ?: immutableListOf(),
                 errorMessage = errorMessage ?: ""
             )
         }

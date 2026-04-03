@@ -17,7 +17,7 @@ val domainModule = module {
     }
 
     single<SearchInteractor> {
-        SearchInteractorImpl(get())
+        SearchInteractorImpl(get(), get())
     }
 
     factory<FiltersInteractor> {

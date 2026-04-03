@@ -12,10 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.app.navigation.Route
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.app.ui.theme.Red
+import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.feature.filters.presentation.Clear
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
@@ -56,7 +58,7 @@ fun FiltersScreen(
                 HintedFilterItem(
                     hint = stringResource(R.string.filter_industry),
                     text = state.industry.name,
-                    onClick = { actions.onClearClick(Clear.Industry) }
+                    onClick = actions.onIndustryFilter
                 )
             }
             SalaryInputField(
@@ -106,7 +108,10 @@ private fun FiltersScreenPreviewLightMode() {
 private fun FiltersScreenPreviewDarkMode() {
     DiplomaTheme(true) {
         FiltersScreen(
-            state = FiltersUiState(),
+            state = FiltersUiState(
+                industry = FilterIndustry(0, "IT"),
+                isCheckBox = true
+            ),
             actions = FiltersActions()
         )
     }

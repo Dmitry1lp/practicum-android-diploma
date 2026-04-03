@@ -10,11 +10,11 @@ import ru.practicum.android.diploma.core.data.network.dto.toDomain
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.domain.model.VacancyQuery
 import ru.practicum.android.diploma.feature.search.data.models.Resource
-import ru.practicum.android.diploma.feature.search.domain.repository.VacancyRepository
+import ru.practicum.android.diploma.feature.search.domain.repository.SearchRepository
 
-class VacancyRepositoryImpl(
+class SearchRepositoryImpl(
     private val networkClient: NetworkClient
-) : VacancyRepository {
+) : SearchRepository {
     override suspend fun searchVacancies(query: VacancyQuery): Resource<Triple<List<Vacancy>, Int, Int>> {
         val params = buildVacancyQuery(query)
 

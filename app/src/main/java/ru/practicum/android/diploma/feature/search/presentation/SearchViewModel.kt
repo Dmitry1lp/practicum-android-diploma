@@ -12,11 +12,11 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.domain.model.VacancyQuery
 import ru.practicum.android.diploma.feature.search.data.models.Resource
-import ru.practicum.android.diploma.feature.search.domain.repository.VacancyRepository
+import ru.practicum.android.diploma.feature.search.domain.interactor.SearchInteractor
 import ru.practicum.android.diploma.feature.search.ui.VacancyState
 
 class SearchViewModel(
-    private val vacancyRepository: VacancyRepository
+    private val interactor: SearchInteractor
 ) : ViewModel() {
     private var searchJob: Job? = null
     private var latestSearchText: String = ""
@@ -27,6 +27,19 @@ class SearchViewModel(
 
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState = _uiState.asStateFlow()
+
+    init {
+        Log.d("Nico", "${uiState.value.filtersSettings != null}")
+        getFiltersSettings()
+        Log.d("Nico", "${uiState.value.filtersSettings != null}")
+    }
+
+    private fun getFiltersSettings() {
+        val filtersSettings = interactor.getFiltersSettings()
+        filtersSettings?.let {
+            _uiState.update { it.copy(filtersSettings = filtersSettings) }
+        }
+    }
 
     private suspend fun performSearch(queryText: String) {
         if (queryText.isEmpty()) {
@@ -42,7 +55,7 @@ class SearchViewModel(
 
         val query = VacancyQuery(text = queryText, page = currentPage)
         Log.d("PAGINATION0", "Requesting page = $currentPage")
-        when (val result = vacancyRepository.searchVacancies(query)) {
+        when (val result = interactor.searchVacancies(query)) {
             is Resource.Success -> {
                 val (vacancies, totalPages, found) = result.data
 
@@ -110,7 +123,7 @@ class SearchViewModel(
                 page = currentPage
             )
             Log.d("PAGINATION", "Requesting page = $currentPage")
-            when (val result = vacancyRepository.searchVacancies(query)) {
+            when (val result = interactor.searchVacancies(query)) {
                 is Resource.Success -> {
                     val (vacancies, totalPages) = result.data
 

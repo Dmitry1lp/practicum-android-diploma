@@ -13,12 +13,17 @@ import ru.practicum.android.diploma.core.presentation.components.TopBarIcon
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchTopBar(
+    isFiltersSettings: Boolean,
     onFiltersClick: () -> Unit
 ) {
     AppTopBar(
         title = stringResource(R.string.screen_vacancy_search),
         action1 = TopBarIcon(
-            iconResId = R.drawable.ic_filter_off_24,
+            iconResId = if (isFiltersSettings) {
+                R.drawable.ic_filter_on_24
+            } else {
+                R.drawable.ic_filter_off_24
+            },
             contentDescription = stringResource(R.string.cd_filter),
             onClick = onFiltersClick
         )
@@ -27,10 +32,20 @@ fun SearchTopBar(
 
 @Preview(showBackground = true)
 @Composable
-private fun SearchTopBarPreview() {
+private fun SearchTopBarPreviewLight() {
     DiplomaTheme {
         Surface {
-            SearchTopBar {}
+            SearchTopBar(false) {}
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SearchTopBarPreviewDark() {
+    DiplomaTheme(darkTheme = true) {
+        Surface {
+            SearchTopBar(true) {}
         }
     }
 }

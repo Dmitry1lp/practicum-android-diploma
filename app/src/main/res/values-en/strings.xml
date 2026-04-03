@@ -42,6 +42,12 @@
         <item quantity="one">Found %d vacancy</item>
         <item quantity="other">Found %d vacancies</item>
     </plurals>
+    <string-array name="developers">
+        <item>Dmitrii Krylov</item>
+        <item>Dmitrii Perov</item>
+        <item>Ivan Sviridov</item>
+        <item>Sergei Anikin</item>
+    </string-array>
     <string name="vacancy_salary_not_specified">Salary not specified</string>
     <string name="vacancy_salary_from">From %1$s %2$s</string>
     <string name="vacancy_salary_to">Up to %1$s %2$s</string>

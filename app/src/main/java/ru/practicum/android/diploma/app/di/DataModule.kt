@@ -20,8 +20,8 @@ import ru.practicum.android.diploma.core.domain.repository.FavoritesRepository
 import ru.practicum.android.diploma.feature.favorite.data.FavoritesRepositoryImpl
 import ru.practicum.android.diploma.feature.filters.data.FiltersRepositoryImpl
 import ru.practicum.android.diploma.feature.filters.domain.FiltersRepository
-import ru.practicum.android.diploma.feature.search.data.repository.VacancyRepositoryImpl
-import ru.practicum.android.diploma.feature.search.domain.repository.VacancyRepository
+import ru.practicum.android.diploma.feature.search.data.repository.SearchRepositoryImpl
+import ru.practicum.android.diploma.feature.search.domain.repository.SearchRepository
 import ru.practicum.android.diploma.feature.vacancy.data.VacancyDetailsRepositoryImpl
 import ru.practicum.android.diploma.feature.vacancy.domain.VacancyDetailsRepository
 
@@ -92,8 +92,8 @@ val dataModule = module {
         FavoritesRepositoryImpl(get<FavoritesDao>())
     }
 
-    single<VacancyRepository> {
-        VacancyRepositoryImpl(
+    single<SearchRepository> {
+        SearchRepositoryImpl(
             networkClient = get(),
         )
     }

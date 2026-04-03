@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.feature.search.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -32,7 +33,9 @@ fun SearchScreen(
     Scaffold(
         contentWindowInsets = WindowInsets(),
         topBar = {
-            SearchTopBar { onFiltersClick() }
+            SearchTopBar(
+                isFiltersSettings = state.filtersSettings != null
+            ) { onFiltersClick() }
         }
     ) { paddingValues ->
         val chipText = getChipText(state.vacancyState, state.totalFound)
