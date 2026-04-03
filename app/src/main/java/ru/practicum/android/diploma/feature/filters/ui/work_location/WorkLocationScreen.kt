@@ -21,38 +21,39 @@ import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.app.ui.theme.primaryButtonColors
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
+import ru.practicum.android.diploma.feature.filters.presentation.work_location.WorkLocationActions
+import ru.practicum.android.diploma.feature.filters.presentation.work_location.WorkLocationUiState
 import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
 
 @Composable
 fun WorkLocationScreen(
     modifier: Modifier = Modifier,
-    country: String? = null,
-    region: String? = null,
-    onBackClick: () -> Unit = {},
-    onCountryClick: () -> Unit = {},
-    onRegionClick: () -> Unit = {},
-    onSelectClick: () -> Unit = {}
+    currentState: WorkLocationUiState,
+    initState: WorkLocationUiState,
+    actions: WorkLocationActions,
 ) {
+    val isApplyButtonEnabled = currentState != initState
+
     Scaffold(
         modifier = modifier,
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.screen_work_location),
-                onNavigationIcon = onBackClick
+                onNavigationIcon = actions.onBackClick
             )
         }
     ) { innerPaddings ->
         val locationFields = listOf(
-            Triple(country, R.string.filter_country, onCountryClick),
-            Triple(region, R.string.filter_region, onRegionClick)
+            Triple(currentState.country, R.string.filter_country, actions.onCountryClick),
+            Triple(currentState.region, R.string.filter_region, actions.onRegionClick)
         )
 
         Column(
             modifier = Modifier.padding(innerPaddings)
         ) {
-            locationFields.forEach { (text, hintId, action) ->
+            locationFields.forEach { (area, hintId, action) ->
                 SelectableFilterItem(
-                    text = text,
+                    text = area?.name,
                     hint = stringResource(hintId),
                     onSelectedClick = action,
                     onUnselectedClick = action
@@ -61,19 +62,21 @@ fun WorkLocationScreen(
 
             Spacer(Modifier.weight(1f))
 
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(AppDimensions.FiltersScreen.heightButton)
-                    .padding(horizontal = AppDimensions.paddingMedium),
-                shape = RoundedCornerShape(AppDimensions.FiltersScreen.cornerRadius),
-                colors = primaryButtonColors(),
-                onClick = onSelectClick
-            ) {
-                Text(
-                    text = stringResource(R.string.button_apply),
-                    style = AppTypography.titleSmall
-                )
+            if (isApplyButtonEnabled) {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(AppDimensions.FiltersScreen.heightButton)
+                        .padding(horizontal = AppDimensions.paddingMedium),
+                    shape = RoundedCornerShape(AppDimensions.FiltersScreen.cornerRadius),
+                    colors = primaryButtonColors(),
+                    onClick = actions.onApplyClick
+                ) {
+                    Text(
+                        text = stringResource(R.string.button_apply),
+                        style = AppTypography.titleSmall
+                    )
+                }
             }
         }
 
@@ -84,12 +87,18 @@ fun WorkLocationScreen(
 @PreviewLightDark
 @Composable
 private fun WorkLocationScreenPreview(
-    @PreviewParameter(WorkLocationUiStateProvider::class) area: Pair<String?, String?>
+    @PreviewParameter(WorkLocationUiStateProvider::class) states: Pair<WorkLocationUiState, WorkLocationUiState>
 ) {
     DiplomaTheme {
         WorkLocationScreen(
-            country = area.first,
-            region = area.second
+            currentState = states.first,
+            initState = states.second,
+            actions = WorkLocationActions(
+                onBackClick = { },
+                onCountryClick = { },
+                onRegionClick = { },
+                onApplyClick = { }
+            )
         )
     }
 }
