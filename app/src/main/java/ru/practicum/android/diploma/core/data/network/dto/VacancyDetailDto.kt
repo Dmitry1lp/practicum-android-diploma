@@ -5,6 +5,7 @@ import ru.practicum.android.diploma.core.domain.model.Contacts
 import ru.practicum.android.diploma.core.domain.model.Employer
 import ru.practicum.android.diploma.core.domain.model.Salary
 import ru.practicum.android.diploma.core.domain.model.Vacancy
+import ru.practicum.android.diploma.core.utils.fixImageSize
 
 data class VacancyDetailDto(
     val id: String,
@@ -51,7 +52,7 @@ fun VacancyDetailDto.toDomain(): Vacancy = Vacancy(
     },
     employer = Employer(
         name = employer.name,
-        logoUrl = employer.logo
+        logoUrl = employer.logo.fixImageSize() ?: ""
     ),
     skills = skills,
     website = url,
