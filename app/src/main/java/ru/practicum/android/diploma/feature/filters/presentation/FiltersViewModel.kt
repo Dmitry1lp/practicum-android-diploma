@@ -66,6 +66,7 @@ class FiltersViewModel(
             state.value.isCheckBox
 
         if (hasActiveFilters) {
+            Log.d("Nico", "save()")
             interactor.saveFiltersSetting(
                 FiltersSettings(
                     area = state.value.area,
@@ -75,16 +76,18 @@ class FiltersViewModel(
                     isStartSearch = isStartSearch
                 )
             )
+        } else {
+            clear(Clear.All)
         }
     }
 
     fun clear(clear: Clear) {
+        Log.d("Nico", "clear($clear)")
         when (clear) {
             is Clear.Industry -> _state.update { it.copy(industry = FilterIndustry(0, "")) }
             is Clear.All -> {
                 interactor.clearSettings()
                 _state.update {
-                    Log.d("Nico", "Clear.All")
                     it.copy(
                         area = FilterArea(0, ""),
                         industry = FilterIndustry(0, ""),

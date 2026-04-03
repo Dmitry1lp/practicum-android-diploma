@@ -130,7 +130,8 @@ private fun appEntryProvider(
                 topLevelBackStack.add(Route.Vacancy(vacancy.id))
             },
             onLoadNextPage = viewModel::loadNextPage,
-            onFiltersClick = { topLevelBackStack.add(Route.Filters) }
+            onFiltersClick = { topLevelBackStack.add(Route.Filters) },
+            onRefresh = viewModel::refreshScreen
         )
     }
 

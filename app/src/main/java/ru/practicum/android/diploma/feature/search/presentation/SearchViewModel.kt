@@ -39,6 +39,18 @@ class SearchViewModel(
         }
     }
 
+    fun refreshScreen() {
+        Log.d("Nico", "refreshScreen\nisStartSearch = ${uiState.value.filtersSettings?.isStartSearch}\n${uiState.value.filtersSettings}")
+        getFiltersSettings()
+        val currentText = _uiState.value.searchText
+        if (currentText.isNotEmpty() && uiState.value.filtersSettings?.isStartSearch == true) {
+            searchJob?.cancel()
+            searchJob = viewModelScope.launch {
+                performSearch(currentText)
+            }
+        }
+    }
+
     private suspend fun performSearch(queryText: String) {
         if (queryText.isEmpty()) {
             _uiState.value = _uiState.value.copy(vacancyState = VacancyState.Empty)
