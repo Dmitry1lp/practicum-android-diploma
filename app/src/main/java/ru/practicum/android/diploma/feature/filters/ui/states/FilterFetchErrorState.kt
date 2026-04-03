@@ -7,7 +7,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.presentation.components.StateInfo
 
 @Composable
-fun FetchErrorState(
+fun FilterFetchErrorState(
     modifier: Modifier = Modifier
 ) {
     StateInfo(

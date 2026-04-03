@@ -34,11 +34,7 @@ class SelectCountryUiStateProvider : PreviewParameterProvider<SelectCountryUiSta
             SelectCountryUiState.FetchError,
             SelectCountryUiState.Content(
                 countries.mapIndexed { index, name ->
-                    GeoArea.Country(
-                        index,
-                        name,
-                        emptyList()
-                    )
+                    GeoArea.Country(index, name, emptyList())
                 }
             )
         )

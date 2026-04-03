@@ -7,7 +7,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.presentation.components.StateInfo
 
 @Composable
-fun NoRegionFoundState(
+fun FilterNoSuchRegionState(
     modifier: Modifier = Modifier
 ) {
     StateInfo(

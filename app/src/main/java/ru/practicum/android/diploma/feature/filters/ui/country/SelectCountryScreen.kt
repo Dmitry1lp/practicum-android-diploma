@@ -16,8 +16,8 @@ import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.feature.filters.presentation.country.SelectCountryUiState
-import ru.practicum.android.diploma.feature.filters.ui.states.FetchErrorState
 import ru.practicum.android.diploma.feature.filters.ui.states.FilterContentState
+import ru.practicum.android.diploma.feature.filters.ui.states.FilterFetchErrorState
 
 @Composable
 fun SelectCountryScreen(
@@ -46,7 +46,7 @@ fun SelectCountryScreen(
                     onItemClick = onCountryClick
                 )
 
-                is SelectCountryUiState.FetchError -> FetchErrorState()
+                is SelectCountryUiState.FetchError -> FilterFetchErrorState()
             }
         }
     }
