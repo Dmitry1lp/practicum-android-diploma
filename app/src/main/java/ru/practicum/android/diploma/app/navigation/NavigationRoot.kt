@@ -201,7 +201,7 @@ private fun appEntryProvider(
                 onIndustryFilter = { topLevelBackStack.add(Route.IndustryFilter(viewModel)) },
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
                 onCheckBox = viewModel::onCheckBox,
-                onActivateButton = { isStartSearch ->
+                onApplyClick = { isStartSearch ->
                     viewModel.saveSettings(isStartSearch as Boolean)
                     topLevelBackStack.removeLast()
                 },
@@ -218,7 +218,7 @@ private fun appEntryProvider(
             actions = FiltersActions(
                 onBackClick = { topLevelBackStack.removeLast() },
                 onSearchTextChange = viewModel::onSearchTextChange,
-                onActivateButton = { industry ->
+                onApplyClick = { industry ->
                     viewModel.onIndustrySelected(industry as FilterIndustry)
                     topLevelBackStack.removeLast()
                 }

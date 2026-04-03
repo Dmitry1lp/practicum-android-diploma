@@ -37,7 +37,7 @@ import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.core.presentation.components.StateInfo
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
-import ru.practicum.android.diploma.feature.filters.ui.ActivateButton
+import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
 
 @Composable
 fun IndustryFilterScreen(
@@ -80,10 +80,10 @@ fun IndustryFilterScreen(
                     )
                 }
                 selectedIndustry?.let {
-                    ActivateButton(
+                    ApplyButton(
                         modifier = Modifier.padding(bottom = AppDimensions.paddingBig ),
                         text = stringResource(R.string.button_choose),
-                        onClick = { actions.onActivateButton(it) }
+                        onClick = { actions.onApplyClick(it) }
                     )
                 }
             } else {

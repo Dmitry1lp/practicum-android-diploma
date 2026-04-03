@@ -25,7 +25,7 @@ data class FiltersActions(
     val onSalaryTextChange: (String) -> Unit = {},
     val onCheckBox: () -> Unit = {},
     val onSearchTextChange: (String) -> Unit = {},
-    val onActivateButton: (Any?) -> Unit = {},
+    val onApplyClick: (Any?) -> Unit = {},
     val onClearClick: (Clear) -> Unit = {}
 )
 

@@ -22,7 +22,7 @@ import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.feature.filters.presentation.Clear
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
-import ru.practicum.android.diploma.feature.filters.ui.ActivateButton
+import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
 import ru.practicum.android.diploma.feature.filters.ui.HintedFilterItem
 import ru.practicum.android.diploma.feature.filters.ui.InactiveFilterItem
 import ru.practicum.android.diploma.feature.filters.ui.SalaryInputField
@@ -78,9 +78,9 @@ fun FiltersScreen(
                 state.isCheckBox ||
                 state.industry.name.isNotEmpty()) {
                 Column{
-                    ActivateButton(
+                    ApplyButton(
                         text = stringResource(R.string.button_apply),
-                        onClick = { actions.onActivateButton(true) }
+                        onClick = { actions.onApplyClick(true) }
                     )
                     Text(
                         modifier = Modifier
