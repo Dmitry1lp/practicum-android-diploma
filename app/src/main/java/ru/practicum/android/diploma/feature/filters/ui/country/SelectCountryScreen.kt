@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.feature.filters.ui.country
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,8 +16,8 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.core.presentation.components.StateInfo
 import ru.practicum.android.diploma.feature.filters.ui.FilterItem
+import ru.practicum.android.diploma.feature.filters.ui.states.FetchErrorState
 
 @Composable
 fun SelectCountryScreen(
@@ -34,29 +35,28 @@ fun SelectCountryScreen(
             )
         }
     ) { innerPaddings ->
-
-        countries?.let {
-            LazyColumn(
-                modifier = Modifier
-                    .padding(innerPaddings)
-                    .padding(vertical = AppDimensions.paddingMedium)
-            ) {
-                items(
-                    items = countries,
-                    key = { country -> country }
-                ) { country ->
-                    FilterItem(
-                        text = country,
-                        onClick = onCountryClick,
-                        isActive = true
-                    )
+        Box(
+            Modifier
+                .padding(innerPaddings)
+                .padding(vertical = AppDimensions.paddingMedium)
+        ) {
+            countries?.let {
+                LazyColumn {
+                    items(
+                        items = countries,
+                        key = { country -> country }
+                    ) { country ->
+                        FilterItem(
+                            text = country,
+                            onClick = onCountryClick,
+                            isActive = true
+                        )
+                    }
                 }
+            } ?: run {
+                FetchErrorState()
             }
-        } ?: StateInfo(
-            image = R.drawable.img_error_list_fetch,
-            text = stringResource(R.string.error_list_fetch)
-        )
-
+        }
     }
 }
 
