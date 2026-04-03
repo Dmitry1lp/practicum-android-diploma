@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import okhttp3.internal.immutableListOf
 import okhttp3.internal.toImmutableList
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
+import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
 
 class FiltersViewModel(
@@ -47,10 +48,32 @@ class FiltersViewModel(
         }
     }
 
+    private fun getAreas() {
+        viewModelScope.launch {
+            interactor
+                .getAreas()
+                .collect { pair ->
+                    progressAreasResult(pair.first, pair.second)
+                }
+        }
+    }
+
     private fun processResult(foundIndustries: List<FilterIndustry>?, errorMessage: String?) {
         _state.update {
             it.copy(
                 industries = foundIndustries?.toImmutableList() ?: immutableListOf(),
+                errorMessage = errorMessage ?: ""
+            )
+        }
+    }
+
+    private fun progressAreasResult(
+        countries: List<GeoArea.Country>?,
+        errorMessage: String?
+    ) {
+        _state.update {
+            it.copy(
+                countries = countries ?: emptyList(),
                 errorMessage = errorMessage ?: ""
             )
         }
