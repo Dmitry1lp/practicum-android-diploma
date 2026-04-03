@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.feature.filters.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,14 +13,14 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.LabelActionListItem
-import ru.practicum.android.diploma.core.utils.antiRepetitionClick
 
 @Composable
 fun HintedFilterItem(
+    modifier: Modifier = Modifier,
     text: String,
     hint: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onIconClick: () -> Unit = {}
 ) {
     LabelActionListItem(
         onClick = onClick,
@@ -41,6 +40,7 @@ fun HintedFilterItem(
         },
         trailingContent = {
             Icon(
+                modifier = modifier.clickable(onClick = onIconClick),
                 painter = painterResource(R.drawable.ic_close_24),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onBackground

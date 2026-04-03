@@ -29,9 +29,7 @@ class SearchViewModel(
     val uiState = _uiState.asStateFlow()
 
     init {
-        Log.d("Nico", "${uiState.value.filtersSettings != null}")
         getFiltersSettings()
-        Log.d("Nico", "${uiState.value.filtersSettings != null}")
     }
 
     private fun getFiltersSettings() {

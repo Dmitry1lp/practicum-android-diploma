@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.feature.filters.data
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.core.data.network.client.NetworkClient
@@ -38,12 +37,11 @@ class FiltersRepositoryImpl(
     }
 
     override fun getFiltersSettings(): FiltersSettings? {
-        if (sharedPrefs.contains(FILTERS_SETTINGS_KEY)) {
-            val json = sharedPrefs.getString(FILTERS_SETTINGS_KEY, "") ?: return null
-            if (json.isBlank()) return null
-            return Gson().fromJson(json, FiltersSettings::class.java)
+        return if (sharedPrefs.contains(FILTERS_SETTINGS_KEY)) {
+            val json = sharedPrefs.getString(FILTERS_SETTINGS_KEY, "")
+            Gson().fromJson(json, FiltersSettings::class.java)
         } else {
-            return null
+            null
         }
     }
 

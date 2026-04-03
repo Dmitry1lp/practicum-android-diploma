@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.feature.filters.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.app.navigation.Route
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
@@ -34,6 +34,8 @@ fun FiltersScreen(
     modifier: Modifier = Modifier,
     actions: FiltersActions
 ) {
+    BackHandler(enabled = true) { actions.onBackClick() }
+
     Scaffold(
         topBar = {
             AppTopBar(
@@ -58,7 +60,8 @@ fun FiltersScreen(
                 HintedFilterItem(
                     hint = stringResource(R.string.filter_industry),
                     text = state.industry.name,
-                    onClick = actions.onIndustryFilter
+                    onClick = actions.onIndustryFilter,
+                    onIconClick = { actions.onClearClick(Clear.Industry) }
                 )
             }
             SalaryInputField(
@@ -71,7 +74,9 @@ fun FiltersScreen(
                 onCheckedChange = actions.onCheckBox
             )
             Spacer(modifier = Modifier.weight(1f))
-            if (state.salaryText.isNotEmpty() || state.isCheckBox || state.industry.name.isNotEmpty()) {
+            if (state.salaryText.isNotEmpty() ||
+                state.isCheckBox ||
+                state.industry.name.isNotEmpty()) {
                 Column{
                     ActivateButton(
                         text = stringResource(R.string.button_apply),

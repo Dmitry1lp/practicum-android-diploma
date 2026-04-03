@@ -76,7 +76,6 @@ fun IndustryFilterScreen(
                         selectedIndustry = selectedIndustry,
                         onSelectionChange = { newIndustry ->
                             selectedIndustry = newIndustry
-//                            keyboardController?.hide()
                         }
                     )
                 }

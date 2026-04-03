@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import okhttp3.internal.immutableListOf
 import okhttp3.internal.toImmutableList
-import ru.practicum.android.diploma.app.navigation.Route
 import ru.practicum.android.diploma.core.domain.model.FilterArea
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
@@ -61,27 +60,38 @@ class FiltersViewModel(
     }
 
     fun saveSettings(isStartSearch: Boolean) {
-        interactor.saveFiltersSetting(
-            FiltersSettings(
-                area = state.value.area,
-                industry = state.value.industry,
-                salaryText = state.value.salaryText,
-                isNotShowWithoutSalary = state.value.isCheckBox,
-                isStartSearch = isStartSearch
+        val hasActiveFilters = state.value.area.name.isNotEmpty() ||
+            state.value.industry.name.isNotEmpty() ||
+            state.value.salaryText.isNotEmpty() ||
+            state.value.isCheckBox
+
+        if (hasActiveFilters) {
+            interactor.saveFiltersSetting(
+                FiltersSettings(
+                    area = state.value.area,
+                    industry = state.value.industry,
+                    salaryText = state.value.salaryText,
+                    isNotShowWithoutSalary = state.value.isCheckBox,
+                    isStartSearch = isStartSearch
+                )
             )
-        )
+        }
     }
 
     fun clear(clear: Clear) {
         when (clear) {
             is Clear.Industry -> _state.update { it.copy(industry = FilterIndustry(0, "")) }
-            is Clear.All -> _state.update {
-                it.copy(
-                    area = FilterArea(0, ""),
-                    industry = FilterIndustry(0, ""),
-                    salaryText = "",
-                    isCheckBox = false
-                )
+            is Clear.All -> {
+                interactor.clearSettings()
+                _state.update {
+                    Log.d("Nico", "Clear.All")
+                    it.copy(
+                        area = FilterArea(0, ""),
+                        industry = FilterIndustry(0, ""),
+                        salaryText = "",
+                        isCheckBox = false
+                    )
+                }
             }
         }
     }
