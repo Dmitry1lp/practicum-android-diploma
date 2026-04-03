@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -55,7 +56,7 @@ fun ThumbnailListItem(
                         shape = shape
                     )
                 }
-                .clip(shape),
+                .clip(shape).padding(AppDimensions.paddingVerySmall),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(model)
                 .addHeader("User-Agent", "Mozilla/5.0")
