@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.feature.filters.ui
+package ru.practicum.android.diploma.feature.filters.ui.work_location
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +21,8 @@ import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.app.ui.theme.primaryButtonColors
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
+import ru.practicum.android.diploma.feature.filters.ui.HintedFilterItem
+import ru.practicum.android.diploma.feature.filters.ui.InactiveFilterItem
 
 @Composable
 fun WorkLocationScreen(

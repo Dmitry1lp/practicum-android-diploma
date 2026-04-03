@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.feature.filters.ui
+package ru.practicum.android.diploma.feature.filters.ui.work_location
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 
