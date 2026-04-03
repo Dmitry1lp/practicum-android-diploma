@@ -17,7 +17,7 @@ class RetrofitNetworkClient(
             handleRequest(request)
         } catch (e: IOException) {
             Log.e(TAG, "Network error", e)
-            Response().apply { resultCode = RESULT_SERVER_ERROR }
+            Response().apply { resultCode = RESULT_NO_INTERNET }
         } catch (e: HttpException) {
             Log.e(TAG, "HTTP error", e)
             Response().apply { resultCode = e.code() }
@@ -36,5 +36,6 @@ class RetrofitNetworkClient(
         private const val TAG = "RetrofitNetworkClient"
         private const val RESULT_OK = 200
         private const val RESULT_SERVER_ERROR = 500
+        private const val RESULT_NO_INTERNET = -1
     }
 }
