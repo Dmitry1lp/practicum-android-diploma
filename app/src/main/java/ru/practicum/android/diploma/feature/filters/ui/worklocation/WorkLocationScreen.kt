@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.feature.filters.ui.work_location
+package ru.practicum.android.diploma.feature.filters.ui.worklocation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,10 +21,26 @@ import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.app.ui.theme.primaryButtonColors
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.presentation.work_location.WorkLocationActions
-import ru.practicum.android.diploma.feature.filters.presentation.work_location.WorkLocationUiState
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationActions
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
 
+/**
+ * Экран выбора места работы (страны и региона).
+ *
+ * Отображает два поля для выбора: страна и регион.
+ * Пользователь может последовательно выбрать страну, затем регион внутри неё.
+ * Кнопка "Применить" становится активной только при наличии изменений.
+ *
+ * @param modifier Модификатор для внешнего позиционирования
+ * @param currentState Текущее состояние экрана (выбранные страна и регион)
+ * @param initState Исходное состояние, с которым сравниваются изменения (обычно пришло из сохранённых фильтров)
+ * @param actions Колбэки для обработки действий пользователя:
+ *   - [WorkLocationActions.onBackClick] - возврат на предыдущий экран
+ *   - [WorkLocationActions.onCountryClick] - переход к выбору страны
+ *   - [WorkLocationActions.onRegionClick] - переход к выбору региона
+ *   - [WorkLocationActions.onApplyClick] - сохранение выбранного места работы
+ */
 @Composable
 fun WorkLocationScreen(
     modifier: Modifier = Modifier,

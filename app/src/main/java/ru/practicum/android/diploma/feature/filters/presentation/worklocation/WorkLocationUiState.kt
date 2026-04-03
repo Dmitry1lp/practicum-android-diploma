@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.feature.filters.presentation.work_location
+package ru.practicum.android.diploma.feature.filters.presentation.worklocation
 
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 

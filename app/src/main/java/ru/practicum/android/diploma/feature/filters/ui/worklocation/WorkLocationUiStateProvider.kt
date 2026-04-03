@@ -1,8 +1,8 @@
-package ru.practicum.android.diploma.feature.filters.ui.work_location
+package ru.practicum.android.diploma.feature.filters.ui.worklocation
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import ru.practicum.android.diploma.core.domain.model.GeoArea
-import ru.practicum.android.diploma.feature.filters.presentation.work_location.WorkLocationUiState
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 
 class WorkLocationUiStateProvider : PreviewParameterProvider<Pair<WorkLocationUiState, WorkLocationUiState>> {
 

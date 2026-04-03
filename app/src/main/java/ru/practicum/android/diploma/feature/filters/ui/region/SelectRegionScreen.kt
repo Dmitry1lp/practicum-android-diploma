@@ -10,7 +10,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.GeoArea
@@ -59,37 +58,6 @@ fun SelectRegionScreen(
             }
         }
     }
-}
-
-class SelectRegionUiStateProvider : PreviewParameterProvider<SelectRegionUiState> {
-
-    private val regions = listOf(
-        "Москва",
-        "Санкт-Петербург",
-        "Московская область",
-        "Ленинградская область",
-        "Республика Татарстан",
-        "Республика Башкортостан",
-        "Свердловская область",
-        "Краснодарский край",
-        "Новосибирская область",
-        "Нижегородская область"
-    )
-
-    override val values: Sequence<SelectRegionUiState>
-        get() = sequenceOf(
-            SelectRegionUiState.FetchError,
-            SelectRegionUiState.NoSuchRegion,
-            SelectRegionUiState.Content(
-                regions.mapIndexed { index, name ->
-                    GeoArea.Region(
-                        id = index,
-                        name = name,
-                        countryId = index
-                    )
-                }
-            )
-        )
 }
 
 @Preview(showSystemUi = true)
