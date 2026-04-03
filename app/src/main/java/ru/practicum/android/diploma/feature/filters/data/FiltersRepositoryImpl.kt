@@ -26,7 +26,7 @@ class FiltersRepositoryImpl(
 
                 if (dtoList != null) {
                     val countries = dtoList
-                        .filter { it.parentId == null} // по условию задачи
+                        .filter { it.parentId == null } // по условию задачи
                         .map { it.toGeoArea() as GeoArea.Country }
 
                     Resource.Success(countries)
