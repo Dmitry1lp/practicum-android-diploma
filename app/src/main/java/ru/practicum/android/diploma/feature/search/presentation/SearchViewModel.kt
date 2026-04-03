@@ -28,19 +28,7 @@ class SearchViewModel(
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState = _uiState.asStateFlow()
 
-    init {
-        getFiltersSettings()
-    }
-
-    private fun getFiltersSettings() {
-        val filtersSettings = interactor.getFiltersSettings()
-        filtersSettings?.let {
-            _uiState.update { it.copy(filtersSettings = filtersSettings) }
-        }
-    }
-
-    fun refreshScreen() {
-        Log.d("Nico", "refreshScreen\nisStartSearch = ${uiState.value.filtersSettings?.isStartSearch}\n${uiState.value.filtersSettings}")
+    fun loadFiltersSettings() {
         getFiltersSettings()
         val currentText = _uiState.value.searchText
         if (currentText.isNotEmpty() && uiState.value.filtersSettings?.isStartSearch == true) {
@@ -49,6 +37,13 @@ class SearchViewModel(
                 performSearch(currentText)
             }
         }
+    }
+
+    private fun getFiltersSettings() {
+        val filtersSettings = interactor.getFiltersSettings()
+        filtersSettings?.let {
+            _uiState.update { it.copy(filtersSettings = filtersSettings) }
+        } ?: _uiState.update { it.copy(filtersSettings = null) }
     }
 
     private suspend fun performSearch(queryText: String) {
@@ -63,7 +58,17 @@ class SearchViewModel(
         currentPage = 1
         maxPages = 1
 
-        val query = VacancyQuery(text = queryText, page = currentPage)
+        val filters = _uiState.value.filtersSettings
+
+        val query = VacancyQuery(
+            text = queryText,
+            area = filters?.area?.id,
+            industry = filters?.industry?.id,
+            salary = filters?.salaryText?.toIntOrNull(),
+            page = currentPage,
+            onlyWithSalary = filters?.onlyWithSalary
+        )
+
         Log.d("PAGINATION0", "Requesting page = $currentPage")
         when (val result = interactor.searchVacancies(query)) {
             is Resource.Success -> {
@@ -128,10 +133,18 @@ class SearchViewModel(
             }
 
             currentPage++
+
+            val filters = _uiState.value.filtersSettings
+
             val query = VacancyQuery(
                 text = queryText,
-                page = currentPage
+                area = filters?.area?.id,
+                industry = filters?.industry?.id,
+                salary = filters?.salaryText?.toIntOrNull(),
+                page = currentPage,
+                onlyWithSalary = filters?.onlyWithSalary
             )
+
             Log.d("PAGINATION", "Requesting page = $currentPage")
             when (val result = interactor.searchVacancies(query)) {
                 is Resource.Success -> {

@@ -32,4 +32,5 @@ data class FiltersActions(
 sealed interface Clear {
     object Industry : Clear
     object All : Clear
+    object Settings : Clear
 }

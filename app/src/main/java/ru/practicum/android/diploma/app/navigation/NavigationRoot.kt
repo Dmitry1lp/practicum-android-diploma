@@ -131,7 +131,7 @@ private fun appEntryProvider(
             },
             onLoadNextPage = viewModel::loadNextPage,
             onFiltersClick = { topLevelBackStack.add(Route.Filters) },
-            onRefresh = viewModel::refreshScreen
+            onRefresh = viewModel::loadFiltersSettings
         )
     }
 

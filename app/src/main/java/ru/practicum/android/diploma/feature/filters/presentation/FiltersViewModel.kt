@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.feature.filters.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -60,33 +59,31 @@ class FiltersViewModel(
     }
 
     fun saveSettings(isStartSearch: Boolean) {
-        val hasActiveFilters = state.value.area.name.isNotEmpty() ||
+        val hasActiveFilters =
+            state.value.area.name.isNotEmpty() ||
             state.value.industry.name.isNotEmpty() ||
             state.value.salaryText.isNotEmpty() ||
             state.value.isCheckBox
 
         if (hasActiveFilters) {
-            Log.d("Nico", "save()")
             interactor.saveFiltersSetting(
                 FiltersSettings(
                     area = state.value.area,
                     industry = state.value.industry,
                     salaryText = state.value.salaryText,
-                    isNotShowWithoutSalary = state.value.isCheckBox,
+                    onlyWithSalary = state.value.isCheckBox,
                     isStartSearch = isStartSearch
                 )
             )
         } else {
-            clear(Clear.All)
+            clear(Clear.Settings)
         }
     }
 
     fun clear(clear: Clear) {
-        Log.d("Nico", "clear($clear)")
         when (clear) {
             is Clear.Industry -> _state.update { it.copy(industry = FilterIndustry(0, "")) }
             is Clear.All -> {
-                interactor.clearSettings()
                 _state.update {
                     it.copy(
                         area = FilterArea(0, ""),
@@ -96,6 +93,7 @@ class FiltersViewModel(
                     )
                 }
             }
+            is Clear.Settings -> interactor.clearSettings()
         }
     }
 
@@ -117,7 +115,7 @@ class FiltersViewModel(
                     area = filtersSettings.area,
                     industry = filtersSettings.industry,
                     salaryText = filtersSettings.salaryText,
-                    isCheckBox = filtersSettings.isNotShowWithoutSalary
+                    isCheckBox = filtersSettings.onlyWithSalary
                 )
             }
         }
