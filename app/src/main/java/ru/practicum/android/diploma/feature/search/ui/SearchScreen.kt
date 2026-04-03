@@ -98,7 +98,7 @@ private fun getChipText(
         )
     }
 
-    is VacancyState.Empty -> stringResource(R.string.no_vacancies_found)
+    is VacancyState.Empty,
 
     is VacancyState.ErrorFound -> stringResource(R.string.no_vacancies_found)
     VacancyState.ErrorInternet,

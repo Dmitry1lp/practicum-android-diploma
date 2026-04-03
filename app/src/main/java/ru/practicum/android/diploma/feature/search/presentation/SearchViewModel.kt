@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.feature.search.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
@@ -40,6 +41,7 @@ class SearchViewModel(
         maxPages = 1
 
         val query = VacancyQuery(text = queryText, page = currentPage)
+        Log.d("PAGINATION0", "Requesting page = $currentPage")
         when (val result = vacancyRepository.searchVacancies(query)) {
             is Resource.Success -> {
                 val (vacancies, totalPages, found) = result.data
@@ -57,7 +59,14 @@ class SearchViewModel(
             }
 
             is Resource.Error -> {
-                _uiState.value = _uiState.value.copy(vacancyState = VacancyState.ErrorFound)
+                val newState = when (result.resultCode) {
+                    -1 -> VacancyState.ErrorInternet
+                    else -> VacancyState.ErrorFound
+                }
+
+                _uiState.value = _uiState.value.copy(
+                    vacancyState = newState
+                )
             }
         }
     }
@@ -78,7 +87,7 @@ class SearchViewModel(
                 performSearch(text)
             } else {
                 _uiState.value = _uiState.value.copy(
-                    vacancyState = VacancyState.Empty,
+                    vacancyState = VacancyState.Idle,
                 )
             }
         }
@@ -95,11 +104,12 @@ class SearchViewModel(
                 it.copy(isNextPageLoading = true)
             }
 
+            currentPage++
             val query = VacancyQuery(
                 text = queryText,
                 page = currentPage
             )
-
+            Log.d("PAGINATION", "Requesting page = $currentPage")
             when (val result = vacancyRepository.searchVacancies(query)) {
                 is Resource.Success -> {
                     val (vacancies, totalPages) = result.data
@@ -112,13 +122,17 @@ class SearchViewModel(
                         )
                     }
 
-                    currentPage++
                     maxPages = totalPages
                 }
 
                 is Resource.Error -> {
+                    val newState = when (result.resultCode) {
+                        -1 -> VacancyState.ErrorInternet
+                        else -> VacancyState.ErrorFound
+                    }
+
                     _uiState.update {
-                        it.copy(vacancyState = VacancyState.ErrorFound)
+                        it.copy(vacancyState = newState)
                     }
                 }
             }
