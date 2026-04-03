@@ -1,8 +1,10 @@
 package ru.practicum.android.diploma.feature.filters.ui.country
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import ru.practicum.android.diploma.core.domain.model.GeoArea
+import ru.practicum.android.diploma.feature.filters.presentation.country.SelectCountryUiState
 
-class SelectCountryUiStateProvider : PreviewParameterProvider<List<String>?> {
+class SelectCountryUiStateProvider : PreviewParameterProvider<SelectCountryUiState> {
 
     private val countries = listOf(
         "Россия",
@@ -27,10 +29,18 @@ class SelectCountryUiStateProvider : PreviewParameterProvider<List<String>?> {
         "Швейцария"
     )
 
-    override val values: Sequence<List<String>?>
+    override val values: Sequence<SelectCountryUiState>
         get() = sequenceOf(
-            null,
-            countries
+            SelectCountryUiState.FetchError,
+            SelectCountryUiState.Content(
+                countries.mapIndexed { index, name ->
+                    GeoArea.Country(
+                        index,
+                        name,
+                        emptyList()
+                    )
+                }
+            )
         )
 
 }

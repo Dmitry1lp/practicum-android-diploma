@@ -3,8 +3,6 @@ package ru.practicum.android.diploma.feature.filters.ui.country
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,16 +13,18 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
+import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.ui.FilterItem
+import ru.practicum.android.diploma.feature.filters.presentation.country.SelectCountryUiState
 import ru.practicum.android.diploma.feature.filters.ui.states.FetchErrorState
+import ru.practicum.android.diploma.feature.filters.ui.states.FilterContentState
 
 @Composable
 fun SelectCountryScreen(
     modifier: Modifier = Modifier,
-    countries: List<String>? = null,
-    onBackClick: () -> Unit = {},
-    onCountryClick: () -> Unit = {}
+    state: SelectCountryUiState,
+    onBackClick: () -> Unit,
+    onCountryClick: (GeoArea) -> Unit
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -40,21 +40,13 @@ fun SelectCountryScreen(
                 .padding(innerPaddings)
                 .padding(vertical = AppDimensions.paddingMedium)
         ) {
-            countries?.let {
-                LazyColumn {
-                    items(
-                        items = countries,
-                        key = { country -> country }
-                    ) { country ->
-                        FilterItem(
-                            text = country,
-                            onClick = onCountryClick,
-                            isActive = true
-                        )
-                    }
-                }
-            } ?: run {
-                FetchErrorState()
+            when (state) {
+                is SelectCountryUiState.Content -> FilterContentState(
+                    items = state.countries,
+                    onItemClick = onCountryClick
+                )
+
+                is SelectCountryUiState.FetchError -> FetchErrorState()
             }
         }
     }
@@ -64,11 +56,13 @@ fun SelectCountryScreen(
 @PreviewLightDark
 @Composable
 private fun SelectCountryScreenPreview(
-    @PreviewParameter(SelectCountryUiStateProvider::class) countries: List<String>?
+    @PreviewParameter(SelectCountryUiStateProvider::class) state: SelectCountryUiState
 ) {
     DiplomaTheme {
         SelectCountryScreen(
-            countries = countries
+            state = state,
+            onBackClick = {},
+            onCountryClick = {}
         )
     }
 }
