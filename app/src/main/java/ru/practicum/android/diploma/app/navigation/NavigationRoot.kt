@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -26,6 +25,7 @@ import androidx.navigation3.ui.NavDisplay
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
+import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
@@ -97,7 +97,6 @@ private fun TopLevelBackStack<NavKey>.shouldDrawBottomNavBar(): Boolean =
 private fun appEntryProvider(
     topLevelBackStack: TopLevelBackStack<NavKey>
 ) = entryProvider<NavKey> {
-
 
     entry<Route.Team> {
         TeamScreen(
@@ -194,27 +193,32 @@ private fun appEntryProvider(
         FiltersScreen(
             state = viewModel.state.collectAsState().value,
             actions = FiltersActions(
-                onBackClick = { topLevelBackStack.removeLast() },
-                onIndustryFilter = { topLevelBackStack.add(Route.IndustryFilter) },
-                onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
-                onCheckBox = viewModel::onCheckBox,
-                onSaveSettings = {
-                    viewModel.saveSettings()
+                onBackClick = {
+                    viewModel.saveSettings(false)
                     topLevelBackStack.removeLast()
                 },
-                onClearSettings = viewModel::clearSettings
+                onIndustryFilter = { topLevelBackStack.add(Route.IndustryFilter(viewModel)) },
+                onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
+                onCheckBox = viewModel::onCheckBox,
+                onActivateButton = { isStartSearch ->
+                    viewModel.saveSettings(isStartSearch as Boolean)
+                    topLevelBackStack.removeLast()
+                },
+                onClearClick = { clear -> viewModel.clear(clear) }
             )
         )
     }
 
-    entry<Route.IndustryFilter> {
+    entry<Route.IndustryFilter> { route ->
+        val viewModel = route.viewModel
+
         IndustryFilterScreen(
             state = viewModel.state.collectAsState().value,
             actions = FiltersActions(
                 onBackClick = { topLevelBackStack.removeLast() },
                 onSearchTextChange = viewModel::onSearchTextChange,
-                onIndustrySelected = {
-                    viewModel.onIndustrySelected(it)
+                onActivateButton = { industry ->
+                    viewModel.onIndustrySelected(industry as FilterIndustry)
                     topLevelBackStack.removeLast()
                 }
             )

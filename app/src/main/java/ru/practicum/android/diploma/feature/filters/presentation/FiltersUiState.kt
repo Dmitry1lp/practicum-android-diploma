@@ -5,14 +5,14 @@ import ru.practicum.android.diploma.core.domain.model.FilterArea
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 
 data class FiltersUiState(
-    val onIndustriesScreen: Boolean = false,
     val area: FilterArea = FilterArea(0, ""),
     val industry: FilterIndustry = FilterIndustry(0, ""),
     val salaryText: String = "",
     val searchText: String = "",
     val isCheckBox: Boolean = false,
     val industries: List<FilterIndustry> = immutableListOf(),
-    val errorMessage: String = ""
+    val errorMessage: String = "",
+    val isStartSearch: Boolean = false
 )
 
 data class FiltersActions(
@@ -24,7 +24,11 @@ data class FiltersActions(
     val onSalaryTextChange: (String) -> Unit = {},
     val onCheckBox: () -> Unit = {},
     val onSearchTextChange: (String) -> Unit = {},
-    val onSaveSettings: () -> Unit = {},
-    val onClearSettings: () -> Unit = {},
-    val onIndustrySelected: (FilterIndustry) -> Unit = {}
+    val onActivateButton: (Any?) -> Unit = {},
+    val onClearClick: (Clear) -> Unit = {}
 )
+
+sealed interface Clear {
+    object Industry : Clear
+    object All : Clear
+}

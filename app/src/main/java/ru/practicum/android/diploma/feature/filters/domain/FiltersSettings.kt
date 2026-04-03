@@ -7,5 +7,6 @@ data class FiltersSettings(
     val area: FilterArea = FilterArea(0, ""),
     val industry: FilterIndustry = FilterIndustry(0, ""),
     val salaryText: String = "",
-    val isNotShowWithoutSalary: Boolean = false
+    val isNotShowWithoutSalary: Boolean = false,
+    val isStartSearch: Boolean = false
 )

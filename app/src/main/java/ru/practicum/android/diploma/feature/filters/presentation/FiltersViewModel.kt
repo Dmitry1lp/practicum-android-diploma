@@ -2,19 +2,20 @@ package ru.practicum.android.diploma.feature.filters.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import okhttp3.internal.immutableListOf
 import okhttp3.internal.toImmutableList
+import ru.practicum.android.diploma.app.navigation.Route
+import ru.practicum.android.diploma.core.domain.model.FilterArea
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
 import ru.practicum.android.diploma.feature.filters.domain.FiltersSettings
 
-@HiltViewModel
-class FiltersViewModel @Inject constructor(
+@Serializable
+class FiltersViewModel(
     private val interactor: FiltersInteractor
 ) : ViewModel() {
 
@@ -42,20 +43,30 @@ class FiltersViewModel @Inject constructor(
         _state.update { it.copy(industry = industry) }
     }
 
-    fun saveSettings() {
+    fun saveSettings(isStartSearch: Boolean) {
         interactor.saveFiltersSetting(
             FiltersSettings(
                 area = state.value.area,
                 industry = state.value.industry,
                 salaryText = state.value.salaryText,
-                isNotShowWithoutSalary = state.value.isCheckBox
+                isNotShowWithoutSalary = state.value.isCheckBox,
+                isStartSearch = isStartSearch
             )
         )
     }
 
-    fun clearSettings() {
-        interactor.clearSettings()
-        _state.value = FiltersUiState()
+    fun clear(clear: Clear) {
+        when (clear) {
+            is Clear.Industry -> _state.update { it.copy(industry = FilterIndustry(0, "")) }
+            is Clear.All -> _state.update {
+                it.copy(
+                    area = FilterArea(0, ""),
+                    industry = FilterIndustry(0, ""),
+                    salaryText = "",
+                    isCheckBox = false
+                )
+            }
+        }
     }
 
     private fun getIndustries() {

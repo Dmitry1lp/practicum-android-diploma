@@ -29,6 +29,7 @@ object AppDimensions {
     object FiltersScreen {
         val heightBoxInputField = 99.dp
         val heightButton = 59.dp
+        val paddingButton = 17.dp
         val cornerRadius = 12.dp
         val rowPaddingTextField = PaddingValues(vertical = paddingSmall, horizontal = paddingMedium)
         val resetButtonPadding = PaddingValues(top = 28.dp, bottom = 44.dp)

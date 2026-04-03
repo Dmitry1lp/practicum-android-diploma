@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.feature.filters.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -77,8 +76,9 @@ fun IndustryFilterScreen(
                 }
                 selectedIndustry?.let {
                     ActivateButton(
+                        modifier = Modifier.padding(bottom = AppDimensions.paddingBig ),
                         text = stringResource(R.string.button_choose),
-                        onClick = { actions.onIndustrySelected(it) }
+                        onClick = { actions.onActivateButton(it) }
                     )
                 }
             } else {

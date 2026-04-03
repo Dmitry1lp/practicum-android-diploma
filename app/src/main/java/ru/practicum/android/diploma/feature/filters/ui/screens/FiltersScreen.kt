@@ -3,11 +3,7 @@ package ru.practicum.android.diploma.feature.filters.ui.screens
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,13 +11,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.app.ui.theme.Red
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
+import ru.practicum.android.diploma.feature.filters.presentation.Clear
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
 import ru.practicum.android.diploma.feature.filters.ui.ActivateButton
@@ -60,7 +56,7 @@ fun FiltersScreen(
                 HintedFilterItem(
                     hint = stringResource(R.string.filter_industry),
                     text = state.industry.name,
-                    onClick = {}
+                    onClick = { actions.onClearClick(Clear.Industry) }
                 )
             }
             SalaryInputField(
@@ -73,19 +69,17 @@ fun FiltersScreen(
                 onCheckedChange = actions.onCheckBox
             )
             Spacer(modifier = Modifier.weight(1f))
-            if (state.salaryText.isNotEmpty() || state.isCheckBox) {
-                Column(
-                    modifier = Modifier.padding(horizontal = 17.dp)
-                ) {
+            if (state.salaryText.isNotEmpty() || state.isCheckBox || state.industry.name.isNotEmpty()) {
+                Column{
                     ActivateButton(
                         text = stringResource(R.string.button_apply),
-                        onClick = actions.onSaveSettings
+                        onClick = { actions.onActivateButton(true) }
                     )
                     Text(
                         modifier = Modifier
                             .padding(AppDimensions.FiltersScreen.resetButtonPadding)
                             .align(Alignment.CenterHorizontally)
-                            .clickable(onClick = actions.onClearSettings),
+                            .clickable(onClick = { actions.onClearClick(Clear.All) }),
                         text = stringResource(R.string.button_reset),
                         style = AppTypography.titleSmall,
                         color = Red
