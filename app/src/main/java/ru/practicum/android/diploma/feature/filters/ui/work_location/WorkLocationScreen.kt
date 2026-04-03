@@ -21,8 +21,7 @@ import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.app.ui.theme.primaryButtonColors
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.ui.HintedFilterItem
-import ru.practicum.android.diploma.feature.filters.ui.InactiveFilterItem
+import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
 
 @Composable
 fun WorkLocationScreen(
@@ -43,7 +42,7 @@ fun WorkLocationScreen(
             )
         }
     ) { innerPaddings ->
-        val actions = listOf(
+        val locationFields = listOf(
             Triple(country, R.string.filter_country, onCountryClick),
             Triple(region, R.string.filter_region, onRegionClick)
         )
@@ -51,16 +50,12 @@ fun WorkLocationScreen(
         Column(
             modifier = Modifier.padding(innerPaddings)
         ) {
-            actions.forEach { (text, id, action) ->
-                text?.let {
-                    HintedFilterItem(
-                        text = text,
-                        hint = stringResource(id),
-                        onClick = action
-                    )
-                } ?: InactiveFilterItem(
-                    text = stringResource(id),
-                    onClick = action
+            locationFields.forEach { (text, hintId, action) ->
+                SelectableFilterItem(
+                    text = text,
+                    hint = stringResource(hintId),
+                    onSelectedClick = action,
+                    onUnselectedClick = action
                 )
             }
 

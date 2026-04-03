@@ -16,7 +16,7 @@ import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.core.presentation.components.StateInfo
-import ru.practicum.android.diploma.feature.filters.ui.InactiveFilterItem
+import ru.practicum.android.diploma.feature.filters.ui.FilterItem
 
 @Composable
 fun SelectCountryScreen(
@@ -45,9 +45,10 @@ fun SelectCountryScreen(
                     items = countries,
                     key = { country -> country }
                 ) { country ->
-                    InactiveFilterItem(
+                    FilterItem(
                         text = country,
-                        onClick = onCountryClick
+                        onClick = onCountryClick,
+                        isActive = true
                     )
                 }
             }

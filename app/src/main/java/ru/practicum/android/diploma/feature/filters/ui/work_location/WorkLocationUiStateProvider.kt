@@ -8,7 +8,6 @@ class WorkLocationUiStateProvider : PreviewParameterProvider<Pair<String?, Strin
         get() = sequenceOf(
             null to null,
             "Россия" to null,
-            null to "Медвежьи-Озёра",
             "Россия" to "Медвежьи-Озёра"
         )
 
