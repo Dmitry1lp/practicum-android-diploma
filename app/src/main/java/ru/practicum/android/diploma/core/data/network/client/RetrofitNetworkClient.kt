@@ -25,10 +25,7 @@ class RetrofitNetworkClient(
 
     private suspend fun handleRequest(request: Request): Response {
         return when (request) {
-            is Request.VacancySearchRequest -> {
-                Log.d(TAG, "Search vacancies request params: ${request.params}")
-                api.searchVacancies(request.params)
-            }
+            is Request.VacancySearchRequest -> { api.searchVacancies(request.params) }
             is Request.VacancyDetailsRequest -> api.getVacancyDetails(request.id)
             is Request.AreasRequest -> AreasResponse(api.getAreas())
             is Request.IndustriesRequest -> IndustriesResponse(api.getIndustries())

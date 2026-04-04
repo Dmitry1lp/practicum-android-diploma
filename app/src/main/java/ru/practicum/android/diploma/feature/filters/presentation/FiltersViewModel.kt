@@ -33,7 +33,7 @@ class FiltersViewModel(
         filterIndustries(text)
     }
 
-    fun filterIndustries(searchText: String) {
+    private fun filterIndustries(searchText: String) {
         _state.update { currentState ->
             val filtered = if (searchText.isBlank()) {
                 currentState.industries

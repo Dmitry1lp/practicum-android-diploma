@@ -74,8 +74,8 @@ class SearchViewModel(
             area = filters?.area?.id,
             industry = filters?.industry?.id,
             salary = filters?.salaryText?.toIntOrNull(),
-            page = currentPage,
-            onlyWithSalary = filters?.onlyWithSalary
+            onlyWithSalary = filters?.onlyWithSalary,
+            page = currentPage
         )
 
         Log.d("PAGINATION0", "Requesting page = $currentPage")
@@ -150,8 +150,8 @@ class SearchViewModel(
                 area = filters?.area?.id,
                 industry = filters?.industry?.id,
                 salary = filters?.salaryText?.toIntOrNull(),
-                page = currentPage,
-                onlyWithSalary = filters?.onlyWithSalary
+                onlyWithSalary = filters?.onlyWithSalary,
+                page = currentPage
             )
 
             Log.d("PAGINATION", "Requesting page = $currentPage")

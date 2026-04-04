@@ -103,7 +103,7 @@ private fun appEntryProvider(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(teamScreenPadding)
-        ) { topLevelBackStack.add(Route.Filters) }
+        )
     }
 
     entry<Route.Favorites> {
@@ -132,7 +132,7 @@ private fun appEntryProvider(
             onLoadNextPage = viewModel::loadNextPage,
             onFiltersClick = { topLevelBackStack.add(Route.Filters) },
             onAction = viewModel::startSearch,
-            onRefresh = viewModel::loadFiltersSettings
+            onRefreshSearch = viewModel::loadFiltersSettings
         )
     }
 

@@ -73,7 +73,7 @@ fun AppSearchBar(
             colors = appSearchBarColors(),
             modifier = modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Search  // или ImeAction.Done, ImeAction.Go
+                imeAction = ImeAction.Search
             ),
             keyboardActions = KeyboardActions(
                 onSearch = {

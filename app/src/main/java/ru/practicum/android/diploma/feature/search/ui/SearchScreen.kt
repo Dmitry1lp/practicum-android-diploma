@@ -33,13 +33,13 @@ fun SearchScreen(
     onLoadNextPage: () -> Unit,
     onFiltersClick: () -> Unit,
     onAction: () -> Unit,
-    onRefresh: () -> Unit
+    onRefreshSearch: () -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(lifecycleOwner.lifecycle) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            onRefresh()
+            onRefreshSearch()
         }
     }
 
