@@ -2,13 +2,12 @@ package ru.practicum.android.diploma.feature.filters.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import okhttp3.internal.immutableListOf
-import okhttp3.internal.toImmutableList
-import ru.practicum.android.diploma.core.domain.model.FilterArea
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
 import ru.practicum.android.diploma.feature.filters.domain.FiltersSettings
@@ -51,7 +50,7 @@ class FiltersViewModel(
     }
 
     fun onCheckBox() {
-        _state.update { it.copy(isCheckBox = !state.value.isCheckBox) }
+        _state.update { it.copy(onCheckBox = !state.value.onCheckBox) }
     }
 
     fun onIndustrySelected(industry: FilterIndustry) {
@@ -60,18 +59,18 @@ class FiltersViewModel(
 
     fun saveSettings(isStartSearch: Boolean) {
         val hasActiveFilters =
-            state.value.area.name.isNotEmpty() ||
-            state.value.industry.name.isNotEmpty() ||
-            state.value.salaryText.isNotEmpty() ||
-            state.value.isCheckBox
+            state.value.area != null ||
+                state.value.industry != null ||
+                state.value.salaryText.isNotEmpty() ||
+                state.value.onCheckBox
 
         if (hasActiveFilters) {
             interactor.saveFiltersSetting(
                 FiltersSettings(
                     area = state.value.area,
                     industry = state.value.industry,
-                    salaryText = state.value.salaryText,
-                    onlyWithSalary = state.value.isCheckBox,
+                    salaryText = state.value.salaryText.ifEmpty { null },
+                    onlyWithSalary = state.value.onCheckBox.let { if (!it) null else true },
                     isStartSearch = isStartSearch
                 )
             )
@@ -82,17 +81,18 @@ class FiltersViewModel(
 
     fun clear(clear: Clear) {
         when (clear) {
-            is Clear.Industry -> _state.update { it.copy(industry = FilterIndustry(0, "")) }
+            is Clear.Industry -> _state.update { it.copy(industry = null) }
             is Clear.All -> {
                 _state.update {
                     it.copy(
-                        area = FilterArea(0, ""),
-                        industry = FilterIndustry(0, ""),
+                        area = null,
+                        industry = null,
                         salaryText = "",
-                        isCheckBox = false
+                        onCheckBox = false
                     )
                 }
             }
+
             is Clear.Settings -> interactor.clearSettings()
         }
     }
@@ -114,8 +114,8 @@ class FiltersViewModel(
                 it.copy(
                     area = filtersSettings.area,
                     industry = filtersSettings.industry,
-                    salaryText = filtersSettings.salaryText,
-                    isCheckBox = filtersSettings.onlyWithSalary
+                    salaryText = filtersSettings.salaryText ?: "",
+                    onCheckBox = filtersSettings.onlyWithSalary ?: false
                 )
             }
         }

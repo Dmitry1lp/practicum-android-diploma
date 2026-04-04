@@ -11,12 +11,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.domain.model.VacancyQuery
+import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
 import ru.practicum.android.diploma.feature.search.data.models.Resource
 import ru.practicum.android.diploma.feature.search.domain.interactor.SearchInteractor
 import ru.practicum.android.diploma.feature.search.ui.VacancyState
 
 class SearchViewModel(
-    private val interactor: SearchInteractor
+    private val searchInteractor: SearchInteractor,
+    private val filtersInteractor: FiltersInteractor
 ) : ViewModel() {
     private var searchJob: Job? = null
     private var latestSearchText: String = ""
@@ -39,8 +41,14 @@ class SearchViewModel(
         }
     }
 
+    fun startSearch() {
+        viewModelScope.launch {
+            performSearch(uiState.value.searchText)
+        }
+    }
+
     private fun getFiltersSettings() {
-        val filtersSettings = interactor.getFiltersSettings()
+        val filtersSettings = filtersInteractor.getFiltersSettings()
         filtersSettings?.let {
             _uiState.update { it.copy(filtersSettings = filtersSettings) }
         } ?: _uiState.update { it.copy(filtersSettings = null) }
@@ -70,7 +78,7 @@ class SearchViewModel(
         )
 
         Log.d("PAGINATION0", "Requesting page = $currentPage")
-        when (val result = interactor.searchVacancies(query)) {
+        when (val result = searchInteractor.searchVacancies(query)) {
             is Resource.Success -> {
                 val (vacancies, totalPages, found) = result.data
 
@@ -146,7 +154,7 @@ class SearchViewModel(
             )
 
             Log.d("PAGINATION", "Requesting page = $currentPage")
-            when (val result = interactor.searchVacancies(query)) {
+            when (val result = searchInteractor.searchVacancies(query)) {
                 is Resource.Success -> {
                     val (vacancies, totalPages) = result.data
 

@@ -46,7 +46,7 @@ fun IndustryFilterScreen(
     actions: FiltersActions
 ) {
     var selectedIndustry by remember(state.industry) {
-        mutableStateOf(if (state.industry.id != 0) state.industry else null)
+        mutableStateOf(state.industry)
     }
 
     Scaffold(

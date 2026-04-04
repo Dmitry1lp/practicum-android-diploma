@@ -51,7 +51,7 @@ fun FiltersScreen(
                 text = stringResource(R.string.filter_work_location),
                 onClick = {}
             )
-            if (state.industry.name.isEmpty()) {
+            if (state.industry == null) {
                 InactiveFilterItem(
                     text = stringResource(R.string.filter_industry),
                     onClick = actions.onIndustryFilter
@@ -70,13 +70,14 @@ fun FiltersScreen(
             )
             SwitchFilterItem(
                 text = stringResource(R.string.checkbox_hide_without_salary),
-                checked = state.isCheckBox,
+                checked = state.onCheckBox,
                 onCheckedChange = actions.onCheckBox
             )
             Spacer(modifier = Modifier.weight(1f))
             if (state.salaryText.isNotEmpty() ||
-                state.isCheckBox ||
-                state.industry.name.isNotEmpty()) {
+                state.onCheckBox ||
+                state.industry != null
+                ) {
                 Column{
                     ApplyButton(
                         text = stringResource(R.string.button_apply),
@@ -115,7 +116,7 @@ private fun FiltersScreenPreviewDarkMode() {
         FiltersScreen(
             state = FiltersUiState(
                 industry = FilterIndustry(0, "IT"),
-                isCheckBox = true
+                onCheckBox = true
             ),
             actions = FiltersActions()
         )

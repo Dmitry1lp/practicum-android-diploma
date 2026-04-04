@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -14,16 +16,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.appSearchBarColors
 
 @Composable
 fun AppSearchBar(
+    modifier: Modifier = Modifier,
     text: String,
     hint: String,
     onTextChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    onAction: () -> Unit = {}
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -67,7 +71,15 @@ fun AppSearchBar(
             },
             shape = RoundedCornerShape(AppDimensions.AppSearchBar.roundedCornerShape),
             colors = appSearchBarColors(),
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Search  // или ImeAction.Done, ImeAction.Go
+            ),
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    onAction()
+                }
+            )
         )
     }
 }

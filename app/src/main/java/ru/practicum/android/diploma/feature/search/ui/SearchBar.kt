@@ -13,11 +13,13 @@ import ru.practicum.android.diploma.core.presentation.components.AppSearchBar
 fun SearchBar(
     text: String,
     onTextChange: (String) -> Unit,
+    onAction: () -> Unit
 ) {
     AppSearchBar(
         text = text,
         hint = stringResource(R.string.hint_search_vacancy),
         onTextChange = onTextChange,
+        onAction = onAction
     )
 }
 
@@ -30,6 +32,7 @@ private fun SearchBarPreview() {
         SearchBar(
             text = textState.value,
             onTextChange = { textState.value = it },
+            onAction = {}
         )
     }
 }

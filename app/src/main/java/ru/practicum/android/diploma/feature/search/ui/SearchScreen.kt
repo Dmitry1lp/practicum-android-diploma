@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.feature.search.ui
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -33,6 +32,7 @@ fun SearchScreen(
     onVacancyClick: (Vacancy) -> Unit,
     onLoadNextPage: () -> Unit,
     onFiltersClick: () -> Unit,
+    onAction: () -> Unit,
     onRefresh: () -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -59,6 +59,7 @@ fun SearchScreen(
             SearchBar(
                 text = state.searchText,
                 onTextChange = onSearchTextChanged,
+                onAction = onAction
             )
 
             Box(
