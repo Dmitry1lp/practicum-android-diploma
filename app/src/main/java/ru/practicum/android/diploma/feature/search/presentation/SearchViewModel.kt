@@ -42,7 +42,8 @@ class SearchViewModel(
     }
 
     fun startSearch() {
-        viewModelScope.launch {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
             performSearch(uiState.value.searchText)
         }
     }

@@ -78,6 +78,7 @@ fun AppSearchBar(
             keyboardActions = KeyboardActions(
                 onSearch = {
                     onAction()
+                    keyboardController?.hide()
                 }
             )
         )
