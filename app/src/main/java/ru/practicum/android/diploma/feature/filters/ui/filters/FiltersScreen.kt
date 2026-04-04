@@ -55,7 +55,7 @@ fun FiltersScreen(
             } else {
                 HintedFilterItem(
                     hint = stringResource(R.string.filter_work_location),
-                    text = (state.country?.name + ", ") + state.region.name,
+                    text = state.country?.name + ", " + state.region.name,
                     onClick = actions.onIndustryFilter,
                     onIconClick = { actions.onClearClick(Clear.Industry) }
                 )
