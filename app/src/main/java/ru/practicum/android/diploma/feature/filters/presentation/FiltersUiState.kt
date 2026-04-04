@@ -13,7 +13,8 @@ data class FiltersUiState(
     val filteredIndustries: List<FilterIndustry> = immutableListOf(),
     val errorMessage: String = "",
     val searchText: String = "",
-    val isStartSearch: Boolean = false
+    val isStartSearch: Boolean = false,
+    val countries: List<GeoArea.Country> = emptyList()
 )
 
 data class FiltersActions(

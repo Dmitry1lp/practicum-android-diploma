@@ -7,4 +7,3 @@ internal fun String?.fixImageSize(): String? {
         .replace("/1024px-", "/1280px-")
         .replace("/1200px-", "/1280px-")
 }
-

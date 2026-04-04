@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import okhttp3.internal.immutableListOf
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
+import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
 import ru.practicum.android.diploma.feature.filters.domain.FiltersSettings
 
@@ -97,16 +98,6 @@ class FiltersViewModel(
         }
     }
 
-    private fun getIndustries() {
-        viewModelScope.launch {
-            interactor
-                .getIndustries()
-                .collect { pair ->
-                    processResult(pair.first, pair.second)
-                }
-        }
-    }
-
     private fun getFiltersSettings() {
         val filtersSettings = interactor.getFiltersSettings()
         filtersSettings?.let {
@@ -121,11 +112,43 @@ class FiltersViewModel(
         }
     }
 
-    private fun processResult(foundIndustries: List<FilterIndustry>?, errorMessage: String?) {
+    private fun getIndustries() {
+        viewModelScope.launch {
+            interactor
+                .getIndustries()
+                .collect { pair ->
+                    processIndustriesResult(pair.first, pair.second)
+                }
+        }
+    }
+
+    private fun processIndustriesResult(foundIndustries: List<FilterIndustry>?, errorMessage: String?) {
         _state.update {
             it.copy(
                 industries = foundIndustries?.toImmutableList() ?: immutableListOf(),
                 filteredIndustries = foundIndustries?.toImmutableList() ?: immutableListOf(),
+                errorMessage = errorMessage ?: ""
+            )
+        }
+    }
+
+    private fun getAreas() {
+        viewModelScope.launch {
+            interactor
+                .getAreas()
+                .collect { pair ->
+                    progressAreasResult(pair.first, pair.second)
+                }
+        }
+    }
+
+    private fun progressAreasResult(
+        countries: List<GeoArea.Country>?,
+        errorMessage: String?
+    ) {
+        _state.update {
+            it.copy(
+                countries = countries ?: emptyList(),
                 errorMessage = errorMessage ?: ""
             )
         }
