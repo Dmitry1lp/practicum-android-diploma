@@ -7,32 +7,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.LabelActionListItem
 
-@Deprecated(
-    message = "Используйте FilterItem с параметром isActive = false",
-    replaceWith = ReplaceWith(
-        "FilterItem(text = text, onClick = onClick, isActive = false, modifier = modifier)",
-    ),
-    level = DeprecationLevel.WARNING
-)
 @Composable
-fun InactiveFilterItem(
+fun FilterItem(
     text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    isActive: Boolean,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
+    val color = if (isActive) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.secondary
+
     LabelActionListItem(
         modifier = modifier,
         onClick = onClick,
         leadingContent = {
             Text(
                 text = text,
-                style = AppTypography.bodyLarge,
-                color = MaterialTheme.colorScheme.secondary
+                style = MaterialTheme.typography.bodyLarge,
+                color = color
             )
         },
         trailingContent = {
@@ -46,22 +42,26 @@ fun InactiveFilterItem(
 }
 
 @Preview
+@PreviewLightDark
 @Composable
-private fun InactiveFilterItemPreview() {
+private fun ActiveFilterItemPreview() {
     DiplomaTheme {
-        InactiveFilterItem(
+        FilterItem(
             text = "Отрасль",
+            isActive = true,
             onClick = {}
         )
     }
 }
 
 @Preview
+@PreviewLightDark
 @Composable
-private fun InactiveFilterItemPreviewDark() {
-    DiplomaTheme(true) {
-        InactiveFilterItem(
+private fun InactiveFilterItemPreview() {
+    DiplomaTheme {
+        FilterItem(
             text = "Отрасль",
+            isActive = false,
             onClick = {}
         )
     }
