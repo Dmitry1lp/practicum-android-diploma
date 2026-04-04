@@ -18,7 +18,7 @@ import ru.practicum.android.diploma.core.utils.antiRepetitionClick
 /**
  * @see [ru.practicum.android.diploma.feature.filters.ui.HintedFilterItem]
  * @see [ru.practicum.android.diploma.feature.filters.ui.InactiveFilterItem]
- * @see [ru.practicum.android.diploma.feature.filters.ui.SwitchFilterItem]
+ * @see [ru.practicum.android.diploma.feature.filters.ui.filters.SwitchFilterItem]
  */
 @Composable
 fun LabelActionListItem(
@@ -37,9 +37,13 @@ fun LabelActionListItem(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        leadingContent()
         Box(
-            modifier = Modifier
+            modifier = modifier.weight(1f)
+        ) {
+            leadingContent()
+        }
+        Box(
+            modifier = modifier
                 .size(AppDimensions.LabelActionListItem.trailingContentSize)
                 .padding(AppDimensions.LabelActionListItem.trailingContentPadding),
             contentAlignment = Alignment.Center

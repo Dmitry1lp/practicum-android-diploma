@@ -9,6 +9,15 @@ import ru.practicum.android.diploma.core.domain.model.Resource
 class FiltersInteractorImpl(
     private val repository: FiltersRepository
 ) : FiltersInteractor {
+    override fun getAreas(): Flow<Pair<List<GeoArea.Country>?, String?>> {
+        return repository.getAreas().map { result ->
+            when (result) {
+                is Resource.Success -> Pair(result.data, null)
+                is Resource.Error -> Pair(null, result.message)
+            }
+        }
+    }
+
     override fun getIndustries(): Flow<Pair<List<FilterIndustry>?, String?>> {
         return repository.getIndustries().map { result ->
             when (result) {
@@ -18,12 +27,15 @@ class FiltersInteractorImpl(
         }
     }
 
-    override fun getAreas(): Flow<Pair<List<GeoArea.Country>?, String?>> {
-        return repository.getAreas().map { result ->
-            when (result) {
-                is Resource.Success -> Pair(result.data, null)
-                is Resource.Error -> Pair(null, result.message)
-            }
-        }
+    override fun getFiltersSettings(): FiltersSettings? {
+        return repository.getFiltersSettings()
+    }
+
+    override fun saveFiltersSetting(settings: FiltersSettings) {
+        repository.saveFiltersSetting(settings)
+    }
+
+    override fun clearSettings() {
+        repository.clearSettings()
     }
 }

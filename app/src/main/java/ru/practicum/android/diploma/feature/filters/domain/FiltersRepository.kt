@@ -10,4 +10,10 @@ interface FiltersRepository {
     fun getAreas(): Flow<Resource<List<GeoArea.Country>>>
 
     fun getIndustries(): Flow<Resource<List<FilterIndustry>>>
+
+    fun getFiltersSettings(): FiltersSettings?
+
+    fun saveFiltersSetting(settings: FiltersSettings)
+
+    fun clearSettings()
 }

@@ -5,7 +5,13 @@ import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 
 interface FiltersInteractor {
+    fun getAreas(): Flow<Pair<List<GeoArea.Country>?, String?>>
+
     fun getIndustries(): Flow<Pair<List<FilterIndustry>?, String?>>
 
-    fun getAreas(): Flow<Pair<List<GeoArea.Country>?, String?>>
+    fun getFiltersSettings(): FiltersSettings?
+
+    fun saveFiltersSetting(settings: FiltersSettings)
+
+    fun clearSettings()
 }

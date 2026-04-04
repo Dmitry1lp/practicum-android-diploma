@@ -2,15 +2,18 @@ package ru.practicum.android.diploma.feature.filters.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import okhttp3.internal.immutableListOf
-import okhttp3.internal.toImmutableList
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
+import ru.practicum.android.diploma.feature.filters.domain.FiltersSettings
 
+@Serializable
 class FiltersViewModel(
     private val interactor: FiltersInteractor
 ) : ViewModel() {
@@ -19,11 +22,8 @@ class FiltersViewModel(
     val state = _state
 
     init {
+        getFiltersSettings()
         getIndustries()
-    }
-
-    fun onIndustriesScreen() {
-        _state.update { it.copy(onIndustriesScreen = !state.value.onIndustriesScreen) }
     }
 
     fun onSalaryTextChange(text: String) {
@@ -31,11 +31,89 @@ class FiltersViewModel(
     }
 
     fun onSearchTextChange(text: String) {
-        _state.update { it.copy(searchText = text) }
+        filterIndustries(text)
+    }
+
+    private fun filterIndustries(searchText: String) {
+        _state.update { currentState ->
+            val filtered = if (searchText.isBlank()) {
+                currentState.industries
+            } else {
+                currentState.industries.filter { industry ->
+                    industry.name.lowercase().contains(searchText.lowercase())
+                }
+            }
+            currentState.copy(
+                searchText = searchText,
+                filteredIndustries = filtered
+            )
+        }
     }
 
     fun onCheckBox() {
         _state.update { it.copy(isCheckBox = !state.value.isCheckBox) }
+    }
+
+    fun onIndustrySelected(industry: FilterIndustry) {
+        _state.update { it.copy(industry = industry) }
+    }
+
+    fun saveSettings(isStartSearch: Boolean) {
+        val hasActiveFilters =
+            state.value.country != null ||
+                state.value.region != null ||
+                state.value.industry != null ||
+                state.value.salaryText.isNotEmpty() ||
+                state.value.isCheckBox
+
+        if (hasActiveFilters) {
+            interactor.saveFiltersSetting(
+                FiltersSettings(
+                    country = state.value.country,
+                    region = state.value.region,
+                    industry = state.value.industry,
+                    salaryText = state.value.salaryText.ifEmpty { null },
+                    onlyWithSalary = state.value.isCheckBox.let { if (!it) null else true },
+                    isStartSearch = isStartSearch
+                )
+            )
+        } else {
+            clear(Clear.Settings)
+        }
+    }
+
+    fun clear(clear: Clear) {
+        when (clear) {
+            is Clear.Industry -> _state.update { it.copy(industry = null) }
+            is Clear.All -> {
+                _state.update {
+                    it.copy(
+                        country = null,
+                        region = null,
+                        industry = null,
+                        salaryText = "",
+                        isCheckBox = false
+                    )
+                }
+            }
+
+            is Clear.Settings -> interactor.clearSettings()
+        }
+    }
+
+    private fun getFiltersSettings() {
+        val filtersSettings = interactor.getFiltersSettings()
+        filtersSettings?.let {
+            _state.update {
+                it.copy(
+                    country = filtersSettings.country,
+                    region = filtersSettings.region,
+                    industry = filtersSettings.industry,
+                    salaryText = filtersSettings.salaryText ?: "",
+                    isCheckBox = filtersSettings.onlyWithSalary ?: false
+                )
+            }
+        }
     }
 
     private fun getIndustries() {
@@ -43,8 +121,18 @@ class FiltersViewModel(
             interactor
                 .getIndustries()
                 .collect { pair ->
-                    processResult(pair.first, pair.second)
+                    processIndustriesResult(pair.first, pair.second)
                 }
+        }
+    }
+
+    private fun processIndustriesResult(foundIndustries: List<FilterIndustry>?, errorMessage: String?) {
+        _state.update {
+            it.copy(
+                industries = foundIndustries?.toImmutableList() ?: immutableListOf(),
+                filteredIndustries = foundIndustries?.toImmutableList() ?: immutableListOf(),
+                errorMessage = errorMessage ?: ""
+            )
         }
     }
 
@@ -55,15 +143,6 @@ class FiltersViewModel(
                 .collect { pair ->
                     progressAreasResult(pair.first, pair.second)
                 }
-        }
-    }
-
-    private fun processResult(foundIndustries: List<FilterIndustry>?, errorMessage: String?) {
-        _state.update {
-            it.copy(
-                industries = foundIndustries?.toImmutableList() ?: immutableListOf(),
-                errorMessage = errorMessage ?: ""
-            )
         }
     }
 

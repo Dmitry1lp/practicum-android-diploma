@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
@@ -37,18 +37,10 @@ fun Chip(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 private fun ChipPreview() {
     DiplomaTheme {
-        Chip("Найдено 1012 вакансий")
-    }
-}
-
-@Preview
-@Composable
-private fun ChipPreviewDark() {
-    DiplomaTheme(true) {
         Chip("Найдено 1012 вакансий")
     }
 }

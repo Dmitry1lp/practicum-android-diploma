@@ -25,11 +25,13 @@ import androidx.navigation3.ui.NavDisplay
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
+import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
-import ru.practicum.android.diploma.feature.filters.ui.FiltersScreen
+import ru.practicum.android.diploma.feature.filters.ui.filters.FiltersScreen
+import ru.practicum.android.diploma.feature.filters.ui.industry.IndustryFilterScreen
 import ru.practicum.android.diploma.feature.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.feature.search.ui.SearchScreen
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
@@ -46,7 +48,7 @@ private val bottomNavItems = listOf<BottomNavItem>(
 @Composable
 fun NavigationRoot(
     modifier: Modifier = Modifier,
-    navigationViewModel: NavigationViewModel = koinViewModel()
+    navigationViewModel: NavigationViewModel = koinViewModel(),
 ) {
     val topLevelBackStack = navigationViewModel.backStack
     val entryProvider = remember(topLevelBackStack) {
@@ -127,7 +129,9 @@ private fun appEntryProvider(
                 topLevelBackStack.add(Route.Vacancy(vacancy.id))
             },
             onLoadNextPage = viewModel::loadNextPage,
-            onFiltersClick = { topLevelBackStack.add(Route.Filters) }
+            onFiltersClick = { topLevelBackStack.add(Route.Filters) },
+            onAction = viewModel::startSearch,
+            onRefreshSearch = viewModel::loadFiltersSettings
         )
     }
 
@@ -186,32 +190,52 @@ private fun appEntryProvider(
 
     entry<Route.Filters> {
         val viewModel: FiltersViewModel = koinViewModel()
+
         FiltersScreen(
             state = viewModel.state.collectAsState().value,
             actions = FiltersActions(
-                onBackClick = { topLevelBackStack.removeLast() },
-                onIndustriesScreen = viewModel::onIndustriesScreen,
+                onBackClick = {
+                    viewModel.saveSettings(false)
+                    topLevelBackStack.removeLast()
+                },
+                onIndustryFilter = { topLevelBackStack.add(Route.IndustryFilter(viewModel)) },
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
-                onSearchTextChange = { viewModel.onSearchTextChange(it) },
-                onCheckBox = viewModel::onCheckBox
+                onCheckBox = viewModel::onCheckBox,
+                onApplyClick = { isStartSearch ->
+                    viewModel.saveSettings(isStartSearch as Boolean)
+                    topLevelBackStack.removeLast()
+                },
+                onClearClick = { clear -> viewModel.clear(clear) }
             )
         )
     }
 
-    entry<Route.IndustryFilter> {
-        // TODO: Выбор отрасли
+    entry<Route.IndustryFilter> { route ->
+        val viewModel = route.viewModel
+
+        IndustryFilterScreen(
+            state = viewModel.state.collectAsState().value,
+            actions = FiltersActions(
+                onBackClick = { topLevelBackStack.removeLast() },
+                onSearchTextChange = viewModel::onSearchTextChange,
+                onApplyClick = { industry ->
+                    viewModel.onIndustrySelected(industry as FilterIndustry)
+                    topLevelBackStack.removeLast()
+                }
+            )
+        )
     }
 
     entry<Route.WorkLocationFilter> {
         // TODO: Выбор места работы
     }
 
-    entry<Route.RegionFilter> {
-        // TODO: Выбор региона
-    }
-
     entry<Route.CountryFilter> {
         // TODO: Выбор страны
+    }
+
+    entry<Route.RegionFilter> {
+        // TODO: Выбор региона
     }
 
 }

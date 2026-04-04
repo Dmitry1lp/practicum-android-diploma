@@ -1,5 +1,8 @@
 package ru.practicum.android.diploma.feature.filters.data
 
+import android.content.SharedPreferences
+import androidx.core.content.edit
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.core.data.network.client.NetworkClient
@@ -12,9 +15,11 @@ import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.domain.model.Resource
 import ru.practicum.android.diploma.feature.filters.domain.FiltersRepository
+import ru.practicum.android.diploma.feature.filters.domain.FiltersSettings
 
 class FiltersRepositoryImpl(
-    private val networkClient: NetworkClient
+    private val networkClient: NetworkClient,
+    private val sharedPrefs: SharedPreferences
 ) : FiltersRepository {
     override fun getAreas(): Flow<Resource<List<GeoArea.Country>>> = flow {
         val response = networkClient.doRequest(Request.AreasRequest)
@@ -54,8 +59,26 @@ class FiltersRepositoryImpl(
         emit(resource)
     }
 
+    override fun getFiltersSettings(): FiltersSettings? {
+        return if (sharedPrefs.contains(FILTERS_SETTINGS_KEY)) {
+            val json = sharedPrefs.getString(FILTERS_SETTINGS_KEY, "")
+            Gson().fromJson(json, FiltersSettings::class.java)
+        } else {
+            null
+        }
+    }
+
+    override fun saveFiltersSetting(settings: FiltersSettings) {
+        sharedPrefs.edit { putString(FILTERS_SETTINGS_KEY, Gson().toJson(settings)) }
+    }
+
+    override fun clearSettings() {
+        sharedPrefs.edit { remove(FILTERS_SETTINGS_KEY) }
+    }
+
     companion object {
         private const val SUCCESS = 200
         private const val ERROR = -1
+        private const val FILTERS_SETTINGS_KEY = "filters_settings_key"
     }
 }

@@ -1,5 +1,6 @@
-package ru.practicum.android.diploma.feature.filters.ui
+package ru.practicum.android.diploma.feature.filters.ui.industry
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,20 +9,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
@@ -33,18 +38,23 @@ import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.core.presentation.components.StateInfo
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
+import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
 
 @Composable
-fun IndustriesScreen(
+fun IndustryFilterScreen(
     modifier: Modifier = Modifier,
     state: FiltersUiState,
     actions: FiltersActions
 ) {
+    var selectedIndustry by remember(state.industry) {
+        mutableStateOf(state.industry)
+    }
+
     Scaffold(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.screen_select_industry),
-                onNavigationIcon = actions.onIndustriesScreen
+                onNavigationIcon = actions.onBackClick
             )
         }
     ) { paddingValues ->
@@ -56,8 +66,27 @@ fun IndustriesScreen(
                 hint = stringResource(R.string.hint_search_industry),
                 onTextChange = { actions.onSearchTextChange(it) }
             )
-            if (state.industries.isNotEmpty()) {
-                ShowContent(state.industries)
+            if (state.filteredIndustries.isNotEmpty()) {
+                Box(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    ShowContent(
+                        state.filteredIndustries,
+                        selectedIndustry = selectedIndustry,
+                        onSelectionChange = { newIndustry ->
+                            selectedIndustry = newIndustry
+                        }
+                    )
+                }
+                selectedIndustry?.let {
+                    ApplyButton(
+                        modifier = Modifier.padding(bottom = AppDimensions.paddingBig),
+                        text = stringResource(R.string.button_choose),
+                        onClick = { actions.onApplyClick(it) }
+                    )
+                }
             } else {
                 StateInfo(
                     image = R.drawable.img_error_list_fetch,
@@ -70,13 +99,25 @@ fun IndustriesScreen(
 }
 
 @Composable
-private fun ShowContent(industries: List<FilterIndustry>) {
-    var selectedOption by remember { mutableStateOf<FilterIndustry?>(null) }
+private fun ShowContent(
+    industries: List<FilterIndustry>,
+    selectedIndustry: FilterIndustry?,
+    onSelectionChange: (FilterIndustry) -> Unit
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(listState.isScrollInProgress) {
+        if (listState.isScrollInProgress) {
+            keyboardController?.hide()
+        }
+    }
 
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = AppDimensions.paddingSmall)
+            .padding(top = AppDimensions.paddingSmall),
+        state = listState
     ) {
         items(industries) { industry ->
             Row(
@@ -84,8 +125,11 @@ private fun ShowContent(industries: List<FilterIndustry>) {
                     .fillMaxWidth()
                     .height(AppDimensions.LabelActionListItem.itemHeight)
                     .selectable(
-                        selected = industry == selectedOption,
-                        onClick = { selectedOption = industry }
+                        selected = industry == selectedIndustry,
+                        onClick = {
+                            onSelectionChange(industry)
+                            keyboardController?.hide()
+                        }
                     )
                     .padding(horizontal = AppDimensions.paddingMedium),
                 verticalAlignment = Alignment.CenterVertically
@@ -98,7 +142,7 @@ private fun ShowContent(industries: List<FilterIndustry>) {
                     style = AppTypography.bodyLarge
                 )
                 RadioButton(
-                    selected = industry == selectedOption,
+                    selected = industry == selectedIndustry,
                     onClick = null,
                     colors = RadioButtonDefaults.colors(
                         selectedColor = Blue,
@@ -110,22 +154,12 @@ private fun ShowContent(industries: List<FilterIndustry>) {
     }
 }
 
-@Preview
+@Preview(showSystemUi = true)
+@PreviewLightDark
 @Composable
-private fun IndustriesScreenPreviewLightMode() {
-    DiplomaTheme(false) {
-        IndustriesScreen(
-            state = FiltersUiState(),
-            actions = FiltersActions()
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun IndustriesScreenPreviewDarkMode() {
-    DiplomaTheme(true) {
-        IndustriesScreen(
+private fun IndustryFilterScreenPreviewLightMode() {
+    DiplomaTheme {
+        IndustryFilterScreen(
             state = FiltersUiState(),
             actions = FiltersActions()
         )

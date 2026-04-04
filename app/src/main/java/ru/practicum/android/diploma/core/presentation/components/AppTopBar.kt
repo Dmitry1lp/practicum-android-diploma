@@ -51,10 +51,7 @@ fun AppTopBar(
                     Icon(
                         painter = painterResource(id = action1.iconResId),
                         contentDescription = action1.contentDescription,
-                        tint = when {
-                            action1.iconResId == R.drawable.ic_favorites_on_24 -> Color.Unspecified
-                            else -> MaterialTheme.colorScheme.onSurface
-                        }
+                        tint = getIconTint(action1.iconResId)
                     )
                 }
             }
@@ -63,15 +60,20 @@ fun AppTopBar(
                     Icon(
                         painter = painterResource(id = action2.iconResId),
                         contentDescription = action2.contentDescription,
-                        tint = when {
-                            action2.iconResId == R.drawable.ic_favorites_on_24 -> Color.Unspecified
-                            else -> MaterialTheme.colorScheme.onSurface
-                        }
+                        tint = getIconTint(action2.iconResId)
                     )
                 }
             }
         }
     )
+}
+
+@Composable
+private fun getIconTint(iconResId: Int): Color {
+    return when {
+        iconResId == R.drawable.ic_favorites_on_24 || iconResId == R.drawable.ic_filter_on_24 -> Color.Unspecified
+        else -> MaterialTheme.colorScheme.onSurface
+    }
 }
 
 data class TopBarIcon(
