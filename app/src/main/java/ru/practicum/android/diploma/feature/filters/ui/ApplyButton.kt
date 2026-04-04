@@ -36,7 +36,7 @@ fun ApplyButton(
 
 @PreviewLightDark
 @Composable
-private fun ApplyButtonPreview() {
+internal fun ApplyButtonPreview() {
     DiplomaTheme {
         ApplyButton(
             text = "Применить"
