@@ -97,7 +97,6 @@ private fun TopLevelBackStack<NavKey>.shouldDrawBottomNavBar(): Boolean =
 private fun appEntryProvider(
     topLevelBackStack: TopLevelBackStack<NavKey>
 ) = entryProvider<NavKey> {
-
     entry<Route.Team> {
         TeamScreen(
             modifier = Modifier

@@ -81,7 +81,7 @@ fun IndustryFilterScreen(
                 }
                 selectedIndustry?.let {
                     ApplyButton(
-                        modifier = Modifier.padding(bottom = AppDimensions.paddingBig ),
+                        modifier = Modifier.padding(bottom = AppDimensions.paddingBig),
                         text = stringResource(R.string.button_choose),
                         onClick = { actions.onApplyClick(it) }
                     )

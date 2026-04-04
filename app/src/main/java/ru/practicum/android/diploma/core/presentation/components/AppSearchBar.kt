@@ -72,9 +72,7 @@ fun AppSearchBar(
             shape = RoundedCornerShape(AppDimensions.AppSearchBar.roundedCornerShape),
             colors = appSearchBarColors(),
             modifier = modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Search
-            ),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(
                 onSearch = {
                     onAction()

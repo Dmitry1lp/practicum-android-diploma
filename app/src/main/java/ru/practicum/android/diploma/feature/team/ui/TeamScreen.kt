@@ -20,7 +20,6 @@ import ru.practicum.android.diploma.app.ui.theme.AppDimensions.paddingVeryBig
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.core.presentation.components.TopBarIcon
 
 @Composable
 fun TeamScreen(

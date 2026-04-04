@@ -77,8 +77,8 @@ fun FiltersScreen(
             if (state.salaryText.isNotEmpty() ||
                 state.onCheckBox ||
                 state.industry != null
-                ) {
-                Column{
+            ) {
+                Column {
                     ApplyButton(
                         text = stringResource(R.string.button_apply),
                         onClick = { actions.onApplyClick(true) }
