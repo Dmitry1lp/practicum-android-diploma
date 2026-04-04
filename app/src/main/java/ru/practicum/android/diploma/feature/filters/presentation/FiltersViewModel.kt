@@ -51,7 +51,7 @@ class FiltersViewModel(
     }
 
     fun onCheckBox() {
-        _state.update { it.copy(onCheckBox = !state.value.onCheckBox) }
+        _state.update { it.copy(isCheckBox = !state.value.isCheckBox) }
     }
 
     fun onIndustrySelected(industry: FilterIndustry) {
@@ -60,18 +60,20 @@ class FiltersViewModel(
 
     fun saveSettings(isStartSearch: Boolean) {
         val hasActiveFilters =
-            state.value.area != null ||
+            state.value.country != null ||
+                state.value.region != null ||
                 state.value.industry != null ||
                 state.value.salaryText.isNotEmpty() ||
-                state.value.onCheckBox
+                state.value.isCheckBox
 
         if (hasActiveFilters) {
             interactor.saveFiltersSetting(
                 FiltersSettings(
-                    area = state.value.area,
+                    country = state.value.country,
+                    region = state.value.region,
                     industry = state.value.industry,
                     salaryText = state.value.salaryText.ifEmpty { null },
-                    onlyWithSalary = state.value.onCheckBox.let { if (!it) null else true },
+                    onlyWithSalary = state.value.isCheckBox.let { if (!it) null else true },
                     isStartSearch = isStartSearch
                 )
             )
@@ -86,10 +88,11 @@ class FiltersViewModel(
             is Clear.All -> {
                 _state.update {
                     it.copy(
-                        area = null,
+                        country = null,
+                        region = null,
                         industry = null,
                         salaryText = "",
-                        onCheckBox = false
+                        isCheckBox = false
                     )
                 }
             }
@@ -103,10 +106,11 @@ class FiltersViewModel(
         filtersSettings?.let {
             _state.update {
                 it.copy(
-                    area = filtersSettings.area,
+                    country = filtersSettings.country,
+                    region = filtersSettings.region,
                     industry = filtersSettings.industry,
                     salaryText = filtersSettings.salaryText ?: "",
-                    onCheckBox = filtersSettings.onlyWithSalary ?: false
+                    isCheckBox = filtersSettings.onlyWithSalary ?: false
                 )
             }
         }

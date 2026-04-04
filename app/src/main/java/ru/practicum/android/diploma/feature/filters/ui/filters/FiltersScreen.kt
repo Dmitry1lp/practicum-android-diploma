@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.feature.filters.ui.screens
+package ru.practicum.android.diploma.feature.filters.ui.filters
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
@@ -12,21 +12,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.app.ui.theme.Red
-import ru.practicum.android.diploma.core.domain.model.FilterIndustry
+import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.feature.filters.presentation.Clear
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
+import ru.practicum.android.diploma.feature.filters.ui.FilterItem
 import ru.practicum.android.diploma.feature.filters.ui.HintedFilterItem
-import ru.practicum.android.diploma.feature.filters.ui.InactiveFilterItem
-import ru.practicum.android.diploma.feature.filters.ui.SalaryInputField
-import ru.practicum.android.diploma.feature.filters.ui.SwitchFilterItem
 
 @Composable
 fun FiltersScreen(
@@ -47,14 +46,25 @@ fun FiltersScreen(
         Column(
             modifier = modifier.padding(paddingValues)
         ) {
-            InactiveFilterItem(
-                text = stringResource(R.string.filter_work_location),
-                onClick = {}
-            )
+            if (state.region == null) {
+                FilterItem(
+                    text = stringResource(R.string.filter_work_location),
+                    onClick = actions.onIndustryFilter,
+                    isActive = false
+                )
+            } else {
+                HintedFilterItem(
+                    hint = stringResource(R.string.filter_work_location),
+                    text = (state.country?.name + ", ") + state.region.name,
+                    onClick = actions.onIndustryFilter,
+                    onIconClick = { actions.onClearClick(Clear.Industry) }
+                )
+            }
             if (state.industry == null) {
-                InactiveFilterItem(
+                FilterItem(
                     text = stringResource(R.string.filter_industry),
-                    onClick = actions.onIndustryFilter
+                    onClick = actions.onIndustryFilter,
+                    isActive = false
                 )
             } else {
                 HintedFilterItem(
@@ -70,12 +80,12 @@ fun FiltersScreen(
             )
             SwitchFilterItem(
                 text = stringResource(R.string.checkbox_hide_without_salary),
-                checked = state.onCheckBox,
+                checked = state.isCheckBox,
                 onCheckedChange = actions.onCheckBox
             )
             Spacer(modifier = Modifier.weight(1f))
             if (state.salaryText.isNotEmpty() ||
-                state.onCheckBox ||
+                state.isCheckBox ||
                 state.industry != null
             ) {
                 Column {
@@ -98,25 +108,24 @@ fun FiltersScreen(
     }
 }
 
-@Preview
+@Preview(showSystemUi = true)
+@PreviewLightDark
 @Composable
 private fun FiltersScreenPreviewLightMode() {
-    DiplomaTheme(false) {
-        FiltersScreen(
-            state = FiltersUiState(),
-            actions = FiltersActions()
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun FiltersScreenPreviewDarkMode() {
-    DiplomaTheme(true) {
+    DiplomaTheme {
         FiltersScreen(
             state = FiltersUiState(
-                industry = FilterIndustry(0, "IT"),
-                onCheckBox = true
+                country = GeoArea.Country(
+                    id = 0,
+                    name = "Россия",
+                    regions = emptyList()
+                ),
+                region = GeoArea.Region(
+                    id = 0,
+                    name = "Москва",
+                    countryId = 0
+                ),
+                isCheckBox = true
             ),
             actions = FiltersActions()
         )

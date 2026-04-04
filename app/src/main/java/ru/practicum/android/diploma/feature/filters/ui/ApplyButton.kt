@@ -8,8 +8,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
+import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 
 @Composable
 fun ApplyButton(
@@ -29,5 +31,15 @@ fun ApplyButton(
             text = text,
             style = AppTypography.titleSmall
         )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun ApplyButtonPreview() {
+    DiplomaTheme {
+        ApplyButton(
+            text = "Применить"
+        ) { }
     }
 }

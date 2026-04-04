@@ -23,6 +23,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.presentation.components.StateInfo
 import ru.practicum.android.diploma.feature.search.presentation.SearchUiState
+import ru.practicum.android.diploma.feature.search.presentation.VacancyState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

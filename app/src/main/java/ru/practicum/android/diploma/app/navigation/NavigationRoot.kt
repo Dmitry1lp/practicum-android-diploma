@@ -30,8 +30,8 @@ import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewM
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
-import ru.practicum.android.diploma.feature.filters.ui.screens.FiltersScreen
-import ru.practicum.android.diploma.feature.filters.ui.screens.IndustryFilterScreen
+import ru.practicum.android.diploma.feature.filters.ui.filters.FiltersScreen
+import ru.practicum.android.diploma.feature.filters.ui.industry.IndustryFilterScreen
 import ru.practicum.android.diploma.feature.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.feature.search.ui.SearchScreen
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
