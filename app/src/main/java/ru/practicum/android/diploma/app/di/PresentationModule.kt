@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.app.di
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.practicum.android.diploma.app.navigation.NavigationViewModel
-import ru.practicum.android.diploma.core.domain.repository.FavoritesRepository
+import ru.practicum.android.diploma.feature.favorite.domain.FavoritesInteractor
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
 import ru.practicum.android.diploma.feature.search.presentation.SearchViewModel
@@ -31,7 +31,7 @@ val presentationModule = module {
 
     viewModel<FavoritesViewModel> {
         FavoritesViewModel(
-            get<FavoritesRepository>()
+            get<FavoritesInteractor>()
         )
     }
 
