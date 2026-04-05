@@ -2,26 +2,19 @@ package ru.practicum.android.diploma.feature.filters.ui.industry
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -29,8 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
-import ru.practicum.android.diploma.app.ui.theme.AppTypography
-import ru.practicum.android.diploma.app.ui.theme.Blue
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.presentation.components.AppSearchBar
@@ -39,6 +30,7 @@ import ru.practicum.android.diploma.core.presentation.components.StateInfo
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
+import ru.practicum.android.diploma.feature.filters.ui.filters.RadioButtonItem
 
 @Composable
 fun IndustryFilterScreen(
@@ -119,36 +111,16 @@ private fun ShowContent(
             .padding(top = AppDimensions.paddingSmall),
         state = listState
     ) {
-        items(industries) { industry ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(AppDimensions.LabelActionListItem.itemHeight)
-                    .selectable(
-                        selected = industry == selectedIndustry,
-                        onClick = {
-                            onSelectionChange(industry)
-                            keyboardController?.hide()
-                        }
-                    )
-                    .padding(horizontal = AppDimensions.paddingMedium),
-                verticalAlignment = Alignment.CenterVertically
+        items(
+            items = industries,
+            key = { it.id }
+        ) { industry ->
+            RadioButtonItem(
+                text = industry.name,
+                isSelected = industry == selectedIndustry
             ) {
-                Text(
-                    modifier = Modifier
-                        .padding(end = AppDimensions.paddingMedium)
-                        .weight(1f),
-                    text = industry.name,
-                    style = AppTypography.bodyLarge
-                )
-                RadioButton(
-                    selected = industry == selectedIndustry,
-                    onClick = null,
-                    colors = RadioButtonDefaults.colors(
-                        selectedColor = Blue,
-                        unselectedColor = Blue
-                    )
-                )
+                onSelectionChange(industry)
+                keyboardController?.hide()
             }
         }
     }

@@ -8,6 +8,7 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -65,4 +66,10 @@ fun appCardColors() = CardDefaults.cardColors(
 @Composable
 fun appTopBarColors() = TopAppBarDefaults.topAppBarColors(
     containerColor = Color.Transparent
+)
+
+@Composable
+fun appRadioButtonColors() = RadioButtonDefaults.colors(
+    selectedColor = MaterialTheme.colorScheme.primary,
+    unselectedColor = MaterialTheme.colorScheme.primary
 )
