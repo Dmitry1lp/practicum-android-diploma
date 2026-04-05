@@ -34,13 +34,13 @@ fun SearchScreen(
     onLoadNextPage: () -> Unit,
     onFiltersClick: () -> Unit,
     onAction: () -> Unit,
-    onRefreshSearch: () -> Unit
+    getFiltersSettings: () -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(lifecycleOwner.lifecycle) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            onRefreshSearch()
+            getFiltersSettings()
         }
     }
 
