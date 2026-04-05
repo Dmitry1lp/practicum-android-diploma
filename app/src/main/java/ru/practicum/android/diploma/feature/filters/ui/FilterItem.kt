@@ -6,6 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
@@ -40,13 +41,27 @@ fun FilterItem(
     )
 }
 
+@Preview
 @PreviewLightDark
 @Composable
-private fun ActiveFilterItemPreview() {
+private fun ActiveFilterItemPreview_Active() {
     DiplomaTheme {
         FilterItem(
             text = "Отрасль",
             isActive = true,
+            onClick = {}
+        )
+    }
+}
+
+@Preview
+@PreviewLightDark
+@Composable
+private fun FilterItemPreview_Inactive() {
+    DiplomaTheme {
+        FilterItem(
+            text = "Отрасль",
+            isActive = false,
             onClick = {}
         )
     }

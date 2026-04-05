@@ -12,10 +12,10 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
-import ru.practicum.android.diploma.app.ui.theme.primaryButtonColors
+import ru.practicum.android.diploma.app.ui.theme.tertiaryButtonColors
 
 @Composable
-fun ApplyButton(
+fun DismissButton(
     text: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
@@ -26,7 +26,7 @@ fun ApplyButton(
             .height(AppDimensions.FiltersScreen.heightButton)
             .padding(horizontal = AppDimensions.FiltersScreen.paddingButton),
         shape = RoundedCornerShape(AppDimensions.FiltersScreen.cornerRadius),
-        colors = primaryButtonColors(),
+        colors = tertiaryButtonColors(),
         onClick = onClick
     ) {
         Text(
@@ -38,10 +38,10 @@ fun ApplyButton(
 
 @PreviewLightDark
 @Composable
-internal fun ApplyButtonPreview() {
+internal fun DismissButtonPreview() {
     DiplomaTheme {
-        ApplyButton(
-            text = "Применить"
+        DismissButton(
+            text = "Сбросить"
         ) { }
     }
 }
