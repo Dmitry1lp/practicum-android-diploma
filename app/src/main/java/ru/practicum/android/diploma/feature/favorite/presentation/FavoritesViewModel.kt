@@ -6,10 +6,10 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import ru.practicum.android.diploma.core.domain.repository.FavoritesRepository
+import ru.practicum.android.diploma.feature.favorite.domain.FavoritesInteractor
 
 class FavoritesViewModel(
-    repository: FavoritesRepository
+    interactor: FavoritesInteractor
 ) : ViewModel() {
 
     companion object {
@@ -17,7 +17,7 @@ class FavoritesViewModel(
     }
 
     val state: StateFlow<FavoritesUiState> =
-        repository.getVacancies()
+        interactor.getVacancies()
             .map { vacancies ->
                 when {
                     vacancies.isEmpty() -> FavoritesUiState.Empty
