@@ -29,14 +29,27 @@ class SearchViewModel(
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState = _uiState.asStateFlow()
 
-    fun loadFiltersSettings() {
-        getFiltersSettings()
-        val currentText = _uiState.value.searchText
-        if (currentText.isNotEmpty() && uiState.value.filtersSettings?.isStartSearch == true) {
+    fun getFiltersSettings() {
+        val filtersSettings = filtersInteractor.getFiltersSettings()
+        filtersSettings?.let {
+            _uiState.update { it.copy(filtersSettings = filtersSettings) }
+            applyFiltersSettings()
+        } ?: _uiState.update { it.copy(filtersSettings = null) }
+    }
+
+    private fun applyFiltersSettings() {
+        val currentText = uiState.value.searchText
+        val isStartSearch = uiState.value.filtersSettings?.isStartSearch
+        if (currentText.isNotEmpty() && isStartSearch == true) {
             searchJob?.cancel()
             searchJob = viewModelScope.launch {
                 performSearch(currentText)
             }
+            filtersInteractor.saveFiltersSetting(
+                uiState.value.filtersSettings!!.copy(
+                    isStartSearch = false
+                )
+            )
         }
     }
 
@@ -45,13 +58,6 @@ class SearchViewModel(
         searchJob = viewModelScope.launch {
             performSearch(uiState.value.searchText)
         }
-    }
-
-    private fun getFiltersSettings() {
-        val filtersSettings = filtersInteractor.getFiltersSettings()
-        filtersSettings?.let {
-            _uiState.update { it.copy(filtersSettings = filtersSettings) }
-        } ?: _uiState.update { it.copy(filtersSettings = null) }
     }
 
     private suspend fun performSearch(queryText: String) {
