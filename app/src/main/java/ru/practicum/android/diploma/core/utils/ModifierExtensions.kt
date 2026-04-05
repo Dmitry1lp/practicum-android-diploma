@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.core.utils
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,6 +16,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+private const val LOCK_TIME = 300L
+private const val DEBOUNCE_TIME = 2000L
+
 fun Modifier.antiRepetitionClick(
     lockTimeMillis: Long = LOCK_TIME,
     onClick: () -> Unit
@@ -26,6 +31,7 @@ fun <T> Modifier.antiRepetitionClick(
 ): Modifier = composed {
     val scope = rememberCoroutineScope()
     var isLocked by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
 
     fun startDelay() {
         scope.launch {
@@ -35,15 +41,16 @@ fun <T> Modifier.antiRepetitionClick(
     }
 
     this.then(
-        Modifier.pointerInput(Unit) {
-            detectTapGestures {
+        Modifier.clickable(
+            interactionSource = interactionSource,
+            onClick = {
                 if (!isLocked) {
                     onClick(param)
                     isLocked = true
                     startDelay()
                 }
             }
-        }
+        )
     )
 }
 
@@ -52,7 +59,6 @@ fun Modifier.debounceClick(
     useLastParam: Boolean = true,
     onDebouncedClick: () -> Unit
 ): Modifier = debounceClick(delayMillis, useLastParam, Unit) { _ -> onDebouncedClick() }
-
 fun <T> Modifier.debounceClick(
     delayMillis: Long = DEBOUNCE_TIME,
     useLastParam: Boolean = true,
@@ -84,9 +90,6 @@ fun <T> Modifier.debounceClick(
         }
     )
 }
-
-private const val LOCK_TIME = 300L
-private const val DEBOUNCE_TIME = 2000L
 
 /**
  * Применяет модификатор [modifier] при выполнении условия [condition].
