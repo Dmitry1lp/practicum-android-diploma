@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.feature.filters.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 
@@ -9,34 +10,52 @@ import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 fun SelectableFilterItem(
     text: String?,
     hint: String,
-    modifier: Modifier = Modifier,
-    onSelectedClick: () -> Unit = {},
-    onUnselectedClick: () -> Unit = {}
+    onClick: () -> Unit,
+    onIconClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     text?.let {
         HintedFilterItem(
             modifier = modifier,
             text = text,
             hint = hint,
-            onClick = onSelectedClick
+            onClick = onClick,
+            onIconClick = onIconClick
         )
     } ?: run {
         FilterItem(
             modifier = modifier,
             text = hint,
             isActive = false,
-            onClick = onUnselectedClick
+            onClick = onClick
         )
     }
 }
 
+@Preview
 @PreviewLightDark
 @Composable
-fun SelectableFilterItemPreview_Unselected() {
+private fun SelectableFilterItemPreview_Unselected() {
     DiplomaTheme {
         SelectableFilterItem(
             text = null,
-            hint = "Страна"
+            hint = "Страна",
+            onClick = {},
+            onIconClick = {}
+        )
+    }
+}
+
+@Preview
+@PreviewLightDark
+@Composable
+private fun SelectableFilterItemPreview_Selected() {
+    DiplomaTheme {
+        SelectableFilterItem(
+            text = "Россия",
+            hint = "Страна",
+            onClick = {},
+            onIconClick = {}
         )
     }
 }

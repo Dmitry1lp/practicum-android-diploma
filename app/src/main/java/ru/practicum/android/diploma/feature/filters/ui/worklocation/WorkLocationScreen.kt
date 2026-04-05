@@ -64,8 +64,8 @@ fun WorkLocationScreen(
                 SelectableFilterItem(
                     text = area?.name,
                     hint = stringResource(hintId),
-                    onSelectedClick = action,
-                    onUnselectedClick = action
+                    onClick = action,
+                    onIconClick = action
                 )
             }
 

@@ -1,16 +1,16 @@
 package ru.practicum.android.diploma.feature.filters.ui
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.LabelActionListItem
 
@@ -23,28 +23,30 @@ fun HintedFilterItem(
     onIconClick: () -> Unit = {}
 ) {
     LabelActionListItem(
+        modifier = modifier,
         onClick = onClick,
         leadingContent = {
             Column {
                 Text(
                     text = hint,
-                    style = AppTypography.labelMedium,
+                    style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = text,
-                    style = AppTypography.bodyLarge,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onBackground
                 )
             }
         },
         trailingContent = {
-            Icon(
-                modifier = modifier.clickable(onClick = onIconClick),
-                painter = painterResource(R.drawable.ic_close_24),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onBackground
-            )
+            IconButton(onClick = onIconClick) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_close_24),
+                    contentDescription = stringResource(R.string.cd_reset),
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
         },
     )
 }

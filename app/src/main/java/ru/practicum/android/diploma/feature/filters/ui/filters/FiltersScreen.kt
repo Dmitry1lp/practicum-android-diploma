@@ -24,8 +24,7 @@ import ru.practicum.android.diploma.feature.filters.presentation.Clear
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
-import ru.practicum.android.diploma.feature.filters.ui.FilterItem
-import ru.practicum.android.diploma.feature.filters.ui.HintedFilterItem
+import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
 
 @Composable
 fun FiltersScreen(
@@ -46,34 +45,23 @@ fun FiltersScreen(
         Column(
             modifier = modifier.padding(paddingValues)
         ) {
-            if (state.region == null) {
-                FilterItem(
-                    text = stringResource(R.string.filter_work_location),
-                    onClick = actions.onIndustryFilter,
-                    isActive = false
-                )
-            } else {
-                HintedFilterItem(
-                    hint = stringResource(R.string.filter_work_location),
-                    text = state.country?.name + ", " + state.region.name,
-                    onClick = actions.onIndustryFilter,
-                    onIconClick = { actions.onClearClick(Clear.Industry) }
-                )
+            val location: String? = state.country?.name?.let { country ->
+                "$country, ${state.region?.name}"
             }
-            if (state.industry == null) {
-                FilterItem(
-                    text = stringResource(R.string.filter_industry),
-                    onClick = actions.onIndustryFilter,
-                    isActive = false
-                )
-            } else {
-                HintedFilterItem(
-                    hint = stringResource(R.string.filter_industry),
-                    text = state.industry.name,
-                    onClick = actions.onIndustryFilter,
-                    onIconClick = { actions.onClearClick(Clear.Industry) }
-                )
-            }
+
+            SelectableFilterItem(
+                text = location,
+                hint = stringResource(R.string.filter_work_location),
+                onClick = actions.onWorkLocationFilter,
+                onIconClick = { TODO("actions.onClearClick(Clear.WorkLocation)") }
+            )
+            SelectableFilterItem(
+                text = state.industry?.name,
+                hint = stringResource(R.string.filter_industry),
+                onClick = actions.onIndustryFilter,
+                onIconClick = { actions.onClearClick(Clear.Industry) }
+            )
+
             SalaryInputField(
                 text = state.salaryText,
                 onTextChange = actions.onSalaryTextChange

@@ -59,4 +59,5 @@
     <string name="vacancy_website">Website</string>
     <string name="vacancy_address">Address</string>
     <string name="vacancy_company_title">Company</string>
+    <string name="cd_reset">Reset</string>
 </resources>
