@@ -4,10 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,7 +32,8 @@ fun LabelActionListItem(
         modifier = modifier
             .antiRepetitionClick { onClick?.invoke() }
             .background(MaterialTheme.colorScheme.background)
-            .height(AppDimensions.LabelActionListItem.itemHeight)
+            .defaultMinSize(minHeight = AppDimensions.LabelActionListItem.itemHeight)
+            .wrapContentHeight()
             .fillMaxWidth()
             .padding(AppDimensions.LabelActionListItem.contentPadding),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -42,9 +44,8 @@ fun LabelActionListItem(
             modifier = Modifier
                 .size(AppDimensions.LabelActionListItem.trailingContentSize)
                 .padding(AppDimensions.LabelActionListItem.trailingContentPadding),
-            contentAlignment = Alignment.Center
-        ) {
-            trailingContent()
-        }
+            contentAlignment = Alignment.Center,
+            content = { trailingContent() }
+        )
     }
 }
