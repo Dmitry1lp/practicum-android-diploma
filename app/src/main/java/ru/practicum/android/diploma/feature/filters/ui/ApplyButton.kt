@@ -12,11 +12,12 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
+import ru.practicum.android.diploma.app.ui.theme.primaryButtonColors
 
 @Composable
 fun ApplyButton(
-    modifier: Modifier = Modifier,
     text: String,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     Button(
@@ -25,6 +26,7 @@ fun ApplyButton(
             .height(AppDimensions.FiltersScreen.heightButton)
             .padding(horizontal = AppDimensions.FiltersScreen.paddingButton),
         shape = RoundedCornerShape(AppDimensions.FiltersScreen.cornerRadius),
+        colors = primaryButtonColors(),
         onClick = onClick
     ) {
         Text(
