@@ -13,9 +13,14 @@ data class FiltersUiState(
     val industries: List<FilterIndustry> = immutableListOf(),
     val filteredIndustries: List<FilterIndustry> = immutableListOf(),
     val errorMessage: String = "",
-    val searchText: String = "",
+    val searchIndustryText: String = "",
+    val searchRegionText: String = "",
     val isStartSearch: Boolean = false,
-    val countries: List<GeoArea.Country> = emptyList()
+    val countries: List<GeoArea.Country> = immutableListOf(),
+    val currentCountry: GeoArea.Country? = null,
+    val currentRegion: GeoArea.Region? = null,
+    val allRegions: List<GeoArea.Region> = immutableListOf(),
+    val filteredRegions: List<GeoArea.Region> = immutableListOf()
 )
 
 data class FiltersActions(
@@ -32,7 +37,10 @@ data class FiltersActions(
 )
 
 sealed interface Clear {
+    object WorkLocation : Clear
     object Industry : Clear
     object All : Clear
     object Settings : Clear
+    object Country : Clear
+    object Region : Clear
 }
