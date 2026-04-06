@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.feature.filters.presentation
+package ru.practicum.android.diploma.feature.filters.presentation.filters
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +12,7 @@ import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.feature.filters.domain.interactor.FiltersInteractor
 import ru.practicum.android.diploma.feature.filters.data.model.FiltersSettings
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 
 @Serializable
 class FiltersViewModel(
@@ -24,6 +25,12 @@ class FiltersViewModel(
     init {
         getFiltersSettings()
         getIndustries()
+    }
+
+    fun updateState(uiState: Any) {
+        when (uiState) {
+            is WorkLocationUiState -> _state.update { it.copy(country = uiState.country, region = uiState.region) }
+        }
     }
 
     fun onSalaryTextChange(text: String) {
