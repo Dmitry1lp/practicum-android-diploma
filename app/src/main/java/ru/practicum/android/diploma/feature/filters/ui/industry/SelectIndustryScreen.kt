@@ -35,6 +35,8 @@ fun SelectIndustryScreen(
     onApplyClick: (FilterIndustry?) -> Unit,
     onBackClick: () -> Unit
 ) {
+    val isApplyButtonEnabled = initSelectedIndustry != screenState.selectedIndustry
+
     Scaffold(
         topBar = {
             AppTopBar(
@@ -46,8 +48,6 @@ fun SelectIndustryScreen(
         Column(
             modifier = modifier.padding(paddingValues)
         ) {
-            val isApplyButtonEnabled = initSelectedIndustry != screenState.selectedIndustry
-
             AppSearchBar(
                 text = screenState.searchText,
                 hint = stringResource(R.string.hint_search_industry),

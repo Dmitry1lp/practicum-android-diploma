@@ -23,15 +23,14 @@ fun filtersEntryProvider(
     onCloseFilters: () -> Unit
 ) = entryProvider<NavKey> {
     entry<FiltersRoute.Main> {
-        val filtersUiState by viewModel.filtersUiState.collectAsState()
+        val currentState by viewModel.filtersUiState.collectAsState()
+        val initState = viewModel.initialFiltersState ?: currentState
 
         FiltersScreen(
-            state = filtersUiState,
+            currentState = currentState,
+            initState = initState,
             actions = FiltersActions(
-                onBackClick = {
-                    viewModel.saveSettings(false)
-                    onCloseFilters()
-                },
+                onBackClick = onCloseFilters,
                 onIndustryFilter = { backStack.add(FiltersRoute.Industry) },
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
                 onCheckBox = viewModel::onCheckBox,

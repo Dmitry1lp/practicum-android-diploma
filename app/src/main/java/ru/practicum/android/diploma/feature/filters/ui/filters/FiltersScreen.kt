@@ -25,10 +25,13 @@ import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
 
 @Composable
 fun FiltersScreen(
-    state: FiltersUiState,
+    initState: FiltersUiState,
+    currentState: FiltersUiState,
     modifier: Modifier = Modifier,
     actions: FiltersActions
 ) {
+    val areButtonsEnabled = initState != currentState
+
     BackHandler(enabled = true) { actions.onBackClick() }
 
     Scaffold(
@@ -42,8 +45,8 @@ fun FiltersScreen(
         Column(
             modifier = modifier.padding(paddingValues)
         ) {
-            val location: String? = state.country?.name?.let { country ->
-                "$country, ${state.region?.name}"
+            val location: String? = currentState.country?.name?.let { country ->
+                "$country, ${currentState.region?.name}"
             }
 
             SelectableFilterItem(
@@ -53,25 +56,25 @@ fun FiltersScreen(
                 onIconClick = { actions.onClearClick(ClearTarget.WorkLocation) }
             )
             SelectableFilterItem(
-                text = state.industry?.name,
+                text = currentState.industry?.name,
                 hint = stringResource(R.string.filter_industry),
                 onClick = actions.onIndustryFilter,
                 onIconClick = { actions.onClearClick(ClearTarget.Industry) }
             )
 
             SalaryInputField(
-                text = state.salaryText,
+                text = currentState.salaryText,
                 onTextChange = actions.onSalaryTextChange
             )
             SwitchFilterItem(
                 text = stringResource(R.string.checkbox_hide_without_salary),
-                checked = state.isCheckBox,
+                checked = currentState.isCheckBox,
                 onCheckedChange = actions.onCheckBox
             )
 
             Spacer(modifier = Modifier.weight(1f))
 
-            if (true) {
+            if (areButtonsEnabled) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(AppDimensions.paddingSmall)
                 ) {
@@ -95,7 +98,20 @@ fun FiltersScreen(
 private fun FiltersScreenPreviewLightMode() {
     DiplomaTheme {
         FiltersScreen(
-            state = FiltersUiState(
+            currentState = FiltersUiState(
+                country = GeoArea.Country(
+                    id = 0,
+                    name = "Россия",
+                    regions = emptyList()
+                ),
+                region = GeoArea.Region(
+                    id = 0,
+                    name = "Москва",
+                    countryId = 0
+                ),
+                isCheckBox = true
+            ),
+            initState = FiltersUiState(
                 country = GeoArea.Country(
                     id = 0,
                     name = "Россия",
