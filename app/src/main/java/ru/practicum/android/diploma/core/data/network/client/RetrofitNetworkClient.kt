@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.core.data.network.client
 import android.util.Log
 import retrofit2.HttpException
 import ru.practicum.android.diploma.core.data.network.api.VacancyApi
-import ru.practicum.android.diploma.core.data.network.dto.AreasResponse
+import ru.practicum.android.diploma.core.data.network.dto.GeoAreasResponse
 import ru.practicum.android.diploma.core.data.network.dto.IndustriesResponse
 import ru.practicum.android.diploma.core.data.network.dto.Request
 import ru.practicum.android.diploma.core.data.network.dto.Response
@@ -27,7 +27,7 @@ class RetrofitNetworkClient(
         return when (request) {
             is Request.VacancySearchRequest -> { api.searchVacancies(request.params) }
             is Request.VacancyDetailsRequest -> api.getVacancyDetails(request.id)
-            is Request.AreasRequest -> AreasResponse(api.getAreas())
+            is Request.AreasRequest -> GeoAreasResponse(api.getAreas())
             is Request.IndustriesRequest -> IndustriesResponse(api.getIndustries())
         }.apply { resultCode = RESULT_OK }
     }
