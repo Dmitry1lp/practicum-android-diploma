@@ -42,15 +42,18 @@ fun FiltersScreen(
         Column(
             modifier = modifier.padding(paddingValues)
         ) {
-            val location: String? = state.country?.name?.let { country ->
-                "$country, ${state.region?.name}"
+            val location: String? =
+                when {
+                    state.country != null && state.region != null -> "${state.country.name}, ${state.region.name}"
+                    state.country != null -> state.country.name
+                    else -> null
             }
 
             SelectableFilterItem(
                 text = location,
                 hint = stringResource(R.string.filter_work_location),
                 onClick = actions.onWorkLocationFilter,
-                onIconClick = { TODO("actions.onClearClick(Clear.WorkLocation)") }
+                onIconClick = { actions.onClearClick(Clear.WorkLocation) }
             )
             SelectableFilterItem(
                 text = state.industry?.name,
@@ -91,9 +94,11 @@ fun FiltersScreen(
 
 @Deprecated("Заглушка. Заменить на реализацию ViewModel")
 private fun isStateChanged(state: FiltersUiState): Boolean =
-    state.salaryText.isNotEmpty() ||
-        state.isCheckBox ||
-        state.industry != null
+    state.country != null ||
+        state.region != null ||
+        state.industry != null ||
+        state.salaryText.isNotEmpty() ||
+        state.isCheckBox
 
 @Preview(showSystemUi = true)
 @PreviewLightDark
