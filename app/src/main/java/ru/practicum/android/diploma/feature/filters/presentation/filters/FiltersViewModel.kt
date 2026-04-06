@@ -1,23 +1,28 @@
-package ru.practicum.android.diploma.feature.filters.presentation.filters
+@file:Suppress("ForbiddenComment")
+
+package ru.practicum.android.diploma.feature.filters.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 import okhttp3.internal.immutableListOf
-import okhttp3.internal.toImmutableList
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
-import ru.practicum.android.diploma.feature.filters.domain.interactor.FiltersInteractor
-import ru.practicum.android.diploma.feature.filters.data.model.FiltersSettings
+import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
+import ru.practicum.android.diploma.feature.filters.domain.FiltersSettings
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 
-@Serializable
 class FiltersViewModel(
     private val interactor: FiltersInteractor
 ) : ViewModel() {
+
+    private val _workLocationState = MutableStateFlow(WorkLocationUiState()) // TODO: забирать актуальное состояние
+    val workLocationState: StateFlow<WorkLocationUiState> = _workLocationState.asStateFlow()
 
     private val _state = MutableStateFlow(FiltersUiState())
     val state = _state
@@ -143,33 +148,17 @@ class FiltersViewModel(
                 )
             )
         } else {
-            clear(Clear.Settings)
+            clear(ClearTarget.AppPreferences)
         }
     }
 
-    fun clear(clear: Clear) {
-        when (clear) {
-            is Clear.WorkLocation -> _state.update {
-                it.copy(
-                    country = null,
-                    currentCountry = null,
-                    region = null,
-                    currentRegion = null,
-                    filteredRegions = state.value.allRegions
-                )
-            }
-
-            is Clear.Country -> _state.update {
-                it.copy(
-                    currentCountry = null,
-                    currentRegion = null,
-                    filteredRegions = state.value.allRegions
-                )
-            }
-
-            is Clear.Region -> _state.update { it.copy(currentRegion = null) }
-            is Clear.Industry -> _state.update { it.copy(industry = null) }
-            is Clear.All -> {
+    /**
+     * Сбрасывает значение указанного [target].
+     */
+    fun clear(target: ClearTarget) {
+        when (target) {
+            is ClearTarget.AppPreferences -> interactor.clearSettings()
+            is ClearTarget.All -> {
                 _state.update {
                     it.copy(
                         country = null,
@@ -183,7 +172,24 @@ class FiltersViewModel(
                 }
             }
 
-            is Clear.Settings -> interactor.clearSettings()
+            is ClearTarget.Industry -> _state.update { it.copy(industry = null) }
+            is ClearTarget.Country -> _state.update {
+                it.copy(
+                    currentCountry = null,
+                    currentRegion = null,
+                    filteredRegions = state.value.allRegions
+                )
+            }
+            is ClearTarget.Region -> _state.update { it.copy(currentRegion = null) }
+            is ClearTarget.WorkLocation -> _state.update {
+                it.copy(
+                    country = null,
+                    currentCountry = null,
+                    region = null,
+                    currentRegion = null,
+                    filteredRegions = state.value.allRegions
+                )
+            }
         }
     }
 
