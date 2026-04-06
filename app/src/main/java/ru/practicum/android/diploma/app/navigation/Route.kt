@@ -32,7 +32,7 @@ sealed interface Route : NavKey {
     data object Filters : Route
 
     @Serializable
-    data object WorkLocationFilter : Route
+    data class WorkLocationFilter(val viewModel: FiltersViewModel) : Route
 
     @Serializable
     data object CountryFilter : Route

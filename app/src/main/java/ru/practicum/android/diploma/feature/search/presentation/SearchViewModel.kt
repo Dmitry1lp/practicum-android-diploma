@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.domain.model.VacancyQuery
-import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
+import ru.practicum.android.diploma.feature.filters.domain.interactor.FiltersInteractor
 import ru.practicum.android.diploma.feature.search.data.models.Resource
 import ru.practicum.android.diploma.feature.search.domain.interactor.SearchInteractor
 
