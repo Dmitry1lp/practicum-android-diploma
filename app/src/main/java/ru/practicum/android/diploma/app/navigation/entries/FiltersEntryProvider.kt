@@ -1,8 +1,7 @@
-@file:Suppress("ForbiddenComment", "LongMethod")
+@file:Suppress("ForbiddenComment")
 
 package ru.practicum.android.diploma.app.navigation.entries
 
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -10,124 +9,83 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import ru.practicum.android.diploma.app.navigation.routes.FiltersRoute
-import ru.practicum.android.diploma.feature.filters.presentation.country.SelectCountryUiState
-import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
-import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryActions
-import ru.practicum.android.diploma.feature.filters.presentation.region.SelectRegionUiState
-import ru.practicum.android.diploma.feature.filters.presentation.viewmodel.FiltersViewModel
+import ru.practicum.android.diploma.core.domain.model.FilterIndustry
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationActions
-import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
-import ru.practicum.android.diploma.feature.filters.ui.country.SelectCountryScreen
 import ru.practicum.android.diploma.feature.filters.ui.filters.FiltersScreen
-import ru.practicum.android.diploma.feature.filters.ui.industry.SelectIndustryScreen
-import ru.practicum.android.diploma.feature.filters.ui.region.SelectRegionScreen
+import ru.practicum.android.diploma.feature.filters.ui.industry.IndustryFilterScreen
 import ru.practicum.android.diploma.feature.filters.ui.worklocation.WorkLocationScreen
 
 fun filtersEntryProvider(
     viewModel: FiltersViewModel,
-    backStack: NavBackStack<NavKey>,
-    onCloseFilters: () -> Unit
+    backStack: NavBackStack<NavKey>
 ) = entryProvider<NavKey> {
     entry<FiltersRoute.Main> {
-        val state by viewModel.filtersUiState.collectAsState()
-        val areButtonsEnabled = remember(state) {
-            state.hasActiveFilters
-        }
-
         FiltersScreen(
-            currentState = state,
-            areButtonsEnabled = areButtonsEnabled,
+            state = viewModel.state.collectAsState().value,
             actions = FiltersActions(
                 onBackClick = {
                     viewModel.saveSettings(false)
-                    onCloseFilters()
+                    backStack.removeLastOrNull()
                 },
-                onWorkLocationClick = { backStack.add(FiltersRoute.WorkLocation) },
-                onIndustryClick = { backStack.add(FiltersRoute.Industry) },
+                onIndustryFilter = { backStack.add(FiltersRoute.Industry) },
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
-                onCheckBoxChange = viewModel::onCheckBox,
+                onCheckBox = viewModel::onCheckBox,
                 onApplyClick = { isStartSearch ->
                     viewModel.saveSettings(isStartSearch as Boolean)
-                    onCloseFilters()
+                    backStack.removeLastOrNull()
                 },
-                onClearClick = { target -> viewModel.clear(target) }
+                onClearClick = { clear -> viewModel.clear(clear) },
+                onWorkLocationFilter = { backStack.add(FiltersRoute.WorkLocation) },
+                onSearchTextChange = { }
             )
         )
     }
 
     entry<FiltersRoute.Industry> {
-        LaunchedEffect(Unit) { viewModel.getIndustries() }
-
-        val state by viewModel.industryState.collectAsState()
-
-        SelectIndustryScreen(
-            screenState = state,
-            actions = IndustryActions(
+        IndustryFilterScreen(
+            state = viewModel.state.collectAsState().value,
+            actions = FiltersActions(
                 onBackClick = { backStack.removeLastOrNull() },
-                onSearchTextChanged = viewModel::onSearchTextChange,
-                onIndustryClick = viewModel::onIndustrySelected,
+                onSearchTextChange = viewModel::onSearchTextChange,
                 onApplyClick = { industry ->
-                    viewModel.onIndustryApplied(industry)
+                    viewModel.onIndustrySelected(industry as FilterIndustry)
                     backStack.removeLastOrNull()
-                }
+                },
+                onWorkLocationFilter = { },
+                onIndustryFilter = { },
+                onSalaryTextChange = { },
+                onCheckBox = { },
+                onClearClick = { }
             )
         )
     }
 
     entry<FiltersRoute.WorkLocation> {
-        val filtersUiState by viewModel.filtersUiState.collectAsState()
+        val state by viewModel.workLocationState.collectAsState()
+        val initState = remember(viewModel.workLocationState) {
+            viewModel.workLocationState.value
+        }
 
         WorkLocationScreen(
-            currentState = WorkLocationUiState.fromFiltersState(filtersUiState),
+            currentState = state,
+            initState = initState,
             actions = WorkLocationActions(
                 onBackClick = { backStack.removeLastOrNull() },
-                onCountryClick = { backStack.add(FiltersRoute.Country) },
-                onRegionClick = { backStack.add(FiltersRoute.Region) },
-                onClearClick = { clear -> viewModel.clear(clear) },
-                onApplyClick = { state ->
-                    viewModel.updateState(state)
-                    backStack.removeLastOrNull()
-                }
+                onCountryClick = { TODO() },
+                onRegionClick = { TODO() },
+                onApplyClick = { TODO() }
             )
+
         )
     }
 
     entry<FiltersRoute.Country> {
-        val filtersUiState by viewModel.filtersUiState.collectAsState()
-        val state = if (filtersUiState.countries.isNotEmpty()) {
-            SelectCountryUiState.Content.fromFiltersState(filtersUiState)
-        } else {
-            SelectCountryUiState.FetchError
-        }
-
-        SelectCountryScreen(
-            onBackClick = { backStack.removeLastOrNull() },
-            state = state,
-            onCountryClick = { country ->
-                viewModel.updateState(country)
-                backStack.removeLastOrNull()
-            }
-        )
+        // TODO: Выбор страны
     }
 
     entry<FiltersRoute.Region> {
-        val filtersUiState by viewModel.filtersUiState.collectAsState()
-        val state = when {
-            filtersUiState.filteredRegions.isNotEmpty() ->
-                SelectRegionUiState.Content(filtersUiState.filteredRegions)
-
-            else -> SelectRegionUiState.FetchError
-        }
-
-        SelectRegionScreen(
-            state = state,
-            searchText = filtersUiState.searchText,
-            onRegionClick = { region ->
-                viewModel.updateState(region)
-                backStack.removeLastOrNull()
-            },
-            onSearchTextChange = { viewModel.onSearchRegionTextChange(it) },
-            onBackClick = { backStack.removeLastOrNull() },
-        )
+        // TODO: Выбор региона
     }
 }
