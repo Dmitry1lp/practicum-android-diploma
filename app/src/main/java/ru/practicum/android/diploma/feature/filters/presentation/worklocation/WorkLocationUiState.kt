@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.feature.filters.presentation.worklocation
 
 import ru.practicum.android.diploma.core.domain.model.GeoArea
-import ru.practicum.android.diploma.feature.filters.presentation.filters.Clear
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersUiState
 
 data class WorkLocationUiState(
@@ -11,8 +10,8 @@ data class WorkLocationUiState(
     companion object {
         fun fromFiltersState(filtersState: FiltersUiState): WorkLocationUiState {
             return WorkLocationUiState(
-                country = filtersState.currentCountry,
-                region = filtersState.currentRegion
+                country = filtersState.country,
+                region = filtersState.region
             )
         }
     }
@@ -22,6 +21,5 @@ data class WorkLocationActions(
     val onBackClick: () -> Unit,
     val onCountryClick: () -> Unit,
     val onRegionClick: () -> Unit,
-    val onClearClick: (Clear) -> Unit,
-    val onApplyClick: (WorkLocationUiState) -> Unit
+    val onApplyClick: () -> Unit
 )
