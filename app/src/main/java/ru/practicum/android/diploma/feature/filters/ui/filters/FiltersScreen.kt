@@ -52,19 +52,19 @@ fun FiltersScreen(
             SelectableFilterItem(
                 text = location,
                 hint = stringResource(R.string.filter_work_location),
-                onClick = actions.onWorkLocationClick,
+                onClick = actions.onWorkLocationFilter,
                 onIconClick = { actions.onClearClick(Clear.WorkLocation) }
             )
             SelectableFilterItem(
                 text = state.industry?.name,
                 hint = stringResource(R.string.filter_industry),
-                onClick = actions.onIndustryClick,
+                onClick = actions.onIndustryFilter,
                 onIconClick = { actions.onClearClick(Clear.Industry) }
             )
 
             SalaryInputField(
                 text = state.salaryText,
-                onTextChange = actions.onTextChange
+                onTextChange = actions.onSalaryTextChange
             )
             SwitchFilterItem(
                 text = stringResource(R.string.checkbox_hide_without_salary),
@@ -74,7 +74,7 @@ fun FiltersScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            if (state.isFiltersSettings) {
+            if (isStateChanged(state)) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(AppDimensions.paddingSmall)
                 ) {
@@ -91,6 +91,14 @@ fun FiltersScreen(
         }
     }
 }
+
+@Deprecated("Заглушка. Заменить на реализацию ViewModel")
+private fun isStateChanged(state: FiltersUiState): Boolean =
+    state.country != null ||
+        state.region != null ||
+        state.industry != null ||
+        state.salaryText.isNotEmpty() ||
+        state.isCheckBox
 
 @Preview(showSystemUi = true)
 @PreviewLightDark

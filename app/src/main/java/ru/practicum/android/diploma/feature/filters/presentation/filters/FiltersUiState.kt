@@ -10,35 +10,37 @@ data class FiltersUiState(
     val industry: FilterIndustry? = null,
     val salaryText: String = "",
     val isCheckBox: Boolean = false,
+    val industries: List<FilterIndustry> = immutableListOf(),
+    val filteredIndustries: List<FilterIndustry> = immutableListOf(),
     val errorMessage: String = "",
-    val searchText: String = "",
+    val searchIndustryText: String = "",
+    val searchRegionText: String = "",
+    val isStartSearch: Boolean = false,
     val countries: List<GeoArea.Country> = immutableListOf(),
     val currentCountry: GeoArea.Country? = null,
     val currentRegion: GeoArea.Region? = null,
     val allRegions: List<GeoArea.Region> = immutableListOf(),
-    val filteredRegions: List<GeoArea.Region> = immutableListOf(),
-    val industries: List<FilterIndustry> = immutableListOf(),
-    val filteredIndustries: List<FilterIndustry> = immutableListOf(),
-) {
-    val isFiltersSettings: Boolean
-        get() = country != null || region != null || industry != null || salaryText.isNotEmpty() || isCheckBox
-}
+    val filteredRegions: List<GeoArea.Region> = immutableListOf()
+)
 
 data class FiltersActions(
     val onBackClick: () -> Unit = {},
-    val onWorkLocationClick: () -> Unit = {},
-    val onIndustryClick: () -> Unit = {},
+    val onWorkLocationFilter: () -> Unit = {},
+    val onCountryFilter: () -> Unit = {},
+    val onRegionFilter: () -> Unit = {},
+    val onIndustryFilter: () -> Unit = {},
+    val onSalaryTextChange: (String) -> Unit = {},
     val onCheckBox: () -> Unit = {},
-    val onTextChange: (String) -> Unit = {},
+    val onSearchTextChange: (String) -> Unit = {},
     val onApplyClick: (Any?) -> Unit = {},
     val onClearClick: (Clear) -> Unit = {}
 )
 
 sealed interface Clear {
     object WorkLocation : Clear
-    object Country : Clear
-    object Region : Clear
     object Industry : Clear
     object All : Clear
     object Settings : Clear
+    object Country : Clear
+    object Region : Clear
 }
