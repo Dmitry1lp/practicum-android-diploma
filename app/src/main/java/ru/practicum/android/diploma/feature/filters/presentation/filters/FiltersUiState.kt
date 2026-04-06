@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.feature.filters.presentation
+package ru.practicum.android.diploma.feature.filters.presentation.filters
 
 import okhttp3.internal.immutableListOf
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry

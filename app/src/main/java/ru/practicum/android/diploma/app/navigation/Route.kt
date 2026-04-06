@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
+import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersViewModel
 
 @Serializable
 sealed interface Route : NavKey {

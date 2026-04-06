@@ -16,9 +16,9 @@ import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.presentation.Clear
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
+import ru.practicum.android.diploma.feature.filters.presentation.filters.Clear
+import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
+import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersUiState
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
 import ru.practicum.android.diploma.feature.filters.ui.DismissButton
 import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
