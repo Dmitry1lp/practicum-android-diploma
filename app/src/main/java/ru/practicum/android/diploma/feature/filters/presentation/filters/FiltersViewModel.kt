@@ -8,6 +8,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.internal.immutableListOf
@@ -16,16 +17,32 @@ import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.utils.queryFilter
 import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
 import ru.practicum.android.diploma.feature.filters.domain.FiltersSettings
-import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryScreenState
 import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryUiState
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 
 class FiltersViewModel(
     private val interactor: FiltersInteractor
 ) : ViewModel() {
 
+    private val _filtersUiState = MutableStateFlow(FiltersUiState())
+    val filtersUiState: StateFlow<FiltersUiState> = _filtersUiState.asStateFlow()
+    var initialFiltersState: FiltersUiState? = null
+
     private val _industryState = MutableStateFlow(IndustryScreenState())
     val industryState: StateFlow<IndustryScreenState> = _industryState.asStateFlow()
+
+    private val _workLocationState = MutableStateFlow(WorkLocationUiState()) // TODO: забирать актуальное состояние
+    val workLocationState: StateFlow<WorkLocationUiState> = _workLocationState.asStateFlow()
+
+    init {
+        getFiltersSettings()
+        viewModelScope.launch {
+            filtersUiState.first().let { state ->
+                initialFiltersState = state.copy()
+            }
+        }
+    }
 
     fun onIndustrySelected(industry: FilterIndustry?) {
         _industryState.update { it.copy(selectedIndustry = industry) }
