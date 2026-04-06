@@ -43,12 +43,18 @@
         <item quantity="many">Найдено %d вакансий</item>
         <item quantity="other">Найдено %d вакансий</item>
     </plurals>
-    <string-array name="developers">
-        <item>Дмитрий Крылов</item>
-        <item>Дмитрий Перов</item>
-        <item>Иван Свиридов</item>
-        <item>Сергей Аникин</item>
-    </string-array>
+    <string name="dev_krylov_name">Дмитрий Крылов</string>
+    <string name="dev_krylov_role">Team Lead</string>
+
+    <string name="dev_anikin_name">Сергей Аникин</string>
+    <string name="dev_anikin_role">Android Developer</string>
+
+    <string name="dev_perov_name">Дмитрий Перов</string>
+    <string name="dev_perov_role">Android Developer</string>
+
+    <string name="dev_sviridov_name">Иван Свиридов</string>
+    <string name="dev_sviridov_role">Android Developer</string>
+
     <string name="vacancy_salary_not_specified">Зарплата не указана</string>
     <string name="vacancy_salary_from">От %1$s %2$s</string>
     <string name="vacancy_salary_to">До %1$s %2$s</string>
