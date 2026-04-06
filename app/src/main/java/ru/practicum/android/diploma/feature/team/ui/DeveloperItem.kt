@@ -53,8 +53,6 @@ fun DeveloperItem(
             modifier = Modifier.padding(AppDimensions.paddingMedium),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
-            // Аватар
             if (developer.avatarRes != null) {
                 Image(
                     painter = painterResource(developer.avatarRes),
