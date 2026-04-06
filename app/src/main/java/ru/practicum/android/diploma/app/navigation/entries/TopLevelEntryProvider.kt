@@ -139,7 +139,8 @@ fun topLevelEntryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryP
             onBack = { filtersBackStack.removeLastOrNull() },
             entryProvider = filtersEntryProvider(
                 viewModel = filtersViewModel,
-                backStack = filtersBackStack
+                backStack = filtersBackStack,
+                onCloseFilters = { topLevelBackStack.removeLast() }
             )
         )
     }
