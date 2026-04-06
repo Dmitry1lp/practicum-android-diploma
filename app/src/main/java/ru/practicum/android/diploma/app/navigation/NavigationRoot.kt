@@ -28,20 +28,15 @@ import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
-import ru.practicum.android.diploma.feature.filters.presentation.country.SelectCountryUiState
-import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
-import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersViewModel
-import ru.practicum.android.diploma.feature.filters.presentation.region.SelectRegionUiState
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationActions
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
-import ru.practicum.android.diploma.feature.filters.ui.country.SelectCountryScreen
 import ru.practicum.android.diploma.feature.filters.ui.filters.FiltersScreen
 import ru.practicum.android.diploma.feature.filters.ui.industry.IndustryFilterScreen
-import ru.practicum.android.diploma.feature.filters.ui.region.SelectRegionScreen
 import ru.practicum.android.diploma.feature.filters.ui.worklocation.WorkLocationScreen
 import ru.practicum.android.diploma.feature.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.feature.search.ui.SearchScreen
-import ru.practicum.android.diploma.feature.team.presentation.TeamViewModel
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
 import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsUiEvent
 import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsViewModel
@@ -106,9 +101,7 @@ private fun appEntryProvider(
     topLevelBackStack: TopLevelBackStack<NavKey>
 ) = entryProvider<NavKey> {
     entry<Route.Team> {
-        val viewModel: TeamViewModel = koinViewModel()
         TeamScreen(
-            developers = viewModel.developers.collectAsState().value,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(teamScreenPadding)
@@ -208,15 +201,9 @@ private fun appEntryProvider(
                     viewModel.saveSettings(false)
                     topLevelBackStack.removeLast()
                 },
-                onWorkLocationClick = {
-                    viewModel.setWorkLocationScreen()
-                    topLevelBackStack.add(Route.WorkLocationFilter(viewModel))
-                },
-                onIndustryClick = {
-                    viewModel.setIndustryScreen()
-                    topLevelBackStack.add(Route.IndustryFilter(viewModel))
-                },
-                onTextChange = { viewModel.onSalaryTextChange(it) },
+                onWorkLocationFilter = { topLevelBackStack.add(Route.WorkLocationFilter(viewModel)) },
+                onIndustryFilter = { topLevelBackStack.add(Route.IndustryFilter(viewModel)) },
+                onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
                 onCheckBox = viewModel::onCheckBox,
                 onApplyClick = { isStartSearch ->
                     viewModel.saveSettings(isStartSearch as Boolean)
@@ -234,7 +221,7 @@ private fun appEntryProvider(
             state = viewModel.state.collectAsState().value,
             actions = FiltersActions(
                 onBackClick = { topLevelBackStack.removeLast() },
-                onTextChange = viewModel::onSearchIndustryTextChange,
+                onSearchTextChange = viewModel::onSearchTextChange,
                 onApplyClick = { industry ->
                     viewModel.onIndustrySelected(industry as FilterIndustry)
                     topLevelBackStack.removeLast()
@@ -245,62 +232,25 @@ private fun appEntryProvider(
 
     entry<Route.WorkLocationFilter> { route ->
         val viewModel = route.viewModel
-        val filtersUiState by viewModel.state.collectAsState()
 
         WorkLocationScreen(
-            currentState = WorkLocationUiState.fromFiltersState(filtersUiState),
+            currentState = WorkLocationUiState(),
+            initState = WorkLocationUiState(),
             actions = WorkLocationActions(
                 onBackClick = { topLevelBackStack.removeLast() },
-                onCountryClick = { topLevelBackStack.add(Route.CountryFilter(viewModel)) },
-                onRegionClick = { topLevelBackStack.add(Route.RegionFilter(viewModel)) },
-                onClearClick = { clear -> viewModel.clear(clear) },
-                onApplyClick = { state ->
-                    viewModel.updateState(state)
-                    topLevelBackStack.removeLast()
-                }
+                onCountryClick = { topLevelBackStack.add(Route.CountryFilter) },
+                onRegionClick = { topLevelBackStack.add(Route.RegionFilter) },
+                onApplyClick = {}
             )
         )
     }
 
-    entry<Route.CountryFilter> { route ->
-        val viewModel = route.viewModel
-        val filtersUiState by viewModel.state.collectAsState()
-        val state = if (filtersUiState.countries.isNotEmpty()) {
-            SelectCountryUiState.Content.fromFiltersState(filtersUiState)
-        } else {
-            SelectCountryUiState.FetchError
-        }
-
-        SelectCountryScreen(
-            onBackClick = { topLevelBackStack.removeLast() },
-            state = state,
-            onCountryClick = { country ->
-                viewModel.updateState(country)
-                topLevelBackStack.removeLast()
-            }
-        )
+    entry<Route.CountryFilter> {
+        // TODO: Выбор страны
     }
 
-    entry<Route.RegionFilter> { route ->
-        val viewModel = route.viewModel
-        val filtersUiState by viewModel.state.collectAsState()
-        val state = when {
-            filtersUiState.filteredRegions.isNotEmpty() ->
-                SelectRegionUiState.Content(filtersUiState.filteredRegions)
-
-            else -> SelectRegionUiState.FetchError
-        }
-
-        SelectRegionScreen(
-            state = state,
-            searchText = filtersUiState.searchText,
-            onRegionClick = { region ->
-                viewModel.updateState(region)
-                topLevelBackStack.removeLast()
-            },
-            onSearchTextChange = { viewModel.onSearchRegionTextChange(it) },
-            onBackClick = { topLevelBackStack.removeLast() },
-        )
+    entry<Route.RegionFilter> {
+        // TODO: Выбор региона
     }
 
 }
