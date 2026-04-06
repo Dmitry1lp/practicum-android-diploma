@@ -2,6 +2,7 @@
 
 package ru.practicum.android.diploma.app.navigation.entries
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -9,32 +10,34 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import ru.practicum.android.diploma.app.navigation.routes.FiltersRoute
-import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationActions
 import ru.practicum.android.diploma.feature.filters.ui.filters.FiltersScreen
-import ru.practicum.android.diploma.feature.filters.ui.industry.IndustryFilterScreen
+import ru.practicum.android.diploma.feature.filters.ui.industry.SelectIndustryScreen
 import ru.practicum.android.diploma.feature.filters.ui.worklocation.WorkLocationScreen
 
 fun filtersEntryProvider(
     viewModel: FiltersViewModel,
-    backStack: NavBackStack<NavKey>
+    backStack: NavBackStack<NavKey>,
+    onCloseFilters: () -> Unit
 ) = entryProvider<NavKey> {
     entry<FiltersRoute.Main> {
+        val filtersUiState by viewModel.filtersUiState.collectAsState()
+
         FiltersScreen(
-            state = viewModel.state.collectAsState().value,
+            state = filtersUiState,
             actions = FiltersActions(
                 onBackClick = {
                     viewModel.saveSettings(false)
-                    backStack.removeLastOrNull()
+                    onCloseFilters()
                 },
                 onIndustryFilter = { backStack.add(FiltersRoute.Industry) },
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
                 onCheckBox = viewModel::onCheckBox,
                 onApplyClick = { isStartSearch ->
                     viewModel.saveSettings(isStartSearch as Boolean)
-                    backStack.removeLastOrNull()
+                    onCloseFilters()
                 },
                 onClearClick = { clear -> viewModel.clear(clear) },
                 onWorkLocationFilter = { backStack.add(FiltersRoute.WorkLocation) },
@@ -44,21 +47,21 @@ fun filtersEntryProvider(
     }
 
     entry<FiltersRoute.Industry> {
-        IndustryFilterScreen(
-            state = viewModel.state.collectAsState().value,
-            actions = FiltersActions(
-                onBackClick = { backStack.removeLastOrNull() },
-                onSearchTextChange = viewModel::onSearchTextChange,
-                onApplyClick = { industry ->
-                    viewModel.onIndustrySelected(industry as FilterIndustry)
-                    backStack.removeLastOrNull()
-                },
-                onWorkLocationFilter = { },
-                onIndustryFilter = { },
-                onSalaryTextChange = { },
-                onCheckBox = { },
-                onClearClick = { }
-            )
+        LaunchedEffect(Unit) { viewModel.getIndustries() }
+
+        val state by viewModel.industryState.collectAsState()
+        val initSelectedIndustry = viewModel.filtersUiState.collectAsState().value.industry
+
+        SelectIndustryScreen(
+            screenState = state,
+            initSelectedIndustry = initSelectedIndustry,
+            onBackClick = { backStack.removeLastOrNull() },
+            onSearchTextChanged = viewModel::onSearchTextChange,
+            onApplyClick = { industry ->
+                viewModel.onIndustryApplied(industry)
+                backStack.removeLastOrNull()
+            },
+            onIndustryClick = viewModel::onIndustrySelected,
         )
     }
 

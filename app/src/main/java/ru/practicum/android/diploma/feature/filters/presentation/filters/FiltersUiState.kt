@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.feature.filters.presentation
 
-import okhttp3.internal.immutableListOf
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 
@@ -10,8 +9,6 @@ data class FiltersUiState(
     val industry: FilterIndustry? = null,
     val salaryText: String = "",
     val isCheckBox: Boolean = false,
-    val industries: List<FilterIndustry> = immutableListOf(),
-    val filteredIndustries: List<FilterIndustry> = immutableListOf(),
     val errorMessage: String = "",
     val searchText: String = "",
     val countries: List<GeoArea.Country> = immutableListOf(),
