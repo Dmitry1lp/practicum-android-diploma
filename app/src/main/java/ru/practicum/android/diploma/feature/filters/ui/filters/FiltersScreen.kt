@@ -50,7 +50,7 @@ fun FiltersScreen(
                 text = location,
                 hint = stringResource(R.string.filter_work_location),
                 onClick = actions.onWorkLocationFilter,
-                onIconClick = { TODO("actions.onClearClick(Clear.WorkLocation)") }
+                onIconClick = { actions.onClearClick(ClearTarget.WorkLocation) }
             )
             SelectableFilterItem(
                 text = state.industry?.name,
@@ -71,7 +71,7 @@ fun FiltersScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            if (isStateChanged(state)) {
+            if (true) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(AppDimensions.paddingSmall)
                 ) {
@@ -88,12 +88,6 @@ fun FiltersScreen(
         }
     }
 }
-
-@Deprecated("Заглушка. Заменить на реализацию ViewModel")
-private fun isStateChanged(state: FiltersUiState): Boolean =
-    state.salaryText.isNotEmpty() ||
-        state.isCheckBox ||
-        state.industry != null
 
 @Preview(showSystemUi = true)
 @PreviewLightDark

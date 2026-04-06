@@ -11,80 +11,74 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
-import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.presentation.components.AppSearchBar
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.core.presentation.components.StateInfo
-import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
-import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersUiState
+import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryScreenState
+import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryUiState
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
 import ru.practicum.android.diploma.feature.filters.ui.filters.RadioButtonItem
+import ru.practicum.android.diploma.feature.filters.ui.states.FilterFetchErrorState
 
 @Composable
-fun IndustryFilterScreen(
+fun SelectIndustryScreen(
     modifier: Modifier = Modifier,
-    state: FiltersUiState,
-    actions: FiltersActions
+    screenState: IndustryScreenState,
+    initSelectedIndustry: FilterIndustry?,
+    onIndustryClick: (FilterIndustry) -> Unit,
+    onSearchTextChanged: (String) -> Unit,
+    onApplyClick: (FilterIndustry?) -> Unit,
+    onBackClick: () -> Unit
 ) {
-    var selectedIndustry by remember(state.industry) {
-        mutableStateOf(state.industry)
-    }
-
     Scaffold(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.screen_select_industry),
-                onNavigationIcon = actions.onBackClick
+                onNavigationIcon = onBackClick
             )
         }
     ) { paddingValues ->
         Column(
             modifier = modifier.padding(paddingValues)
         ) {
+            val isApplyButtonEnabled = initSelectedIndustry != screenState.selectedIndustry
+
             AppSearchBar(
-                text = state.searchText,
+                text = screenState.searchText,
                 hint = stringResource(R.string.hint_search_industry),
-                onTextChange = { actions.onTextChange(it) }
+                onTextChange = { onSearchTextChanged(it) }
             )
-            if (state.filteredIndustries.isNotEmpty()) {
-                Box(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                ) {
-                    ShowContent(
-                        state.filteredIndustries,
-                        selectedIndustry = selectedIndustry,
-                        onSelectionChange = { newIndustry ->
-                            selectedIndustry = newIndustry
-                        }
-                    )
+
+            when (val stateContent = screenState.uiState) {
+                is IndustryUiState.Content -> with(screenState) {
+                    Box(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    ) {
+                        ShowContent(
+                            industries = stateContent.filteredIndustries,
+                            selectedIndustry = selectedIndustry,
+                            onSelectionChange = onIndustryClick
+                        )
+                    }
+
+                    if (isApplyButtonEnabled) {
+                        ApplyButton(
+                            modifier = Modifier.padding(bottom = AppDimensions.paddingBig),
+                            text = stringResource(R.string.button_choose),
+                            onClick = { onApplyClick(selectedIndustry) }
+                        )
+                    }
                 }
-                selectedIndustry?.let {
-                    ApplyButton(
-                        modifier = Modifier.padding(bottom = AppDimensions.paddingBig),
-                        text = stringResource(R.string.button_choose),
-                        onClick = { actions.onApplyClick(it) }
-                    )
-                }
-            } else {
-                StateInfo(
-                    image = R.drawable.img_error_list_fetch,
-                    text = stringResource(R.string.error_list_fetch),
-                    isPaddingBottom = true
-                )
+
+                IndustryUiState.FetchError -> FilterFetchErrorState()
+                IndustryUiState.Loading -> {}
             }
         }
     }
@@ -123,26 +117,5 @@ private fun ShowContent(
                 keyboardController?.hide()
             }
         }
-    }
-}
-
-@Preview(showSystemUi = true)
-@PreviewLightDark
-@Composable
-private fun IndustryFilterScreenPreviewLightMode() {
-    DiplomaTheme {
-        IndustryFilterScreen(
-            state = FiltersUiState(),
-            actions = FiltersActions(
-                onBackClick = { },
-                onWorkLocationFilter = { },
-                onIndustryFilter = { },
-                onSalaryTextChange = { },
-                onCheckBox = { },
-                onSearchTextChange = { },
-                onApplyClick = { },
-                onClearClick = { }
-            )
-        )
     }
 }
