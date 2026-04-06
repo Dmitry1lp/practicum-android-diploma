@@ -5,5 +5,5 @@ data class Developer(
     val role: String,
     val avatarRes: Int?, // drawable
     val github: String?,
-    val max: String?
+    val telegram: String?
 )

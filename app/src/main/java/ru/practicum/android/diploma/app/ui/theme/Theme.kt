@@ -43,6 +43,7 @@ private val DarkColorScheme = darkColorScheme(
     inverseOnSurface = Black,
     outline = White, // hint в строке поиска,
     outlineVariant = White,
+    surface = DarkGraySoft,
 )
 
 @Composable

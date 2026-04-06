@@ -42,12 +42,18 @@
         <item quantity="one">Found %d vacancy</item>
         <item quantity="other">Found %d vacancies</item>
     </plurals>
-    <string-array name="developers">
-        <item>Dmitrii Krylov</item>
-        <item>Dmitrii Perov</item>
-        <item>Ivan Sviridov</item>
-        <item>Sergei Anikin</item>
-    </string-array>
+    <string name="dev_krylov_name">Dmitri Krylov</string>
+    <string name="dev_krylov_role">Team Lead</string>
+
+    <string name="dev_anikin_name">Sergei Anikin</string>
+    <string name="dev_anikin_role">Android Developer</string>
+
+    <string name="dev_perov_name">Dmitri Perov</string>
+    <string name="dev_perov_role">Android Developer</string>
+
+    <string name="dev_sviridov_name">Ivan Sviridov</string>
+    <string name="dev_sviridov_role">Android Developer</string>
+
     <string name="vacancy_salary_not_specified">Salary not specified</string>
     <string name="vacancy_salary_from">From %1$s %2$s</string>
     <string name="vacancy_salary_to">Up to %1$s %2$s</string>
