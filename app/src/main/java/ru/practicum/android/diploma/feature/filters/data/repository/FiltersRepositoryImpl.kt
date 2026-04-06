@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.feature.filters.data
+package ru.practicum.android.diploma.feature.filters.data.repository
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
@@ -14,8 +14,8 @@ import ru.practicum.android.diploma.core.data.network.dto.toGeoArea
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.domain.model.Resource
-import ru.practicum.android.diploma.feature.filters.domain.FiltersRepository
-import ru.practicum.android.diploma.feature.filters.domain.FiltersSettings
+import ru.practicum.android.diploma.feature.filters.data.model.FiltersSettings
+import ru.practicum.android.diploma.feature.filters.domain.repository.FiltersRepository
 
 class FiltersRepositoryImpl(
     private val networkClient: NetworkClient,

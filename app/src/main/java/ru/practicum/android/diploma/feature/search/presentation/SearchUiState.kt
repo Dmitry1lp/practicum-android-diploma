@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.feature.search.presentation
 
-import ru.practicum.android.diploma.feature.filters.domain.FiltersSettings
+import ru.practicum.android.diploma.feature.filters.data.model.FiltersSettings
 
 data class SearchUiState(
     val searchText: String = "",

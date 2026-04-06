@@ -1,10 +1,12 @@
-package ru.practicum.android.diploma.feature.filters.domain
+package ru.practicum.android.diploma.feature.filters.domain.interactor
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.domain.model.Resource
+import ru.practicum.android.diploma.feature.filters.domain.repository.FiltersRepository
+import ru.practicum.android.diploma.feature.filters.data.model.FiltersSettings
 
 class FiltersInteractorImpl(
     private val repository: FiltersRepository

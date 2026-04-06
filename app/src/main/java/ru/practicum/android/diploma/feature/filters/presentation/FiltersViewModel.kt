@@ -10,8 +10,8 @@ import kotlinx.serialization.Serializable
 import okhttp3.internal.immutableListOf
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
-import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
-import ru.practicum.android.diploma.feature.filters.domain.FiltersSettings
+import ru.practicum.android.diploma.feature.filters.domain.interactor.FiltersInteractor
+import ru.practicum.android.diploma.feature.filters.data.model.FiltersSettings
 
 @Serializable
 class FiltersViewModel(

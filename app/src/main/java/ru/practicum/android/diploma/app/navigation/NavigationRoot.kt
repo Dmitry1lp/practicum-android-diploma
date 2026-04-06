@@ -30,8 +30,11 @@ import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewM
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationActions
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 import ru.practicum.android.diploma.feature.filters.ui.filters.FiltersScreen
 import ru.practicum.android.diploma.feature.filters.ui.industry.IndustryFilterScreen
+import ru.practicum.android.diploma.feature.filters.ui.worklocation.WorkLocationScreen
 import ru.practicum.android.diploma.feature.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.feature.search.ui.SearchScreen
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
@@ -198,6 +201,7 @@ private fun appEntryProvider(
                     viewModel.saveSettings(false)
                     topLevelBackStack.removeLast()
                 },
+                onWorkLocationFilter = { topLevelBackStack.add(Route.WorkLocationFilter(viewModel)) },
                 onIndustryFilter = { topLevelBackStack.add(Route.IndustryFilter(viewModel)) },
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
                 onCheckBox = viewModel::onCheckBox,
@@ -226,8 +230,19 @@ private fun appEntryProvider(
         )
     }
 
-    entry<Route.WorkLocationFilter> {
-        // TODO: Выбор места работы
+    entry<Route.WorkLocationFilter> { route ->
+        val viewModel = route.viewModel
+
+        WorkLocationScreen(
+            currentState = WorkLocationUiState(),
+            initState = WorkLocationUiState(),
+            actions = WorkLocationActions(
+                onBackClick = { topLevelBackStack.removeLast() },
+                onCountryClick = { topLevelBackStack.add(Route.CountryFilter) },
+                onRegionClick = { topLevelBackStack.add(Route.RegionFilter) },
+                onApplyClick = {}
+            )
+        )
     }
 
     entry<Route.CountryFilter> {
