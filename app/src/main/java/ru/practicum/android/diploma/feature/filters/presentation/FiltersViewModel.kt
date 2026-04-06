@@ -1,17 +1,18 @@
-package ru.practicum.android.diploma.feature.filters.presentation
+package ru.practicum.android.diploma.feature.filters.presentation.filters
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import okhttp3.internal.immutableListOf
+import okhttp3.internal.toImmutableList
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.feature.filters.domain.interactor.FiltersInteractor
 import ru.practicum.android.diploma.feature.filters.data.model.FiltersSettings
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 
 @Serializable
 class FiltersViewModel(
@@ -23,14 +24,74 @@ class FiltersViewModel(
 
     init {
         getFiltersSettings()
+        getAreas()
         getIndustries()
+    }
+
+    fun updateState(current: Any) {
+        when (current) {
+            is WorkLocationUiState -> _state.update { it.copy(country = current.country, region = current.region) }
+            is GeoArea.Country -> {
+                _state.update { it.copy(currentCountry = current, filteredRegions = current.regions) }
+                if (!current.regions.contains(state.value.currentRegion)) {
+                    _state.update { it.copy(currentRegion = null) }
+                }
+            }
+
+            is GeoArea.Region -> {
+                if (state.value.currentCountry == null) {
+                    val country = state.value.countries.find { it.id == current.countryId }
+                    _state.update {
+                        it.copy(
+                            currentCountry = country,
+                            currentRegion = current,
+                            filteredRegions = country?.regions ?: immutableListOf()
+                        )
+                    }
+                } else {
+                    _state.update { it.copy(currentRegion = current) }
+                }
+            }
+        }
     }
 
     fun onSalaryTextChange(text: String) {
         _state.update { it.copy(salaryText = text) }
     }
 
-    fun onSearchTextChange(text: String) {
+    fun setWorkLocation() {
+        _state.update {
+            it.copy(
+                currentCountry = state.value.country,
+                currentRegion = state.value.region,
+                filteredRegions = state.value.country?.regions ?: state.value.allRegions
+            )
+        }
+    }
+
+    fun onSearchRegionTextChange(text: String) {
+        filterRegions(text)
+    }
+
+    private fun filterRegions(searchText: String) {
+        val regions = state.value.currentCountry?.regions ?: state.value.allRegions
+
+        _state.update { currentState ->
+            val filtered = if (searchText.isBlank()) {
+                regions
+            } else {
+                regions.filter { region ->
+                    region.name.lowercase().contains(searchText.lowercase())
+                }
+            }
+            currentState.copy(
+                searchRegionText = searchText,
+                filteredRegions = filtered
+            )
+        }
+    }
+
+    fun onSearchIndustryTextChange(text: String) {
         filterIndustries(text)
     }
 
@@ -44,7 +105,7 @@ class FiltersViewModel(
                 }
             }
             currentState.copy(
-                searchText = searchText,
+                searchIndustryText = searchText,
                 filteredIndustries = filtered
             )
         }
@@ -84,6 +145,25 @@ class FiltersViewModel(
 
     fun clear(clear: Clear) {
         when (clear) {
+            is Clear.WorkLocation -> _state.update {
+                it.copy(
+                    country = null,
+                    currentCountry = null,
+                    region = null,
+                    currentRegion = null,
+                    filteredRegions = state.value.allRegions
+                )
+            }
+
+            is Clear.Country -> _state.update {
+                it.copy(
+                    currentCountry = null,
+                    currentRegion = null,
+                    filteredRegions = state.value.allRegions
+                )
+            }
+
+            is Clear.Region -> _state.update { it.copy(currentRegion = null) }
             is Clear.Industry -> _state.update { it.copy(industry = null) }
             is Clear.All -> {
                 _state.update {
@@ -92,7 +172,9 @@ class FiltersViewModel(
                         region = null,
                         industry = null,
                         salaryText = "",
-                        isCheckBox = false
+                        isCheckBox = false,
+                        currentCountry = null,
+                        currentRegion = null
                     )
                 }
             }
@@ -152,7 +234,8 @@ class FiltersViewModel(
     ) {
         _state.update {
             it.copy(
-                countries = countries ?: emptyList(),
+                countries = countries?.toImmutableList() ?: immutableListOf(),
+                allRegions = countries?.flatMap { country -> country.regions } ?: immutableListOf(),
                 errorMessage = errorMessage ?: ""
             )
         }

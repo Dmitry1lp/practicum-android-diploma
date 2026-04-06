@@ -35,10 +35,10 @@ sealed interface Route : NavKey {
     data class WorkLocationFilter(val viewModel: FiltersViewModel) : Route
 
     @Serializable
-    data object CountryFilter : Route
+    data class CountryFilter(val viewModel: FiltersViewModel) : Route
 
     @Serializable
-    data object RegionFilter : Route
+    data class RegionFilter(val viewModel: FiltersViewModel) : Route
 
     @Serializable
     data class IndustryFilter(val viewModel: FiltersViewModel) : Route
