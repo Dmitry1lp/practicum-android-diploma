@@ -16,9 +16,9 @@ import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.presentation.filters.Clear
-import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
-import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersUiState
+import ru.practicum.android.diploma.feature.filters.presentation.ClearTarget
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
 import ru.practicum.android.diploma.feature.filters.ui.DismissButton
 import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
@@ -42,29 +42,26 @@ fun FiltersScreen(
         Column(
             modifier = modifier.padding(paddingValues)
         ) {
-            val location: String? =
-                when {
-                    state.country != null && state.region != null -> "${state.country.name}, ${state.region.name}"
-                    state.country != null -> state.country.name
-                    else -> null
+            val location: String? = state.country?.name?.let { country ->
+                "$country, ${state.region?.name}"
             }
 
             SelectableFilterItem(
                 text = location,
                 hint = stringResource(R.string.filter_work_location),
-                onClick = actions.onWorkLocationClick,
-                onIconClick = { actions.onClearClick(Clear.WorkLocation) }
+                onClick = actions.onWorkLocationFilter,
+                onIconClick = { TODO("actions.onClearClick(Clear.WorkLocation)") }
             )
             SelectableFilterItem(
                 text = state.industry?.name,
                 hint = stringResource(R.string.filter_industry),
-                onClick = actions.onIndustryClick,
-                onIconClick = { actions.onClearClick(Clear.Industry) }
+                onClick = actions.onIndustryFilter,
+                onIconClick = { actions.onClearClick(ClearTarget.Industry) }
             )
 
             SalaryInputField(
                 text = state.salaryText,
-                onTextChange = actions.onTextChange
+                onTextChange = actions.onSalaryTextChange
             )
             SwitchFilterItem(
                 text = stringResource(R.string.checkbox_hide_without_salary),
@@ -74,7 +71,7 @@ fun FiltersScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            if (state.isFiltersSettings) {
+            if (isStateChanged(state)) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(AppDimensions.paddingSmall)
                 ) {
@@ -84,13 +81,19 @@ fun FiltersScreen(
                     )
                     DismissButton(
                         text = stringResource(R.string.button_reset),
-                        onClick = { actions.onClearClick(Clear.All) }
+                        onClick = { actions.onClearClick(ClearTarget.All) }
                     )
                 }
             }
         }
     }
 }
+
+@Deprecated("Заглушка. Заменить на реализацию ViewModel")
+private fun isStateChanged(state: FiltersUiState): Boolean =
+    state.salaryText.isNotEmpty() ||
+        state.isCheckBox ||
+        state.industry != null
 
 @Preview(showSystemUi = true)
 @PreviewLightDark
@@ -111,7 +114,16 @@ private fun FiltersScreenPreviewLightMode() {
                 ),
                 isCheckBox = true
             ),
-            actions = FiltersActions()
+            actions = FiltersActions(
+                onBackClick = { },
+                onWorkLocationFilter = { },
+                onIndustryFilter = { },
+                onSalaryTextChange = { },
+                onCheckBox = { },
+                onSearchTextChange = { },
+                onApplyClick = { },
+                onClearClick = { }
+            )
         )
     }
 }
