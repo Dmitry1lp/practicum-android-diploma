@@ -28,8 +28,8 @@ import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
+import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
+import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersViewModel
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationActions
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 import ru.practicum.android.diploma.feature.filters.ui.filters.FiltersScreen
@@ -232,10 +232,11 @@ private fun appEntryProvider(
 
     entry<Route.WorkLocationFilter> { route ->
         val viewModel = route.viewModel
+        val filtersUiState by viewModel.state.collectAsState()
 
         WorkLocationScreen(
-            currentState = WorkLocationUiState(),
-            initState = WorkLocationUiState(),
+            currentState = WorkLocationUiState.fromFiltersState(filtersUiState),
+            initState = WorkLocationUiState.fromFiltersState(filtersUiState),
             actions = WorkLocationActions(
                 onBackClick = { topLevelBackStack.removeLast() },
                 onCountryClick = { topLevelBackStack.add(Route.CountryFilter) },
