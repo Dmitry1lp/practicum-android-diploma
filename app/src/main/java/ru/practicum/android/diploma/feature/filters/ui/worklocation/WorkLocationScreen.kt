@@ -11,11 +11,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
-import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.presentation.filters.Clear
+import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationActions
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
@@ -44,6 +42,8 @@ fun WorkLocationScreen(
     initState: WorkLocationUiState,
     actions: WorkLocationActions,
 ) {
+    val isApplyButtonEnabled = currentState != initState
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -66,24 +66,16 @@ fun WorkLocationScreen(
                     text = area?.name,
                     hint = stringResource(hintId),
                     onClick = action,
-                    onIconClick = {
-                        when (area) {
-                            is GeoArea.Country -> actions.onClearClick(Clear.Country)
-                            is GeoArea.Region -> actions.onClearClick(Clear.Region)
-                            else -> {}
-                        }
-
-                    }
+                    onIconClick = action
                 )
             }
 
             Spacer(Modifier.weight(1f))
 
-            currentState.country?.let {
+            if (isApplyButtonEnabled) {
                 ApplyButton(
-                    modifier = Modifier.padding(bottom = AppDimensions.paddingBig),
                     text = stringResource(R.string.button_apply),
-                    onClick = { actions.onApplyClick(currentState) },
+                    onClick = actions.onApplyClick
                 )
             }
         }
@@ -104,7 +96,6 @@ private fun WorkLocationScreenPreview(
                 onBackClick = { },
                 onCountryClick = { },
                 onRegionClick = { },
-                onClearClick = { },
                 onApplyClick = { }
             )
         )
