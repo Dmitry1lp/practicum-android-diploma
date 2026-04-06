@@ -1,3 +1,5 @@
+@file:Suppress("LongMethod")
+
 package ru.practicum.android.diploma.app.navigation.entries
 
 import android.content.Intent

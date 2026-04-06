@@ -1,4 +1,4 @@
-@file:Suppress("ForbiddenComment")
+@file:Suppress("ForbiddenComment", "LongMethod")
 
 package ru.practicum.android.diploma.app.navigation.entries
 
