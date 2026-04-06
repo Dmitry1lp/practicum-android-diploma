@@ -16,18 +16,16 @@ import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.presentation.ClearTarget
+import ru.practicum.android.diploma.feature.filters.presentation.filters.Clear
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersUiState
-import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
 import ru.practicum.android.diploma.feature.filters.ui.DismissButton
 import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
 
 @Composable
 fun FiltersScreen(
-    currentState: FiltersUiState,
-    areButtonsEnabled: Boolean,
+    state: FiltersUiState,
     modifier: Modifier = Modifier,
     actions: FiltersActions
 ) {
@@ -44,32 +42,36 @@ fun FiltersScreen(
         Column(
             modifier = modifier.padding(paddingValues)
         ) {
+            val location: String? = state.country?.name?.let { country ->
+                "$country, ${state.region?.name}"
+            }
+
             SelectableFilterItem(
-                text = currentState.workLocation.locationString,
+                text = location,
                 hint = stringResource(R.string.filter_work_location),
-                onClick = actions.onWorkLocationClick,
-                onIconClick = { actions.onClearClick(ClearTarget.WorkLocation) }
+                onClick = actions.onWorkLocationFilter,
+                onIconClick = { TODO("actions.onClearClick(Clear.WorkLocation)") }
             )
             SelectableFilterItem(
-                text = currentState.industry?.name,
+                text = state.industry?.name,
                 hint = stringResource(R.string.filter_industry),
-                onClick = actions.onIndustryClick,
-                onIconClick = { actions.onClearClick(ClearTarget.Industry) }
+                onClick = actions.onIndustryFilter,
+                onIconClick = { actions.onClearClick(Clear.Industry) }
             )
 
             SalaryInputField(
-                text = currentState.salaryText,
+                text = state.salaryText,
                 onTextChange = actions.onSalaryTextChange
             )
             SwitchFilterItem(
                 text = stringResource(R.string.checkbox_hide_without_salary),
-                checked = currentState.isCheckBox,
-                onCheckedChange = actions.onCheckBoxChange
+                checked = state.isCheckBox,
+                onCheckedChange = actions.onCheckBox
             )
 
             Spacer(modifier = Modifier.weight(1f))
 
-            if (areButtonsEnabled) {
+            if (isStateChanged(state)) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(AppDimensions.paddingSmall)
                 ) {
@@ -79,7 +81,7 @@ fun FiltersScreen(
                     )
                     DismissButton(
                         text = stringResource(R.string.button_reset),
-                        onClick = { actions.onClearClick(ClearTarget.All) }
+                        onClick = { actions.onClearClick(Clear.All) }
                     )
                 }
             }
@@ -87,37 +89,32 @@ fun FiltersScreen(
     }
 }
 
+@Deprecated("Заглушка. Заменить на реализацию ViewModel")
+private fun isStateChanged(state: FiltersUiState): Boolean =
+    state.salaryText.isNotEmpty() ||
+        state.isCheckBox ||
+        state.industry != null
+
 @Preview(showSystemUi = true)
 @PreviewLightDark
 @Composable
 private fun FiltersScreenPreviewLightMode() {
-    val region = GeoArea.Region(
-        id = 1,
-        name = "Москва",
-        countryId = 0
-    )
-    val country = GeoArea.Country(
-        id = 0,
-        name = "Россия",
-        regions = listOf(region)
-    )
-
     DiplomaTheme {
         FiltersScreen(
-            currentState = FiltersUiState(
-                workLocation = WorkLocationUiState(country, region),
+            state = FiltersUiState(
+                country = GeoArea.Country(
+                    id = 0,
+                    name = "Россия",
+                    regions = emptyList()
+                ),
+                region = GeoArea.Region(
+                    id = 0,
+                    name = "Москва",
+                    countryId = 0
+                ),
                 isCheckBox = true
             ),
-            areButtonsEnabled = true,
-            actions = FiltersActions(
-                onBackClick = { },
-                onWorkLocationClick = { },
-                onIndustryClick = { },
-                onSalaryTextChange = { },
-                onCheckBoxChange = { },
-                onApplyClick = { },
-                onClearClick = { }
-            )
+            actions = FiltersActions()
         )
     }
 }
