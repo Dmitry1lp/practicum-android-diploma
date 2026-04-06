@@ -19,20 +19,24 @@ data class FiltersUiState(
 )
 
 data class FiltersActions(
-    val onBackClick: () -> Unit = {},
-    val onWorkLocationFilter: () -> Unit = {},
-    val onCountryFilter: () -> Unit = {},
-    val onRegionFilter: () -> Unit = {},
-    val onIndustryFilter: () -> Unit = {},
-    val onSalaryTextChange: (String) -> Unit = {},
-    val onCheckBox: () -> Unit = {},
-    val onSearchTextChange: (String) -> Unit = {},
-    val onApplyClick: (Any?) -> Unit = {},
-    val onClearClick: (Clear) -> Unit = {}
+    val onBackClick: () -> Unit,
+    val onWorkLocationFilter: () -> Unit,
+    val onIndustryFilter: () -> Unit,
+    val onSalaryTextChange: (String) -> Unit,
+    val onCheckBox: () -> Unit,
+    val onSearchTextChange: (String) -> Unit,
+    val onApplyClick: (Any?) -> Unit,
+    val onClearClick: (ClearTarget) -> Unit
 )
 
-sealed interface Clear {
-    object Industry : Clear
-    object All : Clear
-    object Settings : Clear
+/**
+ * Определяет цель очистки данных.
+ */
+sealed interface ClearTarget {
+    data object AppPreferences : ClearTarget
+    data object All : ClearTarget
+    data object Industry : ClearTarget
+    data object WorkLocation : ClearTarget
+    data object Country : ClearTarget
+    data object Region : ClearTarget
 }

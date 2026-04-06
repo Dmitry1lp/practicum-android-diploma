@@ -133,7 +133,16 @@ private fun IndustryFilterScreenPreviewLightMode() {
     DiplomaTheme {
         IndustryFilterScreen(
             state = FiltersUiState(),
-            actions = FiltersActions()
+            actions = FiltersActions(
+                onBackClick = { },
+                onWorkLocationFilter = { },
+                onIndustryFilter = { },
+                onSalaryTextChange = { },
+                onCheckBox = { },
+                onSearchTextChange = { },
+                onApplyClick = { },
+                onClearClick = { }
+            )
         )
     }
 }

@@ -1,22 +1,28 @@
+@file:Suppress("ForbiddenComment")
+
 package ru.practicum.android.diploma.feature.filters.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 import okhttp3.internal.immutableListOf
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
 import ru.practicum.android.diploma.feature.filters.domain.FiltersSettings
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 
-@Serializable
 class FiltersViewModel(
     private val interactor: FiltersInteractor
 ) : ViewModel() {
+
+    private val _workLocationState = MutableStateFlow(WorkLocationUiState()) // TODO: забирать актуальное состояние
+    val workLocationState: StateFlow<WorkLocationUiState> = _workLocationState.asStateFlow()
 
     private val _state = MutableStateFlow(FiltersUiState())
     val state = _state
@@ -78,14 +84,17 @@ class FiltersViewModel(
                 )
             )
         } else {
-            clear(Clear.Settings)
+            clear(ClearTarget.AppPreferences)
         }
     }
 
-    fun clear(clear: Clear) {
-        when (clear) {
-            is Clear.Industry -> _state.update { it.copy(industry = null) }
-            is Clear.All -> {
+    /**
+     * Сбрасывает значение указанного [target].
+     */
+    fun clear(target: ClearTarget) {
+        when (target) {
+            is ClearTarget.AppPreferences -> interactor.clearSettings()
+            is ClearTarget.All -> {
                 _state.update {
                     it.copy(
                         country = null,
@@ -97,7 +106,10 @@ class FiltersViewModel(
                 }
             }
 
-            is Clear.Settings -> interactor.clearSettings()
+            is ClearTarget.Industry -> _state.update { it.copy(industry = null) }
+            is ClearTarget.Country -> TODO()
+            is ClearTarget.Region -> TODO()
+            is ClearTarget.WorkLocation -> TODO()
         }
     }
 

@@ -16,7 +16,7 @@ import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.presentation.Clear
+import ru.practicum.android.diploma.feature.filters.presentation.ClearTarget
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
@@ -56,7 +56,7 @@ fun FiltersScreen(
                 text = state.industry?.name,
                 hint = stringResource(R.string.filter_industry),
                 onClick = actions.onIndustryFilter,
-                onIconClick = { actions.onClearClick(Clear.Industry) }
+                onIconClick = { actions.onClearClick(ClearTarget.Industry) }
             )
 
             SalaryInputField(
@@ -81,7 +81,7 @@ fun FiltersScreen(
                     )
                     DismissButton(
                         text = stringResource(R.string.button_reset),
-                        onClick = { actions.onClearClick(Clear.All) }
+                        onClick = { actions.onClearClick(ClearTarget.All) }
                     )
                 }
             }
@@ -114,7 +114,16 @@ private fun FiltersScreenPreviewLightMode() {
                 ),
                 isCheckBox = true
             ),
-            actions = FiltersActions()
+            actions = FiltersActions(
+                onBackClick = { },
+                onWorkLocationFilter = { },
+                onIndustryFilter = { },
+                onSalaryTextChange = { },
+                onCheckBox = { },
+                onSearchTextChange = { },
+                onApplyClick = { },
+                onClearClick = { }
+            )
         )
     }
 }
