@@ -7,22 +7,19 @@ data class WorkLocationUiState(
     val country: GeoArea.Country? = null,
     val region: GeoArea.Region? = null
 ) {
-    val locationString: String?
-        get() = when {
-            country != null && region != null -> "${country.name}, ${region.name}"
-            country != null -> country.name
-            else -> null
-        }
-
-    val isEmpty: Boolean
-        get() = country == null && region == null
-
     companion object {
         fun fromFiltersState(filtersState: FiltersUiState): WorkLocationUiState {
             return WorkLocationUiState(
-                country = filtersState.currentCountry,
-                region = filtersState.currentRegion
+                country = filtersState.country,
+                region = filtersState.region
             )
         }
     }
 }
+
+data class WorkLocationActions(
+    val onBackClick: () -> Unit,
+    val onCountryClick: () -> Unit,
+    val onRegionClick: () -> Unit,
+    val onApplyClick: () -> Unit
+)
