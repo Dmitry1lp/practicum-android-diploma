@@ -11,41 +11,33 @@ class TeamViewModel : ViewModel() {
         listOf(
             Developer(
                 name = "Дмитрий Крылов",
-                role = ROLE_TEAM_LEAD,
+                role = "Team Lead",
                 avatarRes = R.drawable.img_dmitrii_krylov,
-                github = GITHUB_BASE + "dimasla4ee",
-                telegram = TELEGRAM_BASE + "dimasla4ee_dimaslop"
+                github = "https://github.com/dimasla4ee",
+                telegram = "https://t.me/dimasla4ee_dimaslop"
             ),
             Developer(
                 name = "Сергей Аникин",
-                role = ROLE_ANDROID,
-                avatarRes = R.drawable.img_sergei_anikin,
-                github = GITHUB_BASE + "Nicoanik",
-                telegram = TELEGRAM_BASE + "Nicoanik"
+                role = "Android Developer",
+                avatarRes = R.drawable.img_sergey_anikin,
+                github = "https://github.com/Nicoanik",
+                telegram = "https://t.me/Nicoanik"
             ),
             Developer(
                 name = "Дмитрий Перов",
-                role = ROLE_ANDROID,
+                role = "Android Developer",
                 avatarRes = R.drawable.img_dmitrii_perov,
-                github = GITHUB_BASE + "Dmitry1lp",
-                telegram = TELEGRAM_BASE + "glowapkapps"
+                github = "https://github.com/Dmitry1lp",
+                telegram = "https://t.me/glowapkapps"
             ),
             Developer(
                 name = "Иван Свиридов",
-                role = ROLE_ANDROID,
+                role = "Android Developer",
                 avatarRes = R.drawable.img_ivan_sviridov,
-                github = GITHUB_BASE + "Sviridov-Ivan",
-                telegram = TELEGRAM_BASE + "Ivan_Sviridov_razRab"
+                github = "https://github.com/Sviridov-Ivan",
+                telegram = "https://t.me/Ivan_Sviridov_razRab"
             ),
         )
     )
     val developers: StateFlow<List<Developer>> = _developers
-
-    companion object {
-        private const val ROLE_ANDROID = "Android Developer"
-        private const val ROLE_TEAM_LEAD = "Team Lead"
-        private const val GITHUB_BASE = "https://github.com/"
-        private const val TELEGRAM_BASE = "https://t.me/"
-
-    }
 }
