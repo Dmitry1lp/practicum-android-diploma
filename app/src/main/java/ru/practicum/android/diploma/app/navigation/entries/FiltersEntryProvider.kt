@@ -10,8 +10,9 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import ru.practicum.android.diploma.app.navigation.routes.FiltersRoute
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
+import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
+import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryActions
+import ru.practicum.android.diploma.feature.filters.presentation.viewmodel.FiltersViewModel
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationActions
 import ru.practicum.android.diploma.feature.filters.ui.filters.FiltersScreen
 import ru.practicum.android.diploma.feature.filters.ui.industry.SelectIndustryScreen
@@ -31,16 +32,15 @@ fun filtersEntryProvider(
             initState = initState,
             actions = FiltersActions(
                 onBackClick = onCloseFilters,
-                onIndustryFilter = { backStack.add(FiltersRoute.Industry) },
+                onWorkLocationClick = { backStack.add(FiltersRoute.WorkLocation) },
+                onIndustryClick = { backStack.add(FiltersRoute.Industry) },
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
-                onCheckBox = viewModel::onCheckBox,
+                onCheckBoxChange = viewModel::onCheckBox,
                 onApplyClick = { isStartSearch ->
                     viewModel.saveSettings(isStartSearch as Boolean)
                     onCloseFilters()
                 },
-                onClearClick = { clear -> viewModel.clear(clear) },
-                onWorkLocationFilter = { backStack.add(FiltersRoute.WorkLocation) },
-                onSearchTextChange = { }
+                onClearClick = { target -> viewModel.clear(target) }
             )
         )
     }
@@ -54,13 +54,15 @@ fun filtersEntryProvider(
         SelectIndustryScreen(
             screenState = state,
             initSelectedIndustry = initSelectedIndustry,
-            onBackClick = { backStack.removeLastOrNull() },
-            onSearchTextChanged = viewModel::onSearchTextChange,
-            onApplyClick = { industry ->
-                viewModel.onIndustryApplied(industry)
-                backStack.removeLastOrNull()
-            },
-            onIndustryClick = viewModel::onIndustrySelected,
+            actions = IndustryActions(
+                onBackClick = { backStack.removeLastOrNull() },
+                onSearchTextChanged = viewModel::onSearchTextChange,
+                onIndustryClick = { industry ->
+                    viewModel.onIndustryApplied(industry)
+                    backStack.removeLastOrNull()
+                },
+                onApplyClick = viewModel::onIndustrySelected
+            )
         )
     }
 

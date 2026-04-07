@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.feature.filters.presentation
+package ru.practicum.android.diploma.feature.filters.presentation.filters
 
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
@@ -33,15 +33,3 @@ data class FiltersActions(
     val onApplyClick: (Any?) -> Unit,
     val onClearClick: (ClearTarget) -> Unit
 )
-
-/**
- * Определяет цель очистки данных.
- */
-sealed interface ClearTarget {
-    data object AppPreferences : ClearTarget
-    data object All : ClearTarget
-    data object Industry : ClearTarget
-    data object WorkLocation : ClearTarget
-    data object Country : ClearTarget
-    data object Region : ClearTarget
-}

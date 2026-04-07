@@ -34,16 +34,15 @@ class FiltersViewModel(
     private val _industryState = MutableStateFlow(IndustryScreenState())
     val industryState: StateFlow<IndustryScreenState> = _industryState.asStateFlow()
 
-    private val _workLocationState = MutableStateFlow(WorkLocationUiState())
+    private val _workLocationState =
+        MutableStateFlow(WorkLocationUiState()) // TODO: забирать актуальное состояние
     val workLocationState: StateFlow<WorkLocationUiState> = _workLocationState.asStateFlow()
 
     init {
         getFiltersSettings()
         viewModelScope.launch {
-            filtersUiState.first().let { initialFiltersState = it.copy() }
-            filtersUiState.collect { uiState ->
-                _industryState.update { it.copy(selectedIndustry = uiState.industry) }
-                _workLocationState.update { uiState.workLocation }
+            filtersUiState.first().let { state ->
+                initialFiltersState = state.copy()
             }
         }
     }
@@ -70,8 +69,113 @@ class FiltersViewModel(
         else -> _industryState.update { it.copy(searchText = text) }
     }
 
+    private val _workLocationState = MutableStateFlow(WorkLocationUiState()) // TODO: забирать актуальное состояние
+    val workLocationState: StateFlow<WorkLocationUiState> = _workLocationState.asStateFlow()
+
+    /**
+     * Init state
+     */
+    private val _filtersUiState = MutableStateFlow(FiltersUiState())
+    val filtersUiState: StateFlow<FiltersUiState> = _filtersUiState.asStateFlow()
+
+    init {
+        getFiltersSettings()
+        getAreas()
+        getIndustries()
+    }
+
+    fun setWorkLocationScreen() {
+        _state.update {
+            it.copy(
+                searchText = "",
+                currentCountry = state.value.country,
+                currentRegion = state.value.region,
+                filteredRegions = state.value.country?.regions ?: state.value.allRegions
+            )
+        }
+    }
+
+    fun setIndustryScreen() {
+        _state.update {
+            it.copy(
+                searchText = "",
+                filteredIndustries = it.industries
+            )
+        }
+    }
+
+    fun updateState(current: Any) {
+        when (current) {
+            is WorkLocationUiState -> _state.update { it.copy(country = current.country, region = current.region) }
+            is GeoArea.Country -> {
+                _state.update { it.copy(currentCountry = current, filteredRegions = current.regions) }
+                if (!current.regions.contains(state.value.currentRegion)) {
+                    _state.update { it.copy(currentRegion = null) }
+                }
+            }
+
+            is GeoArea.Region -> {
+                if (state.value.currentCountry == null) {
+                    val country = state.value.countries.find { it.id == current.countryId }
+                    _state.update {
+                        it.copy(
+                            searchText = "",
+                            currentCountry = country,
+                            currentRegion = current,
+                            filteredRegions = country?.regions ?: immutableListOf()
+                        )
+                    }
+                } else {
+                    _state.update { it.copy(currentRegion = current) }
+                }
+            }
+        }
+    }
+
     fun onSalaryTextChange(text: String) {
-        _filtersUiState.update { it.copy(salaryText = text) }
+        _state.update { it.copy(salaryText = text) }
+    }
+
+    fun onSearchRegionTextChange(text: String) {
+        filterRegions(text)
+    }
+
+    private fun filterRegions(searchText: String) {
+        val regions = state.value.currentCountry?.regions ?: state.value.allRegions
+
+        _state.update { currentState ->
+            val filtered = if (searchText.isBlank()) {
+                regions
+            } else {
+                regions.filter { region ->
+                    region.name.lowercase().contains(searchText.lowercase())
+                }
+            }
+            currentState.copy(
+                searchText = searchText,
+                filteredRegions = filtered
+            )
+        }
+    }
+
+    fun onSearchIndustryTextChange(text: String) {
+        filterIndustries(text)
+    }
+
+    private fun filterIndustries(searchText: String) {
+        _state.update { currentState ->
+            val filtered = if (searchText.isBlank()) {
+                currentState.industries
+            } else {
+                currentState.industries.filter { industry ->
+                    industry.name.lowercase().contains(searchText.lowercase())
+                }
+            }
+            currentState.copy(
+                searchText = searchText,
+                filteredIndustries = filtered
+            )
+        }
     }
 
     fun onCheckBox() {
@@ -79,11 +183,12 @@ class FiltersViewModel(
     }
 
     fun saveSettings(isStartSearch: Boolean) {
+        if (state.value.isFiltersSettings) {
         val selectedIndustry = industryState.value.selectedIndustry
 
         val hasActiveFilters =
-            filtersUiState.value.workLocation.country != null ||
-                filtersUiState.value.workLocation.region != null ||
+            filtersUiState.value.country != null ||
+                filtersUiState.value.region != null ||
                 selectedIndustry != null ||
                 filtersUiState.value.salaryText.isNotEmpty() ||
                 filtersUiState.value.isCheckBox
@@ -91,8 +196,8 @@ class FiltersViewModel(
         if (hasActiveFilters) {
             interactor.saveFiltersSetting(
                 FiltersSettings(
-                    country = filtersUiState.value.workLocation.country,
-                    region = filtersUiState.value.workLocation.region,
+                    country = filtersUiState.value.country,
+                    region = filtersUiState.value.region,
                     industry = selectedIndustry,
                     salaryText = filtersUiState.value.salaryText.ifEmpty { null },
                     onlyWithSalary = filtersUiState.value.isCheckBox.let { if (!it) null else true },
@@ -113,10 +218,13 @@ class FiltersViewModel(
             is ClearTarget.All -> {
                 _filtersUiState.update {
                     it.copy(
-                        workLocation = WorkLocationUiState(),
+                        country = null,
+                        region = null,
                         industry = null,
                         salaryText = "",
-                        isCheckBox = false
+                        isCheckBox = false,
+                        currentCountry = null,
+                        currentRegion = null
                     )
                 }
             }
@@ -137,10 +245,8 @@ class FiltersViewModel(
         filtersSettings?.let {
             _filtersUiState.update {
                 it.copy(
-                    workLocation = WorkLocationUiState(
-                        country = filtersSettings.country,
-                        region = filtersSettings.region
-                    ),
+                    country = filtersSettings.country,
+                    region = filtersSettings.region,
                     industry = filtersSettings.industry,
                     salaryText = filtersSettings.salaryText ?: "",
                     isCheckBox = filtersSettings.onlyWithSalary ?: false
@@ -195,6 +301,12 @@ class FiltersViewModel(
         countries: List<GeoArea.Country>?,
         errorMessage: String?
     ) {
-        // TODO: изменить под интерактор
+        _filtersUiState.update {
+            it.copy(
+                countries = countries?.toImmutableList() ?: immutableListOf(),
+                allRegions = countries?.flatMap { country -> country.regions } ?: immutableListOf(),
+                errorMessage = errorMessage ?: ""
+            )
+        }
     }
 }
