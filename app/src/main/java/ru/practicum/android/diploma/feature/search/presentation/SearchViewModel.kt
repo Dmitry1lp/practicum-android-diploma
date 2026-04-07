@@ -72,7 +72,16 @@ class SearchViewModel(
         currentPage = 1
         maxPages = 1
 
-        val query = applyFiltersToQuery(queryText)
+        val filters = _uiState.value.filtersSettings
+
+        val query = VacancyQuery(
+            text = queryText,
+            area = filters?.region?.id ?: filters?.country?.id,
+            industry = filters?.industry?.id,
+            salary = filters?.salaryText?.toIntOrNull(),
+            onlyWithSalary = filters?.onlyWithSalary,
+            page = currentPage
+        )
 
         Log.d("PAGINATION0", "Requesting page = $currentPage")
         when (val result = searchInteractor.searchVacancies(query)) {
@@ -126,17 +135,6 @@ class SearchViewModel(
         }
     }
 
-    private fun applyFiltersToQuery(query: String): VacancyQuery = _uiState.value.filtersSettings.let { filters ->
-        VacancyQuery(
-            text = query,
-            area = filters?.region?.id,
-            industry = filters?.industry?.id,
-            salary = filters?.salaryText?.toIntOrNull(),
-            onlyWithSalary = filters?.onlyWithSalary,
-            page = currentPage
-        )
-    }
-
     fun loadNextPage() {
         val queryText = _uiState.value.searchText
 
@@ -144,11 +142,22 @@ class SearchViewModel(
         if (_uiState.value.isNextPageLoading || currentPage >= maxPages) return
 
         viewModelScope.launch {
-            _uiState.update { it.copy(isNextPageLoading = true) }
+            _uiState.update {
+                it.copy(isNextPageLoading = true)
+            }
 
             currentPage++
 
-            val query = applyFiltersToQuery(queryText)
+            val filters = _uiState.value.filtersSettings
+
+            val query = VacancyQuery(
+                text = queryText,
+                area = filters?.region?.id ?: filters?.country?.id,
+                industry = filters?.industry?.id,
+                salary = filters?.salaryText?.toIntOrNull(),
+                onlyWithSalary = filters?.onlyWithSalary,
+                page = currentPage
+            )
 
             Log.d("PAGINATION", "Requesting page = $currentPage")
             when (val result = searchInteractor.searchVacancies(query)) {
@@ -172,10 +181,14 @@ class SearchViewModel(
                         else -> VacancyState.ErrorFound
                     }
 
-                    _uiState.update { it.copy(vacancyState = newState) }
+                    _uiState.update {
+                        it.copy(vacancyState = newState)
+                    }
                 }
             }
-            _uiState.update { it.copy(isNextPageLoading = false) }
+            _uiState.update {
+                it.copy(isNextPageLoading = false)
+            }
         }
     }
 
