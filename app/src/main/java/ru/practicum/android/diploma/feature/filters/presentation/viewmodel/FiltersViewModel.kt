@@ -34,15 +34,16 @@ class FiltersViewModel(
     private val _industryState = MutableStateFlow(IndustryScreenState())
     val industryState: StateFlow<IndustryScreenState> = _industryState.asStateFlow()
 
-    private val _workLocationState =
-        MutableStateFlow(WorkLocationUiState()) // TODO: забирать актуальное состояние
+    private val _workLocationState = MutableStateFlow(WorkLocationUiState())
     val workLocationState: StateFlow<WorkLocationUiState> = _workLocationState.asStateFlow()
 
     init {
         getFiltersSettings()
         viewModelScope.launch {
-            filtersUiState.first().let { state ->
-                initialFiltersState = state.copy()
+            filtersUiState.first().let { initialFiltersState = it.copy() }
+            filtersUiState.collect { uiState ->
+                _industryState.update { it.copy(selectedIndustry = uiState.industry) }
+                _workLocationState.update { uiState.workLocation }
             }
         }
     }
@@ -81,8 +82,8 @@ class FiltersViewModel(
         val selectedIndustry = industryState.value.selectedIndustry
 
         val hasActiveFilters =
-            filtersUiState.value.country != null ||
-                filtersUiState.value.region != null ||
+            filtersUiState.value.workLocation.country != null ||
+                filtersUiState.value.workLocation.region != null ||
                 selectedIndustry != null ||
                 filtersUiState.value.salaryText.isNotEmpty() ||
                 filtersUiState.value.isCheckBox
@@ -90,8 +91,8 @@ class FiltersViewModel(
         if (hasActiveFilters) {
             interactor.saveFiltersSetting(
                 FiltersSettings(
-                    country = filtersUiState.value.country,
-                    region = filtersUiState.value.region,
+                    country = filtersUiState.value.workLocation.country,
+                    region = filtersUiState.value.workLocation.region,
                     industry = selectedIndustry,
                     salaryText = filtersUiState.value.salaryText.ifEmpty { null },
                     onlyWithSalary = filtersUiState.value.isCheckBox.let { if (!it) null else true },
@@ -112,8 +113,7 @@ class FiltersViewModel(
             is ClearTarget.All -> {
                 _filtersUiState.update {
                     it.copy(
-                        country = null,
-                        region = null,
+                        workLocation = WorkLocationUiState(),
                         industry = null,
                         salaryText = "",
                         isCheckBox = false
@@ -137,8 +137,10 @@ class FiltersViewModel(
         filtersSettings?.let {
             _filtersUiState.update {
                 it.copy(
-                    country = filtersSettings.country,
-                    region = filtersSettings.region,
+                    workLocation = WorkLocationUiState(
+                        country = filtersSettings.country,
+                        region = filtersSettings.region
+                    ),
                     industry = filtersSettings.industry,
                     salaryText = filtersSettings.salaryText ?: "",
                     isCheckBox = filtersSettings.onlyWithSalary ?: false
