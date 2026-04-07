@@ -11,13 +11,6 @@ data class WorkLocationUiState(
     companion object {
         fun fromFiltersState(filtersState: FiltersUiState): WorkLocationUiState {
             return WorkLocationUiState(
-                country = filtersState.country,
-                region = filtersState.region
-            )
-        }
-
-        fun fromCurrentFiltersState(filtersState: FiltersUiState): WorkLocationUiState {
-            return WorkLocationUiState(
                 country = filtersState.currentCountry,
                 region = filtersState.currentRegion
             )
