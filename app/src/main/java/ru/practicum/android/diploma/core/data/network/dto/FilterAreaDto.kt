@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.core.data.network.dto
 
-import ru.practicum.android.diploma.core.domain.model.FilterArea
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 
 data class FilterAreaDto(
@@ -9,18 +8,6 @@ data class FilterAreaDto(
     val parentId: Int?,
     val areas: List<FilterAreaDto>
 )
-
-@Deprecated(
-    message = "Используйте FilterAreaDto.toGeoArea() для поддержки иерархии стран и регионов",
-    replaceWith = ReplaceWith("this.toGeoArea()"),
-    level = DeprecationLevel.WARNING
-)
-fun FilterAreaDto.toDomain(): FilterArea {
-    return FilterArea(
-        id = id,
-        name = name
-    )
-}
 
 fun FilterAreaDto.toGeoArea(): GeoArea = when {
     parentId == null -> GeoArea.Country(
