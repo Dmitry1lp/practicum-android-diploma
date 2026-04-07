@@ -55,7 +55,7 @@ fun TeamScreen(
             item {
                 Text(
                     text = stringResource(R.string.about_team),
-                    style = AppTypography.titleLarge,
+                    style = AppTypography.titleMedium,
                     modifier = Modifier.padding(AppDimensions.paddingMedium)
                 )
             }
