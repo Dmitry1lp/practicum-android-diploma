@@ -10,6 +10,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import ru.practicum.android.diploma.app.navigation.routes.FiltersRoute
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
+import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersUiState
 import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryActions
 import ru.practicum.android.diploma.feature.filters.presentation.viewmodel.FiltersViewModel
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationActions
@@ -24,13 +25,16 @@ fun filtersEntryProvider(
 ) = entryProvider<NavKey> {
     entry<FiltersRoute.Main> {
         val currentState by viewModel.filtersUiState.collectAsState()
-        val initState = viewModel.initialFiltersState ?: currentState
+        val initState = FiltersUiState()
 
         FiltersScreen(
             currentState = currentState,
             initState = initState,
             actions = FiltersActions(
-                onBackClick = onCloseFilters,
+                onBackClick = {
+                    viewModel.saveSettings(false)
+                    onCloseFilters()
+                },
                 onWorkLocationClick = { backStack.add(FiltersRoute.WorkLocation) },
                 onIndustryClick = { backStack.add(FiltersRoute.Industry) },
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
@@ -48,11 +52,9 @@ fun filtersEntryProvider(
         LaunchedEffect(Unit) { viewModel.getIndustries() }
 
         val state by viewModel.industryState.collectAsState()
-        val initSelectedIndustry = viewModel.filtersUiState.collectAsState().value.industry
 
         SelectIndustryScreen(
             screenState = state,
-            initSelectedIndustry = initSelectedIndustry,
             actions = IndustryActions(
                 onBackClick = { backStack.removeLastOrNull() },
                 onSearchTextChanged = viewModel::onSearchTextChange,

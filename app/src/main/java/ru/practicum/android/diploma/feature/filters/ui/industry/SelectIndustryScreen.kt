@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
-import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.presentation.components.AppSearchBar
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryActions
@@ -23,10 +22,9 @@ import ru.practicum.android.diploma.feature.filters.ui.states.FilterFetchErrorSt
 fun SelectIndustryScreen(
     modifier: Modifier = Modifier,
     screenState: IndustryScreenState,
-    initSelectedIndustry: FilterIndustry?,
     actions: IndustryActions
 ) {
-    val isApplyButtonEnabled = initSelectedIndustry != screenState.selectedIndustry
+    val isApplyButtonEnabled = screenState.selectedIndustry != null
 
     Scaffold(
         topBar = {
