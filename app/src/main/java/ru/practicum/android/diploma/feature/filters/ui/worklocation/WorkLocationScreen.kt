@@ -15,7 +15,7 @@ import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.presentation.filters.Clear
+import ru.practicum.android.diploma.feature.filters.presentation.ClearTarget
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationActions
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
@@ -66,8 +66,8 @@ fun WorkLocationScreen(
                     onClick = action,
                     onIconClick = {
                         when (area) {
-                            is GeoArea.Country -> actions.onClearClick(Clear.Country)
-                            is GeoArea.Region -> actions.onClearClick(Clear.Region)
+                            is GeoArea.Country -> actions.onClearClick(ClearTarget.Country)
+                            is GeoArea.Region -> actions.onClearClick(ClearTarget.Region)
                             else -> {}
                         }
 
