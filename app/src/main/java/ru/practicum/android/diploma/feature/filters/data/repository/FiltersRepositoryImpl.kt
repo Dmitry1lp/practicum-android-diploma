@@ -28,8 +28,8 @@ class FiltersRepositoryImpl(
             SUCCESS -> with(response as GeoAreasResponse) {
                 Resource.Success(
                     geoAreas
-                    .map { it.toGeoArea() }
-                    .filterIsInstance<GeoArea.Country>()
+                        .map { it.toGeoArea() }
+                        .filterIsInstance<GeoArea.Country>()
                 )
             }
 
