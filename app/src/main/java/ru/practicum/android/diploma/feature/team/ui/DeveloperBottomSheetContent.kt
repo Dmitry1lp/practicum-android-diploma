@@ -60,7 +60,6 @@ fun DeveloperBottomSheetContent(
         Spacer(modifier = Modifier.height(AppDimensions.paddingBig))
 
         Row(horizontalArrangement = Arrangement.spacedBy(AppDimensions.paddingMedium)) {
-
             developer.github?.let {
                 AssistChip(
                     onClick = { onGithubClick(it) },

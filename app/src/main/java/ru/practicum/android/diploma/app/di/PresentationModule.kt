@@ -40,7 +40,7 @@ val presentationModule = module {
         FiltersViewModel(get())
     }
 
-    viewModel <TeamViewModel> {
+    viewModel<TeamViewModel> {
         TeamViewModel()
     }
 }

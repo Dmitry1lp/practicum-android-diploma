@@ -15,7 +15,7 @@ import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.presentation.filters.Clear
+import ru.practicum.android.diploma.feature.filters.presentation.ClearTarget
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationActions
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
@@ -30,7 +30,6 @@ import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
  *
  * @param modifier Модификатор для внешнего позиционирования
  * @param currentState Текущее состояние экрана (выбранные страна и регион)
- * @param initState Исходное состояние, с которым сравниваются изменения (обычно пришло из сохранённых фильтров)
  * @param actions Колбэки для обработки действий пользователя:
  *   - [WorkLocationActions.onBackClick] - возврат на предыдущий экран
  *   - [WorkLocationActions.onCountryClick] - переход к выбору страны
@@ -41,7 +40,6 @@ import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
 fun WorkLocationScreen(
     modifier: Modifier = Modifier,
     currentState: WorkLocationUiState,
-    initState: WorkLocationUiState,
     actions: WorkLocationActions,
 ) {
     Scaffold(
@@ -68,8 +66,8 @@ fun WorkLocationScreen(
                     onClick = action,
                     onIconClick = {
                         when (area) {
-                            is GeoArea.Country -> actions.onClearClick(Clear.Country)
-                            is GeoArea.Region -> actions.onClearClick(Clear.Region)
+                            is GeoArea.Country -> actions.onClearClick(ClearTarget.Country)
+                            is GeoArea.Region -> actions.onClearClick(ClearTarget.Region)
                             else -> {}
                         }
 
@@ -99,7 +97,6 @@ private fun WorkLocationScreenPreview(
     DiplomaTheme {
         WorkLocationScreen(
             currentState = states.first,
-            initState = states.second,
             actions = WorkLocationActions(
                 onBackClick = { },
                 onCountryClick = { },
