@@ -195,11 +195,6 @@ class FiltersViewModel(
         countries: List<GeoArea.Country>?,
         errorMessage: String?
     ) {
-        _filtersUiState.update {
-            it.copy(
-                countries = countries ?: emptyList(),
-                errorMessage = errorMessage ?: ""
-            )
-        }
+        // TODO: изменить под интерактор
     }
 }
