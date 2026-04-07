@@ -54,9 +54,9 @@ fun IndustryFilterScreen(
             modifier = modifier.padding(paddingValues)
         ) {
             AppSearchBar(
-                text = state.searchIndustryText,
+                text = state.searchText,
                 hint = stringResource(R.string.hint_search_industry),
-                onTextChange = { actions.onSearchTextChange(it) }
+                onTextChange = { actions.onTextChange(it) }
             )
             if (state.filteredIndustries.isNotEmpty()) {
                 Box(

@@ -30,7 +30,6 @@ import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
  *
  * @param modifier Модификатор для внешнего позиционирования
  * @param currentState Текущее состояние экрана (выбранные страна и регион)
- * @param initState Исходное состояние, с которым сравниваются изменения (обычно пришло из сохранённых фильтров)
  * @param actions Колбэки для обработки действий пользователя:
  *   - [WorkLocationActions.onBackClick] - возврат на предыдущий экран
  *   - [WorkLocationActions.onCountryClick] - переход к выбору страны
@@ -41,7 +40,6 @@ import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
 fun WorkLocationScreen(
     modifier: Modifier = Modifier,
     currentState: WorkLocationUiState,
-    initState: WorkLocationUiState,
     actions: WorkLocationActions,
 ) {
     Scaffold(
@@ -99,7 +97,6 @@ private fun WorkLocationScreenPreview(
     DiplomaTheme {
         WorkLocationScreen(
             currentState = states.first,
-            initState = states.second,
             actions = WorkLocationActions(
                 onBackClick = { },
                 onCountryClick = { },

@@ -76,7 +76,7 @@ class SearchViewModel(
 
         val query = VacancyQuery(
             text = queryText,
-            area = filters?.region?.id,
+            area = filters?.region?.id ?: filters?.country?.id,
             industry = filters?.industry?.id,
             salary = filters?.salaryText?.toIntOrNull(),
             onlyWithSalary = filters?.onlyWithSalary,
@@ -152,7 +152,7 @@ class SearchViewModel(
 
             val query = VacancyQuery(
                 text = queryText,
-                area = filters?.region?.id,
+                area = filters?.region?.id ?: filters?.country?.id,
                 industry = filters?.industry?.id,
                 salary = filters?.salaryText?.toIntOrNull(),
                 onlyWithSalary = filters?.onlyWithSalary,
