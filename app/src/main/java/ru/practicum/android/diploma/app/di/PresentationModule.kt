@@ -5,7 +5,7 @@ import org.koin.dsl.module
 import ru.practicum.android.diploma.app.navigation.NavigationViewModel
 import ru.practicum.android.diploma.feature.favorite.domain.FavoritesInteractor
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
+import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersViewModel
 import ru.practicum.android.diploma.feature.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.feature.team.presentation.TeamViewModel
 import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsViewModel

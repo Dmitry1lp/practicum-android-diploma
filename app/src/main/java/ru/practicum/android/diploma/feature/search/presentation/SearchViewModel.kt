@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.domain.model.VacancyQuery
-import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
+import ru.practicum.android.diploma.feature.filters.domain.interactor.FiltersInteractor
 import ru.practicum.android.diploma.feature.search.data.models.Resource
 import ru.practicum.android.diploma.feature.search.domain.interactor.SearchInteractor
 
@@ -76,7 +76,7 @@ class SearchViewModel(
 
         val query = VacancyQuery(
             text = queryText,
-            area = filters?.region?.id,
+            area = filters?.region?.id ?: filters?.country?.id,
             industry = filters?.industry?.id,
             salary = filters?.salaryText?.toIntOrNull(),
             onlyWithSalary = filters?.onlyWithSalary,
@@ -152,7 +152,7 @@ class SearchViewModel(
 
             val query = VacancyQuery(
                 text = queryText,
-                area = filters?.region?.id,
+                area = filters?.region?.id ?: filters?.country?.id,
                 industry = filters?.industry?.id,
                 salary = filters?.salaryText?.toIntOrNull(),
                 onlyWithSalary = filters?.onlyWithSalary,

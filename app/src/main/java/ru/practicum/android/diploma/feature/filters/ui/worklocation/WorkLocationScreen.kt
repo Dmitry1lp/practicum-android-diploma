@@ -11,8 +11,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
+import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
+import ru.practicum.android.diploma.feature.filters.presentation.filters.Clear
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationActions
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
@@ -27,7 +30,6 @@ import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
  *
  * @param modifier Модификатор для внешнего позиционирования
  * @param currentState Текущее состояние экрана (выбранные страна и регион)
- * @param initState Исходное состояние, с которым сравниваются изменения (обычно пришло из сохранённых фильтров)
  * @param actions Колбэки для обработки действий пользователя:
  *   - [WorkLocationActions.onBackClick] - возврат на предыдущий экран
  *   - [WorkLocationActions.onCountryClick] - переход к выбору страны
@@ -38,11 +40,8 @@ import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
 fun WorkLocationScreen(
     modifier: Modifier = Modifier,
     currentState: WorkLocationUiState,
-    initState: WorkLocationUiState,
     actions: WorkLocationActions,
 ) {
-    val isApplyButtonEnabled = currentState != initState
-
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -65,16 +64,24 @@ fun WorkLocationScreen(
                     text = area?.name,
                     hint = stringResource(hintId),
                     onClick = action,
-                    onIconClick = action
+                    onIconClick = {
+                        when (area) {
+                            is GeoArea.Country -> actions.onClearClick(Clear.Country)
+                            is GeoArea.Region -> actions.onClearClick(Clear.Region)
+                            else -> {}
+                        }
+
+                    }
                 )
             }
 
             Spacer(Modifier.weight(1f))
 
-            if (isApplyButtonEnabled) {
+            currentState.country?.let {
                 ApplyButton(
+                    modifier = Modifier.padding(bottom = AppDimensions.paddingBig),
                     text = stringResource(R.string.button_apply),
-                    onClick = actions.onApplyClick
+                    onClick = { actions.onApplyClick(currentState) },
                 )
             }
         }
@@ -90,11 +97,11 @@ private fun WorkLocationScreenPreview(
     DiplomaTheme {
         WorkLocationScreen(
             currentState = states.first,
-            initState = states.second,
             actions = WorkLocationActions(
                 onBackClick = { },
                 onCountryClick = { },
                 onRegionClick = { },
+                onClearClick = { },
                 onApplyClick = { }
             )
         )

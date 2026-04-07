@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
+import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersViewModel
 
 @Serializable
 sealed interface Route : NavKey {
@@ -32,13 +32,13 @@ sealed interface Route : NavKey {
     data object Filters : Route
 
     @Serializable
-    data object WorkLocationFilter : Route
+    data class WorkLocationFilter(val viewModel: FiltersViewModel) : Route
 
     @Serializable
-    data object CountryFilter : Route
+    data class CountryFilter(val viewModel: FiltersViewModel) : Route
 
     @Serializable
-    data object RegionFilter : Route
+    data class RegionFilter(val viewModel: FiltersViewModel) : Route
 
     @Serializable
     data class IndustryFilter(val viewModel: FiltersViewModel) : Route

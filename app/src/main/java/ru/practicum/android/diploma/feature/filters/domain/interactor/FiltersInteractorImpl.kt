@@ -1,16 +1,18 @@
-package ru.practicum.android.diploma.feature.filters.domain
+package ru.practicum.android.diploma.feature.filters.domain.interactor
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.domain.model.Resource
+import ru.practicum.android.diploma.feature.filters.domain.repository.FiltersRepository
+import ru.practicum.android.diploma.feature.filters.data.model.FiltersSettings
 
 class FiltersInteractorImpl(
     private val repository: FiltersRepository
 ) : FiltersInteractor {
-    override fun getAreas(): Flow<Pair<List<GeoArea.Country>?, String?>> {
-        return repository.getAreas().map { result ->
+    override fun getCountries(): Flow<Pair<List<GeoArea.Country>?, String?>> {
+        return repository.getCountries().map { result ->
             when (result) {
                 is Resource.Success -> Pair(result.data, null)
                 is Resource.Error -> Pair(null, result.message)

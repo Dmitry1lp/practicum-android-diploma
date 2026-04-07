@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.feature.filters.domain
+package ru.practicum.android.diploma.feature.filters.data.model
 
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
