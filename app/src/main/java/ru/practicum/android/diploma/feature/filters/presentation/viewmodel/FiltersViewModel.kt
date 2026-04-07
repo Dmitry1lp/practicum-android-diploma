@@ -302,7 +302,7 @@ class FiltersViewModel(
     private fun getAreas() {
         viewModelScope.launch {
             interactor
-                .getAreas()
+                .getCountries()
                 .collect { pair ->
                     progressAreasResult(pair.first, pair.second)
                 }
@@ -315,8 +315,9 @@ class FiltersViewModel(
     ) {
         _filtersUiState.update {
             it.copy(
-                countries = countries?.toImmutableList() ?: immutableListOf(),
-                allRegions = countries?.flatMap { country -> country.regions } ?: immutableListOf(),
+                countries = countries ?: immutableListOf(),
+                allRegions = countries?.flatMap { country -> country.regions }?.sortedBy { region -> region.name }
+                    ?: immutableListOf(),
                 errorMessage = errorMessage ?: ""
             )
         }
