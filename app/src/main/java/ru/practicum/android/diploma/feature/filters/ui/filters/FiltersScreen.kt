@@ -26,13 +26,11 @@ import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
 
 @Composable
 fun FiltersScreen(
-    initState: FiltersUiState,
     currentState: FiltersUiState,
+    areButtonsEnabled: Boolean,
     modifier: Modifier = Modifier,
     actions: FiltersActions
 ) {
-    val areButtonsEnabled = initState != currentState
-
     BackHandler(enabled = true) { actions.onBackClick() }
 
     Scaffold(
@@ -110,10 +108,7 @@ private fun FiltersScreenPreviewLightMode() {
                 workLocation = WorkLocationUiState(country, region),
                 isCheckBox = true
             ),
-            initState = FiltersUiState(
-                workLocation = WorkLocationUiState(country, region),
-                isCheckBox = true
-            ),
+            areButtonsEnabled = true,
             actions = FiltersActions(
                 onBackClick = { },
                 onWorkLocationClick = { },

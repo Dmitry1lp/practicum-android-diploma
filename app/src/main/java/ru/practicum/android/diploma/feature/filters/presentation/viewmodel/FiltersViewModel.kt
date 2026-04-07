@@ -184,30 +184,21 @@ class FiltersViewModel(
     }
 
     fun saveSettings(isStartSearch: Boolean) {
-        if (filtersUiState.value.isFiltersSettings) {
+        if (filtersUiState.value.hasActiveFilters) {
             val selectedIndustry = industryState.value.selectedIndustry
 
-            val hasActiveFilters =
-                filtersUiState.value.workLocation.country != null ||
-                    filtersUiState.value.workLocation.region != null ||
-                    selectedIndustry != null ||
-                    filtersUiState.value.salaryText.isNotEmpty() ||
-                    filtersUiState.value.isCheckBox
-
-            if (hasActiveFilters) {
-                interactor.saveFiltersSetting(
-                    FiltersSettings(
-                        country = filtersUiState.value.workLocation.country,
-                        region = filtersUiState.value.workLocation.region,
-                        industry = selectedIndustry,
-                        salaryText = filtersUiState.value.salaryText.ifEmpty { null },
-                        onlyWithSalary = filtersUiState.value.isCheckBox.let { if (!it) null else true },
-                        isStartSearch = isStartSearch
-                    )
+            interactor.saveFiltersSetting(
+                FiltersSettings(
+                    country = filtersUiState.value.workLocation.country,
+                    region = filtersUiState.value.workLocation.region,
+                    industry = selectedIndustry,
+                    salaryText = filtersUiState.value.salaryText.ifEmpty { null },
+                    onlyWithSalary = filtersUiState.value.isCheckBox.let { if (!it) null else true },
+                    isStartSearch = isStartSearch
                 )
-            } else {
-                clear(ClearTarget.AppPreferences)
-            }
+            )
+        } else {
+            clear(ClearTarget.AppPreferences)
         }
     }
 

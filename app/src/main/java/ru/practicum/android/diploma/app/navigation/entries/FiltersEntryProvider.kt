@@ -5,13 +5,13 @@ package ru.practicum.android.diploma.app.navigation.entries
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import ru.practicum.android.diploma.app.navigation.routes.FiltersRoute
 import ru.practicum.android.diploma.feature.filters.presentation.country.SelectCountryUiState
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
-import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersUiState
 import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryActions
 import ru.practicum.android.diploma.feature.filters.presentation.region.SelectRegionUiState
 import ru.practicum.android.diploma.feature.filters.presentation.viewmodel.FiltersViewModel
@@ -29,12 +29,14 @@ fun filtersEntryProvider(
     onCloseFilters: () -> Unit
 ) = entryProvider<NavKey> {
     entry<FiltersRoute.Main> {
-        val currentState by viewModel.filtersUiState.collectAsState()
-        val initState = FiltersUiState()
+        val state by viewModel.filtersUiState.collectAsState()
+        val areButtonsEnabled = remember(state) {
+            state.hasActiveFilters
+        }
 
         FiltersScreen(
-            currentState = currentState,
-            initState = initState,
+            currentState = state,
+            areButtonsEnabled = areButtonsEnabled,
             actions = FiltersActions(
                 onBackClick = {
                     viewModel.saveSettings(false)
