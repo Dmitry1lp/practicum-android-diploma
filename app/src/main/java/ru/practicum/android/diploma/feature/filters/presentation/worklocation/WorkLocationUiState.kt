@@ -25,3 +25,10 @@ data class WorkLocationActions(
     val onClearClick: (Clear) -> Unit,
     val onApplyClick: (WorkLocationUiState) -> Unit
 )
+) {
+    val locationString: String? = when {
+        country != null && region != null -> "${country.name}, ${region.name}"
+        country != null -> country.name
+        else -> null
+    }
+}

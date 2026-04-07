@@ -19,6 +19,7 @@ import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.feature.filters.presentation.ClearTarget
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersUiState
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
 import ru.practicum.android.diploma.feature.filters.ui.DismissButton
 import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
@@ -45,12 +46,8 @@ fun FiltersScreen(
         Column(
             modifier = modifier.padding(paddingValues)
         ) {
-            val location: String? = currentState.country?.name?.let { country ->
-                "$country, ${currentState.region?.name}"
-            }
-
             SelectableFilterItem(
-                text = location,
+                text = currentState.workLocation.locationString,
                 hint = stringResource(R.string.filter_work_location),
                 onClick = actions.onWorkLocationClick,
                 onIconClick = { actions.onClearClick(ClearTarget.WorkLocation) }
@@ -96,32 +93,25 @@ fun FiltersScreen(
 @PreviewLightDark
 @Composable
 private fun FiltersScreenPreviewLightMode() {
+    val region = GeoArea.Region(
+        id = 1,
+        name = "Москва",
+        countryId = 0
+    )
+    val country = GeoArea.Country(
+        id = 0,
+        name = "Россия",
+        regions = listOf(region)
+    )
+
     DiplomaTheme {
         FiltersScreen(
             currentState = FiltersUiState(
-                country = GeoArea.Country(
-                    id = 0,
-                    name = "Россия",
-                    regions = emptyList()
-                ),
-                region = GeoArea.Region(
-                    id = 0,
-                    name = "Москва",
-                    countryId = 0
-                ),
+                workLocation = WorkLocationUiState(country, region),
                 isCheckBox = true
             ),
             initState = FiltersUiState(
-                country = GeoArea.Country(
-                    id = 0,
-                    name = "Россия",
-                    regions = emptyList()
-                ),
-                region = GeoArea.Region(
-                    id = 0,
-                    name = "Москва",
-                    countryId = 0
-                ),
+                workLocation = WorkLocationUiState(country, region),
                 isCheckBox = true
             ),
             actions = FiltersActions(
