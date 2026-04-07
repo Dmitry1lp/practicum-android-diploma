@@ -29,6 +29,7 @@ import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
 import ru.practicum.android.diploma.feature.filters.presentation.viewmodel.FiltersViewModel
 import ru.practicum.android.diploma.feature.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.feature.search.ui.SearchScreen
+import ru.practicum.android.diploma.feature.team.presentation.TeamViewModel
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
 import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsUiEvent
 import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsViewModel
@@ -36,7 +37,9 @@ import ru.practicum.android.diploma.feature.vacancy.ui.VacancyScreen
 
 fun topLevelEntryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryProvider<NavKey> {
     entry<Route.Team> {
+        val viewModel: TeamViewModel = koinViewModel()
         TeamScreen(
+            developers = viewModel.developers.collectAsState().value,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(teamScreenPadding)
