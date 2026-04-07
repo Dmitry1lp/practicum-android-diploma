@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.feature.filters.presentation.filters
 
+import kotlinx.collections.immutable.persistentListOf
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
+import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 
 data class FiltersUiState(
@@ -10,26 +12,14 @@ data class FiltersUiState(
     val isCheckBox: Boolean = false,
     val errorMessage: String = "",
     val searchText: String = "",
-    val countries: List<GeoArea.Country> = immutableListOf(),
+    val countries: List<GeoArea.Country> = persistentListOf(),
     val currentCountry: GeoArea.Country? = null,
     val currentRegion: GeoArea.Region? = null,
-    val allRegions: List<GeoArea.Region> = immutableListOf(),
-    val filteredRegions: List<GeoArea.Region> = immutableListOf(),
-    val industries: List<FilterIndustry> = immutableListOf(),
-    val filteredIndustries: List<FilterIndustry> = immutableListOf(),
+    val allRegions: List<GeoArea.Region> = persistentListOf(),
+    val filteredRegions: List<GeoArea.Region> = persistentListOf(),
+    val industries: List<FilterIndustry> = persistentListOf(),
+    val filteredIndustries: List<FilterIndustry> = persistentListOf(),
 ) {
     val isFiltersSettings: Boolean
-        get() = country != null || region != null || industry != null || salaryText.isNotEmpty() || isCheckBox
+        get() = workLocation.country != null || workLocation.region != null || industry != null || salaryText.isNotEmpty() || isCheckBox
 }
-
-data class FiltersActions(
-    val onBackClick: () -> Unit,
-    val onWorkLocationFilter: () -> Unit,
-    val onIndustryFilter: () -> Unit,
-    val onSalaryTextChange: (String) -> Unit,
-    val onCheckBox: () -> Unit,
-    val onSearchTextChange: (String) -> Unit,
-    val onApplyClick: (Any?) -> Unit,
-    val onClearClick: (ClearTarget) -> Unit
-    val isStartSearch: Boolean = false
-)
