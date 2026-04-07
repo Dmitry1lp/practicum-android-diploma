@@ -17,8 +17,8 @@ import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.feature.filters.presentation.ClearTarget
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersActions
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersUiState
+import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
+import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersUiState
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
 import ru.practicum.android.diploma.feature.filters.ui.DismissButton
 import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
@@ -52,13 +52,13 @@ fun FiltersScreen(
             SelectableFilterItem(
                 text = location,
                 hint = stringResource(R.string.filter_work_location),
-                onClick = actions.onWorkLocationFilter,
+                onClick = actions.onWorkLocationClick,
                 onIconClick = { actions.onClearClick(ClearTarget.WorkLocation) }
             )
             SelectableFilterItem(
                 text = currentState.industry?.name,
                 hint = stringResource(R.string.filter_industry),
-                onClick = actions.onIndustryFilter,
+                onClick = actions.onIndustryClick,
                 onIconClick = { actions.onClearClick(ClearTarget.Industry) }
             )
 
@@ -69,7 +69,7 @@ fun FiltersScreen(
             SwitchFilterItem(
                 text = stringResource(R.string.checkbox_hide_without_salary),
                 checked = currentState.isCheckBox,
-                onCheckedChange = actions.onCheckBox
+                onCheckedChange = actions.onCheckBoxChange
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -126,11 +126,10 @@ private fun FiltersScreenPreviewLightMode() {
             ),
             actions = FiltersActions(
                 onBackClick = { },
-                onWorkLocationFilter = { },
-                onIndustryFilter = { },
+                onWorkLocationClick = { },
+                onIndustryClick = { },
                 onSalaryTextChange = { },
-                onCheckBox = { },
-                onSearchTextChange = { },
+                onCheckBoxChange = { },
                 onApplyClick = { },
                 onClearClick = { }
             )

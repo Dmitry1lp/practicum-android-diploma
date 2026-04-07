@@ -26,7 +26,7 @@ import ru.practicum.android.diploma.app.navigation.routes.Route
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions.teamScreenPadding
 import ru.practicum.android.diploma.feature.favorite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.feature.favorite.ui.FavoritesScreen
-import ru.practicum.android.diploma.feature.filters.presentation.FiltersViewModel
+import ru.practicum.android.diploma.feature.filters.presentation.viewmodel.FiltersViewModel
 import ru.practicum.android.diploma.feature.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.feature.search.ui.SearchScreen
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
