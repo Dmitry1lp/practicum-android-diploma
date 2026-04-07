@@ -12,7 +12,6 @@ data class FiltersUiState(
     val isCheckBox: Boolean = false,
     val errorMessage: String = "",
     val searchText: String = "",
-    val countries: List<GeoArea.Country> = persistentListOf(),
     val currentCountry: GeoArea.Country? = null,
     val currentRegion: GeoArea.Region? = null,
     val allRegions: List<GeoArea.Region> = persistentListOf(),

@@ -15,14 +15,14 @@ import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.presentation.country.SelectCountryUiState
+import ru.practicum.android.diploma.feature.filters.presentation.country.CountryUiState
 import ru.practicum.android.diploma.feature.filters.ui.states.FilterContentState
 import ru.practicum.android.diploma.feature.filters.ui.states.FilterFetchErrorState
 
 @Composable
 fun SelectCountryScreen(
     modifier: Modifier = Modifier,
-    state: SelectCountryUiState,
+    state: CountryUiState,
     onBackClick: () -> Unit,
     onCountryClick: (GeoArea) -> Unit
 ) {
@@ -41,12 +41,13 @@ fun SelectCountryScreen(
                 .padding(vertical = AppDimensions.paddingMedium)
         ) {
             when (state) {
-                is SelectCountryUiState.Content -> FilterContentState(
+                is CountryUiState.Content -> FilterContentState(
                     items = state.countries,
                     onItemClick = onCountryClick
                 )
 
-                is SelectCountryUiState.FetchError -> FilterFetchErrorState()
+                is CountryUiState.FetchError -> FilterFetchErrorState()
+                is CountryUiState.Loading -> {}
             }
         }
     }
@@ -56,7 +57,7 @@ fun SelectCountryScreen(
 @PreviewLightDark
 @Composable
 private fun SelectCountryScreenPreview(
-    @PreviewParameter(SelectCountryUiStateProvider::class) state: SelectCountryUiState
+    @PreviewParameter(SelectCountryUiStateProvider::class) state: CountryUiState
 ) {
     DiplomaTheme {
         SelectCountryScreen(

@@ -10,7 +10,7 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import ru.practicum.android.diploma.app.navigation.routes.FiltersRoute
-import ru.practicum.android.diploma.feature.filters.presentation.country.SelectCountryUiState
+import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryActions
 import ru.practicum.android.diploma.feature.filters.presentation.region.SelectRegionUiState
@@ -99,18 +99,13 @@ fun filtersEntryProvider(
     }
 
     entry<FiltersRoute.Country> {
-        val filtersUiState by viewModel.filtersUiState.collectAsState()
-        val state = if (filtersUiState.countries.isNotEmpty()) {
-            SelectCountryUiState.Content.fromFiltersState(filtersUiState)
-        } else {
-            SelectCountryUiState.FetchError
-        }
+        val state by viewModel.countryState.collectAsState()
 
         SelectCountryScreen(
             onBackClick = { backStack.removeLastOrNull() },
             state = state,
             onCountryClick = { country ->
-                viewModel.updateState(country)
+                viewModel.onCountryApplied(country as GeoArea.Country)
                 backStack.removeLastOrNull()
             }
         )

@@ -18,6 +18,7 @@ import ru.practicum.android.diploma.core.utils.queryFilter
 import ru.practicum.android.diploma.feature.filters.data.model.FiltersSettings
 import ru.practicum.android.diploma.feature.filters.domain.interactor.FiltersInteractor
 import ru.practicum.android.diploma.feature.filters.presentation.ClearTarget
+import ru.practicum.android.diploma.feature.filters.presentation.country.CountryUiState
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersUiState
 import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryScreenState
 import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryUiState
@@ -34,10 +35,12 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
     private val _workLocationState = MutableStateFlow(WorkLocationUiState())
     val workLocationState: StateFlow<WorkLocationUiState> = _workLocationState.asStateFlow()
 
+    private val _countryState = MutableStateFlow<CountryUiState>(CountryUiState.Loading)
+    val countryState: StateFlow<CountryUiState> = _countryState.asStateFlow()
+
     init {
         getFiltersSettings()
         getAreas()
-        getFiltersSettings()
         viewModelScope.launch {
             filtersUiState.first().let { initialFiltersState = it.copy() }
             filtersUiState.collect { uiState ->
@@ -84,16 +87,10 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
                 it.copy(workLocation = WorkLocationUiState(current.country, current.region))
             }
 
-            is GeoArea.Country -> {
-                _filtersUiState.update { it.copy(currentCountry = current, filteredRegions = current.regions) }
-                if (!current.regions.contains(filtersUiState.value.currentRegion)) {
-                    _filtersUiState.update { it.copy(currentRegion = null) }
-                }
-            }
-
             is GeoArea.Region -> {
                 if (filtersUiState.value.currentCountry == null) {
-                    val country = filtersUiState.value.countries.find { it.id == current.countryId }
+                    val country = (_countryState.value as CountryUiState.Content)
+                        .countries.find { it.id == current.countryId }
                     _filtersUiState.update {
                         it.copy(
                             searchText = "",
@@ -107,6 +104,13 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
                 }
             }
         }
+    }
+
+    fun onCountryApplied(country: GeoArea.Country) {
+        val isRegionInCountry = filtersUiState.value.currentRegion?.countryId == country.id
+
+        _filtersUiState.update { it.copy(currentCountry = country, filteredRegions = country.regions) }
+        if (!isRegionInCountry) _filtersUiState.update { it.copy(currentRegion = null) }
     }
 
     fun onSalaryTextChange(text: String) = _filtersUiState.update { it.copy(salaryText = text) }
@@ -228,13 +232,20 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
     }
 
     private fun getAreas() {
+        if (_countryState.value is CountryUiState.Content) return
+
         viewModelScope.launch {
             interactor
                 .getCountries()
                 .collect { (countries, errorMessage) ->
+                    _countryState.update {
+                        when (errorMessage) {
+                            null -> CountryUiState.Content(countries ?: immutableListOf())
+                            else -> CountryUiState.FetchError
+                        }
+                    }
                     _filtersUiState.update {
                         it.copy(
-                            countries = countries ?: immutableListOf(),
                             allRegions = countries?.flatMap { country -> country.regions }
                                 ?.sortedBy { region -> region.name } ?: immutableListOf(),
                             errorMessage = errorMessage ?: ""
