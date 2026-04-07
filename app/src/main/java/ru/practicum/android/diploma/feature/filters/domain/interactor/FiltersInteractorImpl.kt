@@ -11,8 +11,8 @@ import ru.practicum.android.diploma.feature.filters.data.model.FiltersSettings
 class FiltersInteractorImpl(
     private val repository: FiltersRepository
 ) : FiltersInteractor {
-    override fun getAreas(): Flow<Pair<List<GeoArea.Country>?, String?>> {
-        return repository.getAreas().map { result ->
+    override fun getCountries(): Flow<Pair<List<GeoArea.Country>?, String?>> {
+        return repository.getCountries().map { result ->
             when (result) {
                 is Resource.Success -> Pair(result.data, null)
                 is Resource.Error -> Pair(null, result.message)
