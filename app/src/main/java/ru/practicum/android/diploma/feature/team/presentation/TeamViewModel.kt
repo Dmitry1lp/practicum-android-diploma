@@ -19,7 +19,7 @@ class TeamViewModel : ViewModel() {
             Developer(
                 name = "Сергей Аникин",
                 role = ROLE_ANDROID,
-                avatarRes = R.drawable.img_sergey_anikin,
+                avatarRes = R.drawable.img_sergei_anikin,
                 github = GITHUB_BASE + "Nicoanik",
                 telegram = TELEGRAM_BASE + "Nicoanik"
             ),
