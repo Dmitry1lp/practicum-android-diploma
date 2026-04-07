@@ -74,7 +74,7 @@ class FiltersViewModel(
     }
 
     private fun filterRegions(searchText: String) {
-        val regions = state.value.currentCountry?.regions ?: state.value.allRegions
+        val regions = state.value.currentCountry?.regions?.sortedBy { it.name } ?: state.value.allRegions
 
         _state.update { currentState ->
             val filtered = if (searchText.isBlank()) {
@@ -198,6 +198,30 @@ class FiltersViewModel(
         }
     }
 
+    private fun getAreas() {
+        viewModelScope.launch {
+            interactor
+                .getCountries()
+                .collect { pair ->
+                    progressAreasResult(pair.first, pair.second)
+                }
+        }
+    }
+
+    private fun progressAreasResult(
+        countries: List<GeoArea.Country>?,
+        errorMessage: String?
+    ) {
+        _state.update {
+            it.copy(
+                countries = countries ?: immutableListOf(),
+                allRegions = countries?.flatMap { country -> country.regions }?.sortedBy { region -> region.name }
+                    ?: immutableListOf(),
+                errorMessage = errorMessage ?: ""
+            )
+        }
+    }
+
     private fun getIndustries() {
         viewModelScope.launch {
             interactor
@@ -213,29 +237,6 @@ class FiltersViewModel(
             it.copy(
                 industries = foundIndustries?.toImmutableList() ?: immutableListOf(),
                 filteredIndustries = foundIndustries?.toImmutableList() ?: immutableListOf(),
-                errorMessage = errorMessage ?: ""
-            )
-        }
-    }
-
-    private fun getAreas() {
-        viewModelScope.launch {
-            interactor
-                .getAreas()
-                .collect { pair ->
-                    progressAreasResult(pair.first, pair.second)
-                }
-        }
-    }
-
-    private fun progressAreasResult(
-        countries: List<GeoArea.Country>?,
-        errorMessage: String?
-    ) {
-        _state.update {
-            it.copy(
-                countries = countries?.toImmutableList() ?: immutableListOf(),
-                allRegions = countries?.flatMap { country -> country.regions } ?: immutableListOf(),
                 errorMessage = errorMessage ?: ""
             )
         }
