@@ -20,6 +20,6 @@ data class FiltersUiState(
     val industries: List<FilterIndustry> = persistentListOf(),
     val filteredIndustries: List<FilterIndustry> = persistentListOf(),
 ) {
-    val isFiltersSettings: Boolean
-        get() = workLocation.country != null || workLocation.region != null || industry != null || salaryText.isNotEmpty() || isCheckBox
+    val hasActiveFilters: Boolean
+        get() = !workLocation.isEmpty || industry != null || salaryText.isNotEmpty() || isCheckBox
 }
