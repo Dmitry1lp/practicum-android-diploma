@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.feature.filters.presentation.country
 
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersUiState
-import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 
 sealed interface SelectCountryUiState {
     data object FetchError : SelectCountryUiState
