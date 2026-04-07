@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.feature.filters.presentation.filters
 
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
-import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 
 data class FiltersUiState(
@@ -32,4 +31,5 @@ data class FiltersActions(
     val onSearchTextChange: (String) -> Unit,
     val onApplyClick: (Any?) -> Unit,
     val onClearClick: (ClearTarget) -> Unit
+    val isStartSearch: Boolean = false
 )
