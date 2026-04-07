@@ -21,15 +21,16 @@ class FiltersRepositoryImpl(
     private val networkClient: NetworkClient,
     private val sharedPrefs: SharedPreferences
 ) : FiltersRepository {
-    override fun getAreas(): Flow<Resource<List<GeoArea.Country>>> = flow {
+    override fun getCountries(): Flow<Resource<List<GeoArea.Country>>> = flow {
         val response = networkClient.doRequest(Request.AreasRequest)
         val result = when (response.resultCode) {
             ERROR -> Resource.Error(response.resultCode.toString())
             SUCCESS -> with(response as GeoAreasResponse) {
                 Resource.Success(
                     geoAreas
-                    .map { it.toGeoArea() }
-                    .filterIsInstance<GeoArea.Country>()
+                        .map { it.toGeoArea() }
+                        .sortedBy { it.name }
+                        .filterIsInstance<GeoArea.Country>()
                 )
             }
 
