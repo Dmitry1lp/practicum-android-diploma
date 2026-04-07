@@ -67,5 +67,7 @@ object AppDimensions {
 
     val loadingIndicatorSize = DpSize(48.dp, 48.dp)
     val searchBarIconSize = DpSize(24.dp, 24.dp)
+    val teamIconSizeBs = 96.dp
+    val teamIconSizeItem = 56.dp
 
 }
