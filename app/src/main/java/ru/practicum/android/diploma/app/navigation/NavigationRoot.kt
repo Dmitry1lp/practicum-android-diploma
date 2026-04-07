@@ -205,12 +205,15 @@ private fun appEntryProvider(
                     viewModel.saveSettings(false)
                     topLevelBackStack.removeLast()
                 },
-                onWorkLocationFilter = {
-                    viewModel.setWorkLocation()
+                onWorkLocationClick = {
+                    viewModel.setWorkLocationScreen()
                     topLevelBackStack.add(Route.WorkLocationFilter(viewModel))
                 },
-                onIndustryFilter = { topLevelBackStack.add(Route.IndustryFilter(viewModel)) },
-                onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
+                onIndustryClick = {
+                    viewModel.setIndustryScreen()
+                    topLevelBackStack.add(Route.IndustryFilter(viewModel))
+                },
+                onTextChange = { viewModel.onSalaryTextChange(it) },
                 onCheckBox = viewModel::onCheckBox,
                 onApplyClick = { isStartSearch ->
                     viewModel.saveSettings(isStartSearch as Boolean)
@@ -228,7 +231,7 @@ private fun appEntryProvider(
             state = viewModel.state.collectAsState().value,
             actions = FiltersActions(
                 onBackClick = { topLevelBackStack.removeLast() },
-                onSearchTextChange = viewModel::onSearchIndustryTextChange,
+                onTextChange = viewModel::onSearchIndustryTextChange,
                 onApplyClick = { industry ->
                     viewModel.onIndustrySelected(industry as FilterIndustry)
                     topLevelBackStack.removeLast()
@@ -242,8 +245,7 @@ private fun appEntryProvider(
         val filtersUiState by viewModel.state.collectAsState()
 
         WorkLocationScreen(
-            currentState = WorkLocationUiState.fromCurrentFiltersState(filtersUiState),
-            initState = WorkLocationUiState.fromFiltersState(filtersUiState),
+            currentState = WorkLocationUiState.fromFiltersState(filtersUiState),
             actions = WorkLocationActions(
                 onBackClick = { topLevelBackStack.removeLast() },
                 onCountryClick = { topLevelBackStack.add(Route.CountryFilter(viewModel)) },
@@ -261,7 +263,7 @@ private fun appEntryProvider(
         val viewModel = route.viewModel
         val filtersUiState by viewModel.state.collectAsState()
         val state = if (filtersUiState.countries.isNotEmpty()) {
-            SelectCountryUiState.Content(filtersUiState.countries)
+            SelectCountryUiState.Content.fromFiltersState(filtersUiState)
         } else {
             SelectCountryUiState.FetchError
         }
@@ -288,7 +290,7 @@ private fun appEntryProvider(
 
         SelectRegionScreen(
             state = state,
-            searchText = filtersUiState.searchRegionText,
+            searchText = filtersUiState.searchText,
             onRegionClick = { region ->
                 viewModel.updateState(region)
                 topLevelBackStack.removeLast()
