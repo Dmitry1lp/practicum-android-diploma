@@ -5,7 +5,6 @@ package ru.practicum.android.diploma.app.navigation.entries
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -57,23 +56,21 @@ fun filtersEntryProvider(
             actions = IndustryActions(
                 onBackClick = { backStack.removeLastOrNull() },
                 onSearchTextChanged = viewModel::onSearchTextChange,
-                onIndustryClick = { industry ->
+                onIndustryClick = viewModel::onIndustrySelected,
+                onApplyClick = { industry ->
                     viewModel.onIndustryApplied(industry)
                     backStack.removeLastOrNull()
-                },
-                onApplyClick = viewModel::onIndustrySelected
+                }
             )
         )
     }
 
     entry<FiltersRoute.WorkLocation> {
-        val state by viewModel.workLocationState.collectAsState()
-        val initState = remember(viewModel.workLocationState) {
-            viewModel.workLocationState.value
-        }
+        val currentState by viewModel.workLocationState.collectAsState()
+        val initState = viewModel.initialFiltersState?.workLocation ?: currentState
 
         WorkLocationScreen(
-            currentState = state,
+            currentState = currentState,
             initState = initState,
             actions = WorkLocationActions(
                 onBackClick = { backStack.removeLastOrNull() },
