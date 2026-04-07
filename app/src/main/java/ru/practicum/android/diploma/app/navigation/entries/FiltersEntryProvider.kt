@@ -42,8 +42,14 @@ fun filtersEntryProvider(
                     viewModel.saveSettings(false)
                     onCloseFilters()
                 },
-                onWorkLocationClick = { backStack.add(FiltersRoute.WorkLocation) },
-                onIndustryClick = { backStack.add(FiltersRoute.Industry) },
+                onWorkLocationClick = {
+                    viewModel.setWorkLocationScreen()
+                    backStack.add(FiltersRoute.WorkLocation)
+                },
+                onIndustryClick = {
+                    viewModel.setIndustryScreen()
+                    backStack.add(FiltersRoute.Industry)
+                },
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
                 onCheckBoxChange = viewModel::onCheckBox,
                 onApplyClick = { isStartSearch ->
@@ -64,7 +70,7 @@ fun filtersEntryProvider(
             screenState = state,
             actions = IndustryActions(
                 onBackClick = { backStack.removeLastOrNull() },
-                onSearchTextChanged = viewModel::onSearchTextChange,
+                onSearchTextChanged = viewModel::onSearchIndustryTextChange,
                 onIndustryClick = viewModel::onIndustrySelected,
                 onApplyClick = { industry ->
                     viewModel.onIndustryApplied(industry)
