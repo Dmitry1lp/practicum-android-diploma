@@ -1,6 +1,6 @@
 @file:Suppress("ForbiddenComment")
 
-package ru.practicum.android.diploma.feature.filters.presentation
+package ru.practicum.android.diploma.feature.filters.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,6 +17,8 @@ import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.utils.queryFilter
 import ru.practicum.android.diploma.feature.filters.domain.FiltersInteractor
 import ru.practicum.android.diploma.feature.filters.domain.FiltersSettings
+import ru.practicum.android.diploma.feature.filters.presentation.ClearTarget
+import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersUiState
 import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryScreenState
 import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryUiState
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
@@ -32,7 +34,8 @@ class FiltersViewModel(
     private val _industryState = MutableStateFlow(IndustryScreenState())
     val industryState: StateFlow<IndustryScreenState> = _industryState.asStateFlow()
 
-    private val _workLocationState = MutableStateFlow(WorkLocationUiState()) // TODO: забирать актуальное состояние
+    private val _workLocationState =
+        MutableStateFlow(WorkLocationUiState()) // TODO: забирать актуальное состояние
     val workLocationState: StateFlow<WorkLocationUiState> = _workLocationState.asStateFlow()
 
     init {
