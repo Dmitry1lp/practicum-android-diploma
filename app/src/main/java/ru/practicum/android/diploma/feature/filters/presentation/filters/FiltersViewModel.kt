@@ -28,6 +28,26 @@ class FiltersViewModel(
         getIndustries()
     }
 
+    fun setWorkLocationScreen() {
+        _state.update {
+            it.copy(
+                searchText = "",
+                currentCountry = state.value.country,
+                currentRegion = state.value.region,
+                filteredRegions = state.value.country?.regions ?: state.value.allRegions
+            )
+        }
+    }
+
+    fun setIndustryScreen() {
+        _state.update {
+            it.copy(
+                searchText = "",
+                filteredIndustries = it.industries
+            )
+        }
+    }
+
     fun updateState(current: Any) {
         when (current) {
             is WorkLocationUiState -> _state.update { it.copy(country = current.country, region = current.region) }
@@ -43,6 +63,7 @@ class FiltersViewModel(
                     val country = state.value.countries.find { it.id == current.countryId }
                     _state.update {
                         it.copy(
+                            searchText = "",
                             currentCountry = country,
                             currentRegion = current,
                             filteredRegions = country?.regions ?: immutableListOf()
@@ -57,16 +78,6 @@ class FiltersViewModel(
 
     fun onSalaryTextChange(text: String) {
         _state.update { it.copy(salaryText = text) }
-    }
-
-    fun setWorkLocation() {
-        _state.update {
-            it.copy(
-                currentCountry = state.value.country,
-                currentRegion = state.value.region,
-                filteredRegions = state.value.country?.regions ?: state.value.allRegions
-            )
-        }
     }
 
     fun onSearchRegionTextChange(text: String) {
@@ -85,7 +96,7 @@ class FiltersViewModel(
                 }
             }
             currentState.copy(
-                searchRegionText = searchText,
+                searchText = searchText,
                 filteredRegions = filtered
             )
         }
@@ -105,7 +116,7 @@ class FiltersViewModel(
                 }
             }
             currentState.copy(
-                searchIndustryText = searchText,
+                searchText = searchText,
                 filteredIndustries = filtered
             )
         }
@@ -120,14 +131,7 @@ class FiltersViewModel(
     }
 
     fun saveSettings(isStartSearch: Boolean) {
-        val hasActiveFilters =
-            state.value.country != null ||
-                state.value.region != null ||
-                state.value.industry != null ||
-                state.value.salaryText.isNotEmpty() ||
-                state.value.isCheckBox
-
-        if (hasActiveFilters) {
+        if (state.value.isFiltersSettings) {
             interactor.saveFiltersSetting(
                 FiltersSettings(
                     country = state.value.country,
