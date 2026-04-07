@@ -1,44 +1,25 @@
 package ru.practicum.android.diploma.feature.filters.presentation.filters
 
-import okhttp3.internal.immutableListOf
+import kotlinx.collections.immutable.persistentListOf
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 
 data class FiltersUiState(
-    val country: GeoArea.Country? = null,
-    val region: GeoArea.Region? = null,
+    val workLocation: WorkLocationUiState = WorkLocationUiState(),
     val industry: FilterIndustry? = null,
     val salaryText: String = "",
     val isCheckBox: Boolean = false,
     val errorMessage: String = "",
     val searchText: String = "",
-    val countries: List<GeoArea.Country> = immutableListOf(),
+    val countries: List<GeoArea.Country> = persistentListOf(),
     val currentCountry: GeoArea.Country? = null,
     val currentRegion: GeoArea.Region? = null,
-    val allRegions: List<GeoArea.Region> = immutableListOf(),
-    val filteredRegions: List<GeoArea.Region> = immutableListOf(),
-    val industries: List<FilterIndustry> = immutableListOf(),
-    val filteredIndustries: List<FilterIndustry> = immutableListOf(),
+    val allRegions: List<GeoArea.Region> = persistentListOf(),
+    val filteredRegions: List<GeoArea.Region> = persistentListOf(),
+    val industries: List<FilterIndustry> = persistentListOf(),
+    val filteredIndustries: List<FilterIndustry> = persistentListOf(),
 ) {
-    val isFiltersSettings: Boolean
-        get() = country != null || region != null || industry != null || salaryText.isNotEmpty() || isCheckBox
-}
-
-data class FiltersActions(
-    val onBackClick: () -> Unit = {},
-    val onWorkLocationClick: () -> Unit = {},
-    val onIndustryClick: () -> Unit = {},
-    val onCheckBox: () -> Unit = {},
-    val onTextChange: (String) -> Unit = {},
-    val onApplyClick: (Any?) -> Unit = {},
-    val onClearClick: (Clear) -> Unit = {}
-)
-
-sealed interface Clear {
-    object WorkLocation : Clear
-    object Country : Clear
-    object Region : Clear
-    object Industry : Clear
-    object All : Clear
-    object Settings : Clear
+    val hasActiveFilters: Boolean
+        get() = !workLocation.isEmpty || industry != null || salaryText.isNotEmpty() || isCheckBox
 }

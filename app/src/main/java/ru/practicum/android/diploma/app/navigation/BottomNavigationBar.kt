@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavKey
+import ru.practicum.android.diploma.app.navigation.routes.BottomNavItem
 import ru.practicum.android.diploma.app.ui.theme.LocalAppColors
 import ru.practicum.android.diploma.app.ui.theme.appNavBarItemColors
 

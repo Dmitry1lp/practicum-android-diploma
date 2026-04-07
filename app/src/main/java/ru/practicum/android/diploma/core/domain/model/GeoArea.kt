@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.core.domain.model
 
 sealed class GeoArea {
     abstract val id: Int
+
     abstract val name: String
 
     /**

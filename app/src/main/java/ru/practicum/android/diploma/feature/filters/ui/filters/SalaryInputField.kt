@@ -38,6 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
@@ -178,6 +179,7 @@ private fun rememberIsKeyboardVisible(): State<Boolean> {
 
 private const val KEYBOARD_THRESHOLD_RATIO = 0.15
 
+@Preview
 @PreviewLightDark
 @Composable
 private fun SalaryInputFieldPreviewLightMode() {
