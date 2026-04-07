@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.feature.filters.data.model.FiltersSettings
 
 interface FiltersRepository {
 
-    fun getAreas(): Flow<Resource<List<GeoArea.Country>>>
+    fun getCountries(): Flow<Resource<List<GeoArea.Country>>>
 
     fun getIndustries(): Flow<Resource<List<FilterIndustry>>>
 
