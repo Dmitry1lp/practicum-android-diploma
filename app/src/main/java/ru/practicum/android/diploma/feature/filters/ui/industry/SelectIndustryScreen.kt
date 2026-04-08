@@ -6,10 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import ru.practicum.android.diploma.R
@@ -29,7 +25,6 @@ fun SelectIndustryScreen(
     actions: IndustryActions
 ) {
     val isApplyButtonEnabled = screenState.selectedIndustry != null
-    var searchText by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
@@ -43,12 +38,9 @@ fun SelectIndustryScreen(
             modifier = modifier.padding(paddingValues)
         ) {
             AppSearchBar(
-                text = searchText,
+                text = screenState.searchText,
                 hint = stringResource(R.string.hint_search_industry),
-                onTextChange = {
-                    searchText = it
-                    actions.onSearchTextChanged(it)
-                }
+                onTextChange = { actions.onSearchTextChanged(it) }
             )
 
             when (val stateContent = screenState.uiState) {

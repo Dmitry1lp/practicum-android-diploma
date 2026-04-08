@@ -49,17 +49,17 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
         val regions = filtersUiState.value.workLocation.country?.regions ?: (filtersUiState.value.allRegions)
         _filtersUiState.update { it.copy(filteredRegions = regions) }
         _workLocationState.update { filtersUiState.value.workLocation }
-        _industryState.update { currentState ->
-            when (val industryUiState = currentState.uiState) {
-                is IndustryUiState.Content -> currentState.copy(
-                    selectedIndustry = filtersUiState.value.industry,
-                    uiState = industryUiState.copy(
-                        filteredIndustries = industryUiState.industries
-                    )
-                )
-                else -> currentState
-            }
-        }
+//        _industryState.update { currentState ->
+//            when (val industryUiState = currentState.uiState) {
+//                is IndustryUiState.Content -> currentState.copy(
+//                    selectedIndustry = filtersUiState.value.industry,
+//                    uiState = industryUiState.copy(
+//                        filteredIndustries = industryUiState.industries
+//                    )
+//                )
+//                else -> currentState
+//            }
+//        }
     }
 
     fun onSearchRegionTextChange(text: String) {
@@ -72,6 +72,7 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
     fun onSearchIndustryTextChange(text: String) = when (val uiState = _industryState.value.uiState) {
         is IndustryUiState.Content -> _industryState.update { currentState ->
             currentState.copy(
+                searchText = text,
                 uiState = uiState.copy(
                     filteredIndustries = uiState.industries.queryFilter(text) { it.name }
                 )
