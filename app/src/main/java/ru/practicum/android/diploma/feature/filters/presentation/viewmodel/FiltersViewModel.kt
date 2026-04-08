@@ -50,28 +50,10 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
         }
     }
 
-    fun onIndustrySelected(industry: FilterIndustry?) = _industryState.update { it.copy(selectedIndustry = industry) }
-    fun onIndustryApplied(industry: FilterIndustry?) = _filtersUiState.update { it.copy(industry = industry) }
-
-    fun onSearchIndustryTextChange(text: String) = when (val uiState = _industryState.value.uiState) {
-        is IndustryUiState.Content -> _industryState.update { currentState ->
-            currentState.copy(
-                searchText = text,
-                uiState = uiState.copy(
-                    industries = uiState.industries,
-                    filteredIndustries = uiState.industries.queryFilter(text) { it.name }
-                )
-            )
-        }
-
-        else -> _industryState.update { it.copy(searchText = text) }
-    }
-
     fun setWorkLocationScreen() {
         val country = filtersUiState.value.workLocation.country
         _filtersUiState.update {
             it.copy(
-                searchText = "",
                 currentCountry = country,
                 currentRegion = filtersUiState.value.workLocation.region,
                 filteredRegions = country?.regions ?: filtersUiState.value.allRegions
@@ -79,7 +61,29 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
         }
     }
 
-    fun setIndustryScreen() = _filtersUiState.update { it.copy(searchText = "", filteredIndustries = it.industries) }
+    fun onIndustrySelected(industry: FilterIndustry?) = _industryState.update { it.copy(selectedIndustry = industry) }
+    fun onIndustryApplied(industry: FilterIndustry?) = _filtersUiState.update { it.copy(industry = industry) }
+
+    fun onSearchRegionTextChange(text: String) {
+        val regions = filtersUiState.value.currentCountry?.regions ?: filtersUiState.value.allRegions
+        _filtersUiState.update { currentState ->
+            currentState.copy(
+                filteredRegions = regions.queryFilter(text) { it.name })
+        }
+    }
+
+    fun onSearchIndustryTextChange(text: String) = when (val uiState = _industryState.value.uiState) {
+        is IndustryUiState.Content -> _industryState.update { currentState ->
+            currentState.copy(
+                uiState = uiState.copy(
+                    industries = uiState.industries,
+                    filteredIndustries = uiState.industries.queryFilter(text) { it.name }
+                )
+            )
+        }
+
+        else -> {}
+    }
 
     fun updateState(current: Any) {
         when (current) {
@@ -93,7 +97,6 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
                         .countries.find { it.id == current.countryId }
                     _filtersUiState.update {
                         it.copy(
-                            searchText = "",
                             currentCountry = country,
                             currentRegion = current,
                             filteredRegions = country?.regions ?: immutableListOf()
@@ -114,13 +117,6 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
     }
 
     fun onSalaryTextChange(text: String) = _filtersUiState.update { it.copy(salaryText = text) }
-
-    fun onSearchRegionTextChange(text: String) {
-        val regions = filtersUiState.value.currentCountry?.regions ?: filtersUiState.value.allRegions
-        _filtersUiState.update { currentState ->
-            currentState.copy(searchText = text, filteredRegions = regions.queryFilter(text) { it.name })
-        }
-    }
 
     fun onCheckBox() = _filtersUiState.update { it.copy(isCheckBox = !filtersUiState.value.isCheckBox) }
 

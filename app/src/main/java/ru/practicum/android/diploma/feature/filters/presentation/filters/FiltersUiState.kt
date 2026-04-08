@@ -11,7 +11,6 @@ data class FiltersUiState(
     val salaryText: String = "",
     val isCheckBox: Boolean = false,
     val errorMessage: String = "",
-    val searchText: String = "",
     val currentCountry: GeoArea.Country? = null,
     val currentRegion: GeoArea.Region? = null,
     val allRegions: List<GeoArea.Region> = persistentListOf(),
