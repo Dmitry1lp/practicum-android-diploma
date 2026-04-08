@@ -42,6 +42,10 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
         getFiltersSettings()
         viewModelScope.launch {
             filtersUiState.first().let { initialFiltersState = it.copy() }
+            filtersUiState.collect { uiState ->
+                _industryState.update { it.copy(selectedIndustry = uiState.industry) }
+                _workLocationState.update { uiState.workLocation }
+            }
         }
     }
 
@@ -49,17 +53,6 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
         val regions = filtersUiState.value.workLocation.country?.regions ?: (filtersUiState.value.allRegions)
         _filtersUiState.update { it.copy(filteredRegions = regions) }
         _workLocationState.update { filtersUiState.value.workLocation }
-//        _industryState.update { currentState ->
-//            when (val industryUiState = currentState.uiState) {
-//                is IndustryUiState.Content -> currentState.copy(
-//                    selectedIndustry = filtersUiState.value.industry,
-//                    uiState = industryUiState.copy(
-//                        filteredIndustries = industryUiState.industries
-//                    )
-//                )
-//                else -> currentState
-//            }
-//        }
     }
 
     fun onSearchRegionTextChange(text: String) {
@@ -111,7 +104,10 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
                 }
             }
 
-            is FilterIndustry -> _filtersUiState.update { it.copy(industry = current) }
+            is FilterIndustry -> {
+                _filtersUiState.update { it.copy(industry = current) }
+                _industryState.update { it.copy(selectedIndustry = current) }
+            }
         }
     }
 
