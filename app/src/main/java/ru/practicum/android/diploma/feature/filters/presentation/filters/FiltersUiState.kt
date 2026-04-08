@@ -11,12 +11,8 @@ data class FiltersUiState(
     val salaryText: String = "",
     val isCheckBox: Boolean = false,
     val errorMessage: String = "",
-    val currentCountry: GeoArea.Country? = null,
-    val currentRegion: GeoArea.Region? = null,
     val allRegions: List<GeoArea.Region> = persistentListOf(),
-    val filteredRegions: List<GeoArea.Region> = persistentListOf(),
-    val industries: List<FilterIndustry> = persistentListOf(),
-    val filteredIndustries: List<FilterIndustry> = persistentListOf(),
+    val filteredRegions: List<GeoArea.Region> = persistentListOf()
 ) {
     val hasActiveFilters: Boolean
         get() = !workLocation.isEmpty || industry != null || salaryText.isNotEmpty() || isCheckBox
