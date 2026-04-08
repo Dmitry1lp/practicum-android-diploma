@@ -71,7 +71,6 @@ fun filtersEntryProvider(
                 onSearchTextChanged = viewModel::onSearchIndustryTextChange,
                 onIndustryClick = viewModel::onIndustrySelected,
                 onApplyClick = { industry ->
-//                    viewModel.onIndustryApplied(industry)
                     viewModel.updateState(industry)
                     backStack.removeLastOrNull()
                 }

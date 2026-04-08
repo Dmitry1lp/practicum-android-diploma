@@ -49,7 +49,6 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
         val regions = filtersUiState.value.workLocation.country?.regions ?: (filtersUiState.value.allRegions)
         _filtersUiState.update { it.copy(filteredRegions = regions) }
         _workLocationState.update { filtersUiState.value.workLocation }
-//        _industryState.update { it.copy(selectedIndustry = filtersUiState.value.industry) }
         _industryState.update { currentState ->
             when (val industryUiState = currentState.uiState) {
                 is IndustryUiState.Content -> currentState.copy(
