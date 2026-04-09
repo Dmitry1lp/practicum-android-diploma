@@ -15,7 +15,6 @@ data class FiltersUiState(
     val currentCountry: GeoArea.Country? = null,
     val currentRegion: GeoArea.Region? = null,
     val allRegions: List<GeoArea.Region> = persistentListOf(),
-    val filteredRegions: List<GeoArea.Region> = persistentListOf(),
     val industries: List<FilterIndustry> = persistentListOf(),
     val filteredIndustries: List<FilterIndustry> = persistentListOf(),
 ) {

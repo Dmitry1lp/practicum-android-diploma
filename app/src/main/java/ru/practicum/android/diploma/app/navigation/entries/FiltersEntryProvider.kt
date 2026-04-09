@@ -3,9 +3,9 @@
 package ru.practicum.android.diploma.app.navigation.entries
 
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -13,7 +13,7 @@ import ru.practicum.android.diploma.app.navigation.routes.FiltersRoute
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryActions
-import ru.practicum.android.diploma.feature.filters.presentation.region.SelectRegionUiState
+import ru.practicum.android.diploma.feature.filters.presentation.region.RegionActions
 import ru.practicum.android.diploma.feature.filters.presentation.viewmodel.FiltersViewModel
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationActions
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
@@ -29,7 +29,7 @@ fun filtersEntryProvider(
     onCloseFilters: () -> Unit
 ) = entryProvider<NavKey> {
     entry<FiltersRoute.Main> {
-        val state by viewModel.filtersUiState.collectAsState()
+        val state by viewModel.filtersUiState.collectAsStateWithLifecycle()
         val areButtonsEnabled = remember(state) {
             state.hasActiveFilters
         }
@@ -64,7 +64,7 @@ fun filtersEntryProvider(
     entry<FiltersRoute.Industry> {
         LaunchedEffect(Unit) { viewModel.getIndustries() }
 
-        val state by viewModel.industryState.collectAsState()
+        val state by viewModel.industryState.collectAsStateWithLifecycle()
 
         SelectIndustryScreen(
             screenState = state,
@@ -81,7 +81,7 @@ fun filtersEntryProvider(
     }
 
     entry<FiltersRoute.WorkLocation> {
-        val filtersUiState by viewModel.filtersUiState.collectAsState()
+        val filtersUiState by viewModel.filtersUiState.collectAsStateWithLifecycle()
 
         WorkLocationScreen(
             currentState = WorkLocationUiState.fromFiltersState(filtersUiState),
@@ -99,7 +99,7 @@ fun filtersEntryProvider(
     }
 
     entry<FiltersRoute.Country> {
-        val state by viewModel.countryState.collectAsState()
+        val state by viewModel.countryState.collectAsStateWithLifecycle()
 
         SelectCountryScreen(
             onBackClick = { backStack.removeLastOrNull() },
@@ -112,23 +112,18 @@ fun filtersEntryProvider(
     }
 
     entry<FiltersRoute.Region> {
-        val filtersUiState by viewModel.filtersUiState.collectAsState()
-        val state = when {
-            filtersUiState.filteredRegions.isNotEmpty() ->
-                SelectRegionUiState.Content(filtersUiState.filteredRegions)
-
-            else -> SelectRegionUiState.FetchError
-        }
+        val state by viewModel.regionState.collectAsStateWithLifecycle()
 
         SelectRegionScreen(
-            state = state,
-            searchText = filtersUiState.searchText,
-            onRegionClick = { region ->
-                viewModel.updateState(region)
-                backStack.removeLastOrNull()
-            },
-            onSearchTextChange = { viewModel.onSearchRegionTextChange(it) },
-            onBackClick = { backStack.removeLastOrNull() },
+            screenState = state,
+            actions = RegionActions(
+                onRegionClick = { region ->
+                    viewModel.onRegionApplied(region as GeoArea.Region)
+                    backStack.removeLastOrNull()
+                },
+                onSearchTextChange = viewModel::onSearchRegionTextChange,
+                onBackClick = { backStack.removeLastOrNull() }
+            )
         )
     }
 }
