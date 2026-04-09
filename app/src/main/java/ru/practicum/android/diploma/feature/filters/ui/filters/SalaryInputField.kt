@@ -183,7 +183,7 @@ private const val KEYBOARD_THRESHOLD_RATIO = 0.15
 @PreviewLightDark
 @Composable
 private fun SalaryInputFieldPreviewLightMode() {
-    DiplomaTheme() {
+    DiplomaTheme {
         SalaryInputField("") { }
     }
 }
