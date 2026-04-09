@@ -8,7 +8,9 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -25,18 +27,19 @@ fun tertiaryButtonColors() = ButtonDefaults.buttonColors(
 )
 
 @Composable
-fun appSearchBarColors() = SearchBarDefaults.colors(
-    containerColor = LocalAppColors.current.searchBarBackground,
-    inputFieldColors = SearchBarDefaults.inputFieldColors(
-        focusedTextColor = LocalAppColors.current.searchBarText,
-        unfocusedTextColor = LocalAppColors.current.searchBarText,
-        focusedPlaceholderColor = LocalAppColors.current.searchBarHint,
-        unfocusedPlaceholderColor = LocalAppColors.current.searchBarHint,
-        focusedLeadingIconColor = LocalAppColors.current.searchBarIcon,
-        unfocusedLeadingIconColor = LocalAppColors.current.searchBarIcon,
-        focusedTrailingIconColor = LocalAppColors.current.searchBarIcon,
-        unfocusedTrailingIconColor = LocalAppColors.current.searchBarIcon
-    )
+fun appSearchBarColors() = TextFieldDefaults.colors(
+
+    // фон
+    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+
+    // курсор
+    cursorColor = MaterialTheme.colorScheme.primary,
+
+    // бордер
+    focusedIndicatorColor = Color.Transparent,
+    unfocusedIndicatorColor = Color.Transparent,
+    focusedTextColor = MaterialTheme.colorScheme.onSecondary
 )
 
 @Composable
@@ -58,4 +61,15 @@ fun appCheckboxColors() = CheckboxDefaults.colors(
 fun appCardColors() = CardDefaults.cardColors(
     containerColor = LocalAppColors.current.cardBackground,
     contentColor = LocalAppColors.current.cardText
+)
+
+@Composable
+fun appTopBarColors() = TopAppBarDefaults.topAppBarColors(
+    containerColor = Color.Transparent
+)
+
+@Composable
+fun appRadioButtonColors() = RadioButtonDefaults.colors(
+    selectedColor = MaterialTheme.colorScheme.primary,
+    unselectedColor = MaterialTheme.colorScheme.primary
 )

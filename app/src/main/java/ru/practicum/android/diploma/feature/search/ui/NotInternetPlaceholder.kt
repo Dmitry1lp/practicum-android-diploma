@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
@@ -31,7 +32,8 @@ fun NotInternetPlaceholder(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showSystemUi = true)
+@PreviewLightDark
 @Composable
 private fun NotInternetPlaceholderPreview() {
     DiplomaTheme {

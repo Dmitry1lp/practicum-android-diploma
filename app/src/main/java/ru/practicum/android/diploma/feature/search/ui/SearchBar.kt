@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.AppSearchBar
@@ -12,20 +13,19 @@ import ru.practicum.android.diploma.core.presentation.components.AppSearchBar
 @Composable
 fun SearchBar(
     text: String,
-    isClearVisible: Boolean,
     onTextChange: (String) -> Unit,
-    onClearClick: () -> Unit
+    onAction: () -> Unit
 ) {
     AppSearchBar(
         text = text,
         hint = stringResource(R.string.hint_search_vacancy),
-        isClearVisible = isClearVisible,
         onTextChange = onTextChange,
-        onClearClick = onClearClick
+        onAction = onAction
     )
 }
 
-@Preview(showBackground = true)
+@Preview
+@PreviewLightDark
 @Composable
 private fun SearchBarPreview() {
     val textState = remember { mutableStateOf("Введите запрос") }
@@ -33,9 +33,8 @@ private fun SearchBarPreview() {
     DiplomaTheme {
         SearchBar(
             text = textState.value,
-            isClearVisible = textState.value.isNotEmpty(),
             onTextChange = { textState.value = it },
-            onClearClick = { textState.value = "" }
+            onAction = {}
         )
     }
 }

@@ -107,7 +107,6 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 # KotlinX
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "collections" }
 
-
 [plugins]
 
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

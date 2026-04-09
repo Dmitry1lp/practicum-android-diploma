@@ -5,5 +5,5 @@ import ru.practicum.android.diploma.core.domain.model.VacancyQuery
 import ru.practicum.android.diploma.feature.search.data.models.Resource
 
 interface SearchInteractor {
-    suspend fun search(query: VacancyQuery): Resource<Triple<List<Vacancy>, Int, Int>>
+    suspend fun searchVacancies(query: VacancyQuery): Resource<Triple<List<Vacancy>, Int, Int>>
 }

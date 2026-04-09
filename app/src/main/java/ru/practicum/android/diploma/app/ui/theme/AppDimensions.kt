@@ -12,6 +12,7 @@ object AppDimensions {
     val paddingSmall = 8.dp
     val paddingVerySmall = 6.dp
     val endPaddingTopBar = 4.dp
+    val paddingBottomStateInfo = 57.dp
 
     val teamScreenPadding = PaddingValues(top = paddingBig, start = paddingMedium, end = paddingMedium)
 
@@ -23,6 +24,15 @@ object AppDimensions {
             horizontal = paddingMedium
         )
         val roundedCornerShape = 12.dp
+    }
+
+    object FiltersScreen {
+        val heightBoxInputField = 99.dp
+        val heightButton = 59.dp
+        val paddingButton = 17.dp
+        val cornerRadius = 12.dp
+        val rowPaddingTextField = PaddingValues(vertical = paddingSmall, horizontal = paddingMedium)
+        val resetButtonPadding = PaddingValues(top = 28.dp, bottom = 44.dp)
     }
 
     object Button {
@@ -57,5 +67,7 @@ object AppDimensions {
 
     val loadingIndicatorSize = DpSize(48.dp, 48.dp)
     val searchBarIconSize = DpSize(24.dp, 24.dp)
+    val teamIconSizeBs = 96.dp
+    val teamIconSizeItem = 56.dp
 
 }

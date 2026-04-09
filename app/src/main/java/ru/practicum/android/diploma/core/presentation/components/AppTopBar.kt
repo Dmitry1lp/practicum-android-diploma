@@ -9,7 +9,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
+import ru.practicum.android.diploma.app.ui.theme.appTopBarColors
 
 @Composable
 fun AppTopBar(
@@ -27,11 +27,8 @@ fun AppTopBar(
     action2: TopBarIcon? = null
 ) {
     TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Transparent
-        ),
-        modifier = modifier
-            .padding(end = AppDimensions.endPaddingTopBar),
+        colors = appTopBarColors(),
+        modifier = modifier.padding(end = AppDimensions.endPaddingTopBar),
         title = {
             Text(
                 text = title,
@@ -54,10 +51,7 @@ fun AppTopBar(
                     Icon(
                         painter = painterResource(id = action1.iconResId),
                         contentDescription = action1.contentDescription,
-                        tint = when {
-                            action1.iconResId == R.drawable.ic_favorites_on_24 -> Color.Unspecified
-                            else -> MaterialTheme.colorScheme.onSurface
-                        }
+                        tint = getIconTint(action1.iconResId)
                     )
                 }
             }
@@ -66,15 +60,20 @@ fun AppTopBar(
                     Icon(
                         painter = painterResource(id = action2.iconResId),
                         contentDescription = action2.contentDescription,
-                        tint = when {
-                            action2.iconResId == R.drawable.ic_favorites_on_24 -> Color.Unspecified
-                            else -> MaterialTheme.colorScheme.onSurface
-                        }
+                        tint = getIconTint(action2.iconResId)
                     )
                 }
             }
         }
     )
+}
+
+@Composable
+private fun getIconTint(iconResId: Int): Color {
+    return when {
+        iconResId == R.drawable.ic_favorites_on_24 || iconResId == R.drawable.ic_filter_on_24 -> Color.Unspecified
+        else -> MaterialTheme.colorScheme.onSurface
+    }
 }
 
 data class TopBarIcon(

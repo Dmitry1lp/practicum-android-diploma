@@ -23,6 +23,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField(type = "String", name = "API_ACCESS_TOKEN", value = "\"${developProperties.apiAccessToken}\"")
+        buildConfigField("String", "DIPLOMA_PREFERENCES", "\"diploma_preferences\"")
     }
 
     buildTypes {
@@ -72,8 +73,6 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.manifest)
     implementation(libs.kotlinx.collections.immutable)
-    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0")
-
     implementation(libs.gson)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
