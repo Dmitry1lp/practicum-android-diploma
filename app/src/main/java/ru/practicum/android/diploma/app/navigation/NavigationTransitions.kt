@@ -1,26 +1,42 @@
 package ru.practicum.android.diploma.app.navigation
 
+import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.togetherWith
+import androidx.compose.animation.slideInHorizontally as composeSlideInHorizontally
+import androidx.compose.animation.slideOutHorizontally as composeSlideOutHorizontally
 
 object NavigationTransitions {
 
     private const val ANIM_DURATION = 300
 
-    fun slideInHorizontally(rightToLeft: Boolean): EnterTransition {
-        val directionModifier = if (rightToLeft) 1 else -1
-        return androidx.compose.animation.slideInHorizontally(
-            initialOffsetX = { it * directionModifier },
-            animationSpec = tween(ANIM_DURATION)
-        )
-    }
+    fun forward(): ContentTransform = slideInFromEnd() togetherWith slideOutToStart()
+    fun back(): ContentTransform = slideInFromStart() togetherWith slideOutToEnd()
+    fun predictiveBack(): ContentTransform = back()
 
-    fun slideOutHorizontally(rightToLeft: Boolean): ExitTransition {
-        val directionModifier = if (rightToLeft) 1 else -1
-        return androidx.compose.animation.slideOutHorizontally(
-            targetOffsetX = { it * directionModifier },
+    private fun slideInFromEnd(): EnterTransition =
+        composeSlideInHorizontally(
+            initialOffsetX = { it },
             animationSpec = tween(ANIM_DURATION)
         )
-    }
+
+    private fun slideOutToStart(): ExitTransition =
+        composeSlideOutHorizontally(
+            targetOffsetX = { -it },
+            animationSpec = tween(ANIM_DURATION)
+        )
+
+    private fun slideInFromStart(): EnterTransition =
+        composeSlideInHorizontally(
+            initialOffsetX = { -it },
+            animationSpec = tween(ANIM_DURATION)
+        )
+
+    private fun slideOutToEnd(): ExitTransition =
+        composeSlideOutHorizontally(
+            targetOffsetX = { it },
+            animationSpec = tween(ANIM_DURATION)
+        )
 }

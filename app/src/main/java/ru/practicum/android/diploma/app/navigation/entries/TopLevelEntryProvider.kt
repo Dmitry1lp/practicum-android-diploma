@@ -20,6 +20,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import ru.practicum.android.diploma.app.navigation.NavigationTransitions
 import ru.practicum.android.diploma.app.navigation.TopLevelBackStack
 import ru.practicum.android.diploma.app.navigation.routes.FiltersRoute
 import ru.practicum.android.diploma.app.navigation.routes.Route
@@ -140,12 +141,14 @@ fun topLevelEntryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryP
                 rememberSaveableStateHolderNavEntryDecorator(),
                 rememberViewModelStoreNavEntryDecorator()
             ),
-            onBack = { filtersBackStack.removeLastOrNull() },
             entryProvider = filtersEntryProvider(
                 viewModel = filtersViewModel,
                 backStack = filtersBackStack,
                 onCloseFilters = { topLevelBackStack.removeLast() }
-            )
+            ),
+            transitionSpec = { NavigationTransitions.forward() },
+            popTransitionSpec = { NavigationTransitions.back() },
+            predictivePopTransitionSpec = { NavigationTransitions.predictiveBack() }
         )
     }
 }

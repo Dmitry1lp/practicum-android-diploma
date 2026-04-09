@@ -2,7 +2,6 @@
 
 package ru.practicum.android.diploma.app.navigation
 
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -54,18 +53,9 @@ fun NavigationRoot(
             ),
             onBack = { topLevelBackStack.removeLast() },
             entryProvider = entryProvider,
-            transitionSpec = {
-                NavigationTransitions.slideInHorizontally(rightToLeft = true) togetherWith
-                    NavigationTransitions.slideOutHorizontally(rightToLeft = false)
-            },
-            popTransitionSpec = {
-                NavigationTransitions.slideInHorizontally(rightToLeft = false) togetherWith
-                    NavigationTransitions.slideOutHorizontally(rightToLeft = true)
-            },
-            predictivePopTransitionSpec = {
-                NavigationTransitions.slideInHorizontally(rightToLeft = false) togetherWith
-                    NavigationTransitions.slideOutHorizontally(rightToLeft = true)
-            }
+            transitionSpec = { NavigationTransitions.forward() },
+            popTransitionSpec = { NavigationTransitions.back() },
+            predictivePopTransitionSpec = { NavigationTransitions.predictiveBack() }
         )
     }
 }
