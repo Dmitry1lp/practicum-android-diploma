@@ -12,7 +12,7 @@ import androidx.navigation3.runtime.entryProvider
 import ru.practicum.android.diploma.app.navigation.routes.FiltersRoute
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.industry.IndustryActions
-import ru.practicum.android.diploma.feature.filters.presentation.region.SelectRegionUiState
+import ru.practicum.android.diploma.feature.filters.presentation.region.RegionActions
 import ru.practicum.android.diploma.feature.filters.presentation.viewmodel.FiltersViewModel
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationActions
 import ru.practicum.android.diploma.feature.filters.ui.country.SelectCountryScreen
@@ -65,7 +65,7 @@ fun filtersEntryProvider(
                 onSearchTextChanged = viewModel::onSearchIndustryTextChange,
                 onIndustryClick = viewModel::onIndustrySelected,
                 onApplyClick = { industry ->
-                    viewModel.updateState(industry)
+                    viewModel.onIndustryApplied(industry)
                     backStack.removeLastOrNull()
                 }
             )
@@ -73,6 +73,7 @@ fun filtersEntryProvider(
     }
 
     entry<FiltersRoute.WorkLocation> {
+        val filtersUiState by viewModel.filtersUiState.collectAsStateWithLifecycle()
         LaunchedEffect(Unit) { viewModel.getAreas() }
 
         val currentState by viewModel.workLocationState.collectAsStateWithLifecycle()
@@ -106,24 +107,18 @@ fun filtersEntryProvider(
     }
 
     entry<FiltersRoute.Region> {
-        val workLocationUiState by viewModel.workLocationState.collectAsStateWithLifecycle()
-
-        val state = when {
-            workLocationUiState.filteredRegions.isNotEmpty() ->
-                SelectRegionUiState.Content(workLocationUiState.filteredRegions)
-
-            else -> SelectRegionUiState.FetchError
-        }
+        val state by viewModel.regionState.collectAsStateWithLifecycle()
 
         SelectRegionScreen(
-            state = state,
-            searchText = workLocationUiState.searchText,
-            onRegionClick = { region ->
-                viewModel.updateState(region)
-                backStack.removeLastOrNull()
-            },
-            onSearchTextChange = { viewModel.onSearchRegionTextChange(it) },
-            onBackClick = { backStack.removeLastOrNull() },
+            screenState = state,
+            actions = RegionActions(
+                onRegionClick = { region ->
+                    viewModel.onRegionApplied(region as GeoArea.Region)
+                    backStack.removeLastOrNull()
+                },
+                onSearchTextChange = viewModel::onSearchRegionTextChange,
+                onBackClick = { backStack.removeLastOrNull() }
+            )
         )
     }
 }

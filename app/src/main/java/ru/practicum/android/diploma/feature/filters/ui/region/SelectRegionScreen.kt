@@ -12,10 +12,11 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
-import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppSearchBar
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.presentation.region.SelectRegionUiState
+import ru.practicum.android.diploma.feature.filters.presentation.region.RegionActions
+import ru.practicum.android.diploma.feature.filters.presentation.region.RegionScreenState
+import ru.practicum.android.diploma.feature.filters.presentation.region.RegionUiState
 import ru.practicum.android.diploma.feature.filters.ui.states.FilterContentState
 import ru.practicum.android.diploma.feature.filters.ui.states.FilterFetchErrorState
 import ru.practicum.android.diploma.feature.filters.ui.states.FilterNoSuchRegionState
@@ -23,17 +24,14 @@ import ru.practicum.android.diploma.feature.filters.ui.states.FilterNoSuchRegion
 @Composable
 fun SelectRegionScreen(
     modifier: Modifier = Modifier,
-    state: SelectRegionUiState,
-    searchText: String = "",
-    onRegionClick: (GeoArea) -> Unit,
-    onSearchTextChange: (String) -> Unit,
-    onBackClick: () -> Unit
+    screenState: RegionScreenState,
+    actions: RegionActions
 ) {
     Scaffold(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.screen_select_region),
-                onNavigationIcon = onBackClick
+                onNavigationIcon = actions.onBackClick
             )
         }
     ) { paddingValues ->
@@ -41,19 +39,20 @@ fun SelectRegionScreen(
             modifier = modifier.padding(paddingValues)
         ) {
             AppSearchBar(
-                text = searchText,
+                text = screenState.searchText,
                 hint = stringResource(R.string.hint_search_region),
-                onTextChange = { onSearchTextChange(it) }
+                onTextChange = { actions.onSearchTextChange(it) }
             )
             Box {
-                when (state) {
-                    is SelectRegionUiState.Content -> FilterContentState(
-                        items = state.regions,
-                        onItemClick = onRegionClick
+                when (val state = screenState.uiState) {
+                    is RegionUiState.Content -> FilterContentState(
+                        items = state.filteredRegions,
+                        onItemClick = actions.onRegionClick
                     )
 
-                    is SelectRegionUiState.FetchError -> FilterFetchErrorState()
-                    is SelectRegionUiState.NoSuchRegion -> FilterNoSuchRegionState()
+                    is RegionUiState.FetchError -> FilterFetchErrorState()
+                    is RegionUiState.NoResult -> FilterNoSuchRegionState()
+                    is RegionUiState.Loading -> {}
                 }
             }
         }
@@ -64,14 +63,16 @@ fun SelectRegionScreen(
 @PreviewLightDark
 @Composable
 private fun SelectRegionScreenPreview(
-    @PreviewParameter(SelectRegionUiStateProvider::class) state: SelectRegionUiState
+    @PreviewParameter(SelectRegionScreenStateProvider::class) state: RegionScreenState
 ) {
     DiplomaTheme {
         SelectRegionScreen(
-            state = state,
-            onRegionClick = {},
-            onSearchTextChange = {},
-            onBackClick = {}
+            screenState = state,
+            actions = RegionActions(
+                onRegionClick = {},
+                onSearchTextChange = {},
+                onBackClick = {}
+            )
         )
     }
 }
