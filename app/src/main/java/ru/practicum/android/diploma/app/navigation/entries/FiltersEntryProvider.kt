@@ -3,9 +3,9 @@
 package ru.practicum.android.diploma.app.navigation.entries
 
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -27,7 +27,7 @@ fun filtersEntryProvider(
     onCloseFilters: () -> Unit
 ) = entryProvider<NavKey> {
     entry<FiltersRoute.Main> {
-        val state by viewModel.filtersUiState.collectAsState()
+        val state by viewModel.filtersUiState.collectAsStateWithLifecycle()
         val areButtonsEnabled = remember(state) {
             state.hasActiveFilters
         }
@@ -40,14 +40,8 @@ fun filtersEntryProvider(
                     viewModel.saveSettings(false)
                     onCloseFilters()
                 },
-                onWorkLocationClick = {
-                    viewModel.setCurrent()
-                    backStack.add(FiltersRoute.WorkLocation)
-                },
-                onIndustryClick = {
-                    viewModel.setCurrent()
-                    backStack.add(FiltersRoute.Industry)
-                },
+                onWorkLocationClick = { backStack.add(FiltersRoute.WorkLocation) },
+                onIndustryClick = { backStack.add(FiltersRoute.Industry) },
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
                 onCheckBoxChange = viewModel::onCheckBox,
                 onApplyClick = { isStartSearch ->
@@ -62,7 +56,7 @@ fun filtersEntryProvider(
     entry<FiltersRoute.Industry> {
         LaunchedEffect(Unit) { viewModel.getIndustries() }
 
-        val state by viewModel.industryState.collectAsState()
+        val state by viewModel.industryState.collectAsStateWithLifecycle()
 
         SelectIndustryScreen(
             screenState = state,
@@ -81,7 +75,7 @@ fun filtersEntryProvider(
     entry<FiltersRoute.WorkLocation> {
         LaunchedEffect(Unit) { viewModel.getAreas() }
 
-        val currentState by viewModel.workLocationState.collectAsState()
+        val currentState by viewModel.workLocationState.collectAsStateWithLifecycle()
 
         WorkLocationScreen(
             currentState = currentState,
@@ -99,7 +93,7 @@ fun filtersEntryProvider(
     }
 
     entry<FiltersRoute.Country> {
-        val state by viewModel.countryState.collectAsState()
+        val state by viewModel.countryState.collectAsStateWithLifecycle()
 
         SelectCountryScreen(
             onBackClick = { backStack.removeLastOrNull() },
@@ -112,16 +106,18 @@ fun filtersEntryProvider(
     }
 
     entry<FiltersRoute.Region> {
-        val filtersUiState by viewModel.filtersUiState.collectAsState()
+        val workLocationUiState by viewModel.workLocationState.collectAsStateWithLifecycle()
+
         val state = when {
-            filtersUiState.filteredRegions.isNotEmpty() ->
-                SelectRegionUiState.Content(filtersUiState.filteredRegions)
+            workLocationUiState.filteredRegions.isNotEmpty() ->
+                SelectRegionUiState.Content(workLocationUiState.filteredRegions)
 
             else -> SelectRegionUiState.FetchError
         }
 
         SelectRegionScreen(
             state = state,
+            searchText = workLocationUiState.searchText,
             onRegionClick = { region ->
                 viewModel.updateState(region)
                 backStack.removeLastOrNull()
