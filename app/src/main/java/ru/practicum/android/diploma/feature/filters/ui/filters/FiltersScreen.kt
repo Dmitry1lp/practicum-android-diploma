@@ -19,7 +19,7 @@ import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.feature.filters.presentation.ClearTarget
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersUiState
-import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocation
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
 import ru.practicum.android.diploma.feature.filters.ui.DismissButton
 import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
@@ -105,7 +105,7 @@ private fun FiltersScreenPreviewLightMode() {
     DiplomaTheme {
         FiltersScreen(
             currentState = FiltersUiState(
-                workLocation = WorkLocationUiState(country, region),
+                workLocation = WorkLocation(country, region),
                 isCheckBox = true
             ),
             areButtonsEnabled = true,

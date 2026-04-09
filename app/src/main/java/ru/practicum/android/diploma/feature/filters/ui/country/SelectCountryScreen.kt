@@ -16,13 +16,15 @@ import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.feature.filters.presentation.country.CountryUiState
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.AreasStatus
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationScreenState
 import ru.practicum.android.diploma.feature.filters.ui.states.FilterContentState
 import ru.practicum.android.diploma.feature.filters.ui.states.FilterFetchErrorState
 
 @Composable
 fun SelectCountryScreen(
     modifier: Modifier = Modifier,
-    state: CountryUiState,
+    state: WorkLocationScreenState,
     onBackClick: () -> Unit,
     onCountryClick: (GeoArea) -> Unit
 ) {
@@ -40,30 +42,30 @@ fun SelectCountryScreen(
                 .padding(innerPaddings)
                 .padding(vertical = AppDimensions.paddingMedium)
         ) {
-            when (state) {
-                is CountryUiState.Content -> FilterContentState(
+            when (state.status) {
+                AreasStatus.Content -> FilterContentState(
                     items = state.countries,
                     onItemClick = onCountryClick
                 )
 
-                is CountryUiState.FetchError -> FilterFetchErrorState()
-                is CountryUiState.Loading -> {}
+                AreasStatus.FetchError -> FilterFetchErrorState()
+                AreasStatus.Loading -> {}
             }
         }
     }
 }
 
-@Preview(showSystemUi = true)
-@PreviewLightDark
-@Composable
-private fun SelectCountryScreenPreview(
-    @PreviewParameter(SelectCountryUiStateProvider::class) state: CountryUiState
-) {
-    DiplomaTheme {
-        SelectCountryScreen(
-            state = state,
-            onBackClick = {},
-            onCountryClick = {}
-        )
-    }
-}
+//@Preview(showSystemUi = true)
+//@PreviewLightDark
+//@Composable
+//private fun SelectCountryScreenPreview(
+//    @PreviewParameter(SelectCountryUiStateProvider::class) state: CountryUiState
+//) {
+//    DiplomaTheme {
+//        SelectCountryScreen(
+//            state = state,
+//            onBackClick = {},
+//            onCountryClick = {}
+//        )
+//    }
+//}
