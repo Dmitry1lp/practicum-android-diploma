@@ -114,6 +114,7 @@ class TopLevelBackStack<T : NavKey>(
      * @param key ключ нового экрана, который нужно добавить в стек.
      */
     fun add(key: T) {
+        transitionDirection = HorizontalDirection.Forward
         currentStack.add(key)
     }
 
@@ -130,6 +131,7 @@ class TopLevelBackStack<T : NavKey>(
      *    происходит переключение на стартовый раздел.
      */
     fun removeLast() {
+        transitionDirection = HorizontalDirection.Backward
         when {
             currentStack.size > 1 -> currentStack.removeLastOrNull()
             topLevelKey != startKey -> topLevelKey = startKey
