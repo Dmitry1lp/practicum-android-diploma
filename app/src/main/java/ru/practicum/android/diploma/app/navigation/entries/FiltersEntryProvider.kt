@@ -35,10 +35,7 @@ fun filtersEntryProvider(
             currentState = state,
             areButtonsEnabled = areButtonsEnabled,
             actions = FiltersActions(
-                onBackClick = {
-                    viewModel.saveSettings(false)
-                    onCloseFilters()
-                },
+                onBackClick = { onCloseFilters() },
                 onWorkLocationClick = { backStack.add(FiltersRoute.WorkLocation) },
                 onIndustryClick = { backStack.add(FiltersRoute.Industry) },
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },

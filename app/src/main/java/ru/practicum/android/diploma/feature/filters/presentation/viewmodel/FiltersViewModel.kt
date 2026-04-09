@@ -44,7 +44,10 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
     }
 
     fun onIndustrySelected(industry: FilterIndustry?) = _industryState.update { it.copy(selectedIndustry = industry) }
-    fun onIndustryApplied(industry: FilterIndustry?) = _filtersUiState.update { it.copy(industry = industry) }
+    fun onIndustryApplied(industry: FilterIndustry?) {
+        _filtersUiState.update { it.copy(industry = industry) }
+        saveSettings(false)
+    }
 
     fun onSearchIndustryTextChange(text: String) = when (val uiState = _industryState.value.uiState) {
         is IndustryUiState.Content -> _industryState.update { currentState ->
@@ -59,8 +62,9 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
         else -> _industryState.update { it.copy(searchText = text) }
     }
 
-    fun onWorkLocationApplied(current: WorkLocation) = _filtersUiState.update {
-        it.copy(workLocation = WorkLocation(current.country, current.region))
+    fun onWorkLocationApplied(current: WorkLocation) {
+        _filtersUiState.update { it.copy(workLocation = WorkLocation(current.country, current.region)) }
+        saveSettings(false)
     }
 
     fun onCountryApplied(country: GeoArea.Country) = _workLocationState.update { state ->
@@ -85,11 +89,17 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
         )
     }
 
-    fun onSalaryTextChange(text: String) = _filtersUiState.update { it.copy(salaryText = text) }
+    fun onSalaryTextChange(text: String) {
+        _filtersUiState.update { it.copy(salaryText = text) }
+        saveSettings(false)
+    }
 
     fun onSearchRegionTextChange(text: String) = _workLocationState.update { it.copy(regionSearchQuery = text) }
 
-    fun onCheckBox() = _filtersUiState.update { it.copy(isCheckBox = !filtersUiState.value.isCheckBox) }
+    fun onCheckBox() {
+        _filtersUiState.update { it.copy(isCheckBox = !filtersUiState.value.isCheckBox) }
+        saveSettings(false)
+    }
 
     fun saveSettings(isStartSearch: Boolean) {
         if (filtersUiState.value.hasActiveFilters) {
@@ -129,11 +139,13 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
                     )
                 }
                 _workLocationState.update { it.copy(workLocation = WorkLocation()) }
+                saveSettings(false)
             }
 
             is ClearTarget.Industry -> {
                 _filtersUiState.update { it.copy(industry = null) }
                 _industryState.update { it.copy(selectedIndustry = null) }
+                saveSettings(false)
             }
 
             is ClearTarget.Country -> {
@@ -147,6 +159,7 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
 
             is ClearTarget.WorkLocation -> {
                 _filtersUiState.update { it.copy(workLocation = WorkLocation()) }
+                saveSettings(false)
             }
 
         }
