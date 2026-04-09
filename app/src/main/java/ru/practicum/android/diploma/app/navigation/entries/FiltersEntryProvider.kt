@@ -4,7 +4,9 @@ package ru.practicum.android.diploma.app.navigation.entries
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
@@ -30,6 +32,11 @@ fun filtersEntryProvider(
     entry<FiltersRoute.Main> {
         val state by viewModel.filtersUiState.collectAsStateWithLifecycle()
         val areButtonsEnabled = remember(state) { state.hasActiveFilters }
+        var isFirstRun by remember { mutableStateOf(true) }
+        LaunchedEffect(state) {
+            if (!isFirstRun) viewModel.saveSettings(false)
+            isFirstRun = false
+        }
 
         FiltersScreen(
             currentState = state,

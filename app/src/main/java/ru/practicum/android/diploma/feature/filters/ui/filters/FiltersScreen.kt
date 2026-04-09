@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.feature.filters.ui.filters
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -31,8 +30,6 @@ fun FiltersScreen(
     modifier: Modifier = Modifier,
     actions: FiltersActions
 ) {
-    BackHandler(enabled = true) { actions.onBackClick() }
-
     Scaffold(
         topBar = {
             AppTopBar(
