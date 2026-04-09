@@ -13,7 +13,6 @@ import ru.practicum.android.diploma.core.data.network.dto.toDomain
 import ru.practicum.android.diploma.core.data.network.dto.toGeoArea
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
-import ru.practicum.android.diploma.core.domain.model.Resource
 import ru.practicum.android.diploma.feature.filters.data.model.FiltersSettings
 import ru.practicum.android.diploma.feature.filters.domain.repository.FiltersRepository
 
@@ -21,33 +20,39 @@ class FiltersRepositoryImpl(
     private val networkClient: NetworkClient,
     private val sharedPrefs: SharedPreferences
 ) : FiltersRepository {
-    override fun getCountries(): Flow<Resource<List<GeoArea.Country>>> = flow {
+    override fun getCountries(): Flow<Result<List<GeoArea.Country>>> = flow {
         val response = networkClient.doRequest(Request.AreasRequest)
         val result = when (response.resultCode) {
-            ERROR -> Resource.Error(response.resultCode.toString())
-            SUCCESS -> with(response as GeoAreasResponse) {
-                Resource.Success(
-                    geoAreas
-                        .map { it.toGeoArea() }
-                        .sortedBy { it.name }
-                        .filterIsInstance<GeoArea.Country>()
-                )
+            ERROR -> Result.failure(Exception(response.resultCode.toString()))
+            SUCCESS -> {
+                val data = (response as GeoAreasResponse)
+                    .geoAreas
+                    .map { it.toGeoArea() }
+                    .sortedBy { it.name }
+                    .filterIsInstance<GeoArea.Country>()
+
+                Result.success(data)
             }
 
-            else -> Resource.Error(response.resultCode.toString())
+            else -> Result.failure(Exception(response.resultCode.toString()))
         }
+
         emit(result)
     }
 
-    override fun getIndustries(): Flow<Resource<List<FilterIndustry>>> = flow {
+    override fun getIndustries(): Flow<Result<List<FilterIndustry>>> = flow {
         val response = networkClient.doRequest(Request.IndustriesRequest)
         val result = when (response.resultCode) {
-            ERROR -> Resource.Error(response.resultCode.toString())
-            SUCCESS -> with(response as IndustriesResponse) {
-                Resource.Success(industries.map { it.toDomain() })
+            ERROR -> Result.failure(Exception(response.resultCode.toString()))
+            SUCCESS -> {
+                val data = (response as IndustriesResponse)
+                    .industries
+                    .map { it.toDomain() }
+
+                Result.success(data)
             }
 
-            else -> Resource.Error(response.resultCode.toString())
+            else -> Result.failure(Exception(response.resultCode.toString()))
         }
         emit(result)
     }
