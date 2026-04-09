@@ -36,9 +36,34 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
 
     init {
         getFiltersSettings()
-        viewModelScope.launch {
-            filtersUiState.collect { uiState ->
-                _industryState.update { it.copy(selectedIndustry = uiState.industry) }
+    }
+
+    fun setWorkLocation() {
+        _workLocationState.update {
+            it.copy(
+                regionSearchQuery = "",
+                workLocation = _filtersUiState.value.workLocation
+            )
+        }
+    }
+
+    fun setIndustry() {
+        _industryState.update { currentState ->
+            when (val uiState = currentState.uiState) {
+                is IndustryUiState.Content -> {
+                    currentState.copy(
+                        searchText = "",
+                        selectedIndustry = _filtersUiState.value.industry,
+                        uiState = uiState.copy(
+                            filteredIndustries = uiState.industries
+                        )
+                    )
+                }
+
+                else -> currentState.copy(
+                    searchText = "",
+                    selectedIndustry = _filtersUiState.value.industry
+                )
             }
         }
     }

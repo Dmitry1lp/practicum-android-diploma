@@ -43,8 +43,14 @@ fun filtersEntryProvider(
             areButtonsEnabled = areButtonsEnabled,
             actions = FiltersActions(
                 onBackClick = { onCloseFilters() },
-                onWorkLocationClick = { backStack.add(FiltersRoute.WorkLocation) },
-                onIndustryClick = { backStack.add(FiltersRoute.Industry) },
+                onWorkLocationClick = {
+                    viewModel.setWorkLocation()
+                    backStack.add(FiltersRoute.WorkLocation)
+                },
+                onIndustryClick = {
+                    viewModel.setIndustry()
+                    backStack.add(FiltersRoute.Industry)
+                },
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
                 onCheckBoxChange = viewModel::onCheckBox,
                 onApplyClick = { isStartSearch ->
