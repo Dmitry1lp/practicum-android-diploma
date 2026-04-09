@@ -32,11 +32,7 @@ fun filtersEntryProvider(
     entry<FiltersRoute.Main> {
         val state by viewModel.filtersUiState.collectAsStateWithLifecycle()
         val areButtonsEnabled = remember(state) { state.hasActiveFilters }
-        var isFirstRun by remember { mutableStateOf(true) }
-        LaunchedEffect(state) {
-            if (!isFirstRun) viewModel.saveSettings(false)
-            isFirstRun = false
-        }
+        LaunchedEffect(state) { viewModel.saveSettings(false) }
 
         FiltersScreen(
             currentState = state,

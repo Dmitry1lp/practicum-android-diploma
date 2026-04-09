@@ -124,13 +124,12 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
 
     fun saveSettings(isStartSearch: Boolean) {
         if (filtersUiState.value.hasActiveFilters) {
-            val selectedIndustry = _industryState.value.selectedIndustry
 
             interactor.saveFiltersSetting(
                 FiltersSettings(
                     country = filtersUiState.value.workLocation.country,
                     region = filtersUiState.value.workLocation.region,
-                    industry = selectedIndustry,
+                    industry = filtersUiState.value.industry,
                     salaryText = filtersUiState.value.salaryText.ifEmpty { null },
                     onlyWithSalary = filtersUiState.value.isCheckBox.let { if (!it) null else true },
                     isStartSearch = isStartSearch
@@ -183,7 +182,7 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
         }
     }
 
-    private fun getFiltersSettings() {
+    fun getFiltersSettings() {
         val filtersSettings = interactor.getFiltersSettings()
         filtersSettings?.let {
             _filtersUiState.update {
