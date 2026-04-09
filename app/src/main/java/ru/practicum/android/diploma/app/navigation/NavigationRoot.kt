@@ -15,13 +15,6 @@ import androidx.navigation3.ui.NavDisplay
 import org.koin.androidx.compose.koinViewModel
 import ru.practicum.android.diploma.app.navigation.entries.topLevelEntryProvider
 import ru.practicum.android.diploma.app.navigation.routes.BottomNavItem
-import ru.practicum.android.diploma.app.navigation.routes.Route
-
-private val bottomNavItems = listOf<BottomNavItem>(
-    Route.Search,
-    Route.Favorites,
-    Route.Team
-)
 
 @Composable
 fun NavigationRoot(
@@ -38,7 +31,7 @@ fun NavigationRoot(
         bottomBar = {
             if (topLevelBackStack.shouldDrawBottomNavBar()) {
                 BottomNavigationBar(
-                    bottomNavItems = bottomNavItems,
+                    bottomNavItems = navigationViewModel.bottomNavItems,
                     topLevelBackStack = topLevelBackStack
                 )
             }
@@ -53,7 +46,12 @@ fun NavigationRoot(
             ),
             onBack = { topLevelBackStack.removeLast() },
             entryProvider = entryProvider,
-            transitionSpec = { NavigationTransitions.forward() },
+            transitionSpec = {
+                when (topLevelBackStack.transitionDirection) {
+                    TopLevelBackStack.HorizontalDirection.Forward -> NavigationTransitions.forward()
+                    TopLevelBackStack.HorizontalDirection.Backward -> NavigationTransitions.back()
+                }
+            },
             popTransitionSpec = { NavigationTransitions.back() },
             predictivePopTransitionSpec = { NavigationTransitions.predictiveBack() }
         )

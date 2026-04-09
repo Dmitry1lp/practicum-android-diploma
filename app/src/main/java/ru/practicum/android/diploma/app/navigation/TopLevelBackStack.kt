@@ -34,8 +34,11 @@ import androidx.navigation3.runtime.NavKey
  * @param startKey ключ стартового экрана верхнего уровня в приложении.
  */
 class TopLevelBackStack<T : NavKey>(
-    private val startKey: T
+    private val startKey: T,
+    private val topLevelOrder: List<T>
 ) {
+    var transitionDirection by mutableStateOf(HorizontalDirection.Forward)
+        private set
 
     /**
      * Хранилище стеков навигации для каждого ключа верхнего уровня.
@@ -91,6 +94,14 @@ class TopLevelBackStack<T : NavKey>(
      * @param key ключ экрана верхнего уровня, на который происходит переключение.
      */
     fun switchTopLevel(key: T) {
+        val fromIndex = topLevelOrder.indexOf(topLevelKey)
+        val toIndex = topLevelOrder.indexOf(key)
+
+        transitionDirection = when {
+            fromIndex < toIndex -> HorizontalDirection.Forward
+            else -> HorizontalDirection.Backward
+        }
+
         topLevelBackStacks.getOrPut(key) { mutableStateListOf(key) }
         topLevelKey = key
     }
@@ -137,6 +148,11 @@ class TopLevelBackStack<T : NavKey>(
         require(keys.isNotEmpty())
 
         topLevelBackStacks[topLevelKey] = mutableStateListOf(*keys)
+    }
+
+    enum class HorizontalDirection {
+        Forward,
+        Backward
     }
 
 }
