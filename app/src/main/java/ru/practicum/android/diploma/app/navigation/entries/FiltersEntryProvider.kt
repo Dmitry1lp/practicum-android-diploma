@@ -28,9 +28,7 @@ fun filtersEntryProvider(
 ) = entryProvider<NavKey> {
     entry<FiltersRoute.Main> {
         val state by viewModel.filtersUiState.collectAsStateWithLifecycle()
-        val areButtonsEnabled = remember(state) {
-            state.hasActiveFilters
-        }
+        val areButtonsEnabled = remember(state) { state.hasActiveFilters }
 
         FiltersScreen(
             currentState = state,
@@ -86,7 +84,7 @@ fun filtersEntryProvider(
                 onRegionClick = { backStack.add(FiltersRoute.Region) },
                 onClearClick = { clear -> viewModel.clear(clear) },
                 onApplyClick = { state ->
-                    viewModel.updateState(state)
+                    viewModel.onWorkLocationApplied(state)
                     backStack.removeLastOrNull()
                 }
             )
@@ -94,23 +92,23 @@ fun filtersEntryProvider(
     }
 
     entry<FiltersRoute.Country> {
-        val state by viewModel.countryState.collectAsStateWithLifecycle()
+        val state by viewModel.workLocationState.collectAsStateWithLifecycle()
 
         SelectCountryScreen(
             onBackClick = { backStack.removeLastOrNull() },
             state = state,
             onCountryClick = { country ->
-                viewModel.updateState(country)
+                viewModel.onCountryApplied(country as GeoArea.Country)
                 backStack.removeLastOrNull()
             }
         )
     }
 
     entry<FiltersRoute.Region> {
-        val state by viewModel.regionState.collectAsStateWithLifecycle()
+        val state by viewModel.workLocationState.collectAsStateWithLifecycle()
 
         SelectRegionScreen(
-            screenState = state,
+            state = state,
             actions = RegionActions(
                 onRegionClick = { region ->
                     viewModel.onRegionApplied(region as GeoArea.Region)
