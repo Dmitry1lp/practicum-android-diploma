@@ -59,18 +59,6 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
         else -> _industryState.update { it.copy(searchText = text) }
     }
 
-    fun setWorkLocationScreen() {
-        val country = filtersUiState.value.workLocation.country
-        _filtersUiState.update {
-            it.copy(
-                searchText = "",
-                workLocation = WorkLocation(country, filtersUiState.value.workLocation.region)
-            )
-        }
-    }
-
-    fun setIndustryScreen() = _filtersUiState.update { it.copy(searchText = "", filteredIndustries = it.industries) }
-
     fun onWorkLocationApplied(current: WorkLocation) = _filtersUiState.update {
         it.copy(workLocation = WorkLocation(current.country, current.region))
     }
@@ -149,18 +137,16 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
             }
 
             is ClearTarget.Country -> {
-                _filtersUiState.update { it.copy(workLocation = WorkLocation()) }
                 _workLocationState.update { it.copy(workLocation = WorkLocation()) }
             }
 
             is ClearTarget.Region -> {
-                _filtersUiState.update { it.copy(workLocation = _filtersUiState.value.workLocation.copy(region = null)) }
-                _workLocationState.update { it.copy(workLocation = _workLocationState.value.workLocation.copy(region = null)) }
+                val workLocation = _workLocationState.value.workLocation.copy(region = null)
+                _workLocationState.update { it.copy(workLocation = workLocation) }
             }
 
             is ClearTarget.WorkLocation -> {
                 _filtersUiState.update { it.copy(workLocation = WorkLocation()) }
-                _workLocationState.update { it.copy(workLocation = WorkLocation()) }
             }
 
         }
@@ -211,7 +197,6 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
                 .getCountries()
                 .collect { (countries, errorMessage) ->
                     _workLocationState.update { uiState ->
-                        Log.d("TEST", errorMessage.toString())
                         uiState.copy(
                             status = if (errorMessage == null) AreasStatus.Content else AreasStatus.FetchError,
                             countries = countries ?: persistentListOf()

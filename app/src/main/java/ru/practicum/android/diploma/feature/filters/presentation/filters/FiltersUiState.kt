@@ -1,10 +1,10 @@
 package ru.practicum.android.diploma.feature.filters.presentation.filters
 
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
-import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocation
 
 data class FiltersUiState(
-    val workLocation: WorkLocationUiState = WorkLocationUiState(),
+    val workLocation: WorkLocation = WorkLocation(),
     val industry: FilterIndustry? = null,
     val salaryText: String = "",
     val isCheckBox: Boolean = false,

@@ -7,7 +7,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.presentation.components.AppSearchBar
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.feature.filters.presentation.region.RegionActions
@@ -59,20 +63,20 @@ fun SelectRegionScreen(
     }
 }
 
-//@Preview(showSystemUi = true)
-//@PreviewLightDark
-//@Composable
-//private fun SelectRegionScreenPreview(
-//    @PreviewParameter(SelectRegionScreenStateProvider::class) state: RegionScreenState
-//) {
-//    DiplomaTheme {
-//        SelectRegionScreen(
-//            state = state,
-//            actions = RegionActions(
-//                onRegionClick = {},
-//                onSearchTextChange = {},
-//                onBackClick = {}
-//            )
-//        )
-//    }
-//}
+@Preview(showSystemUi = true)
+@PreviewLightDark
+@Composable
+private fun SelectRegionScreenPreview(
+    @PreviewParameter(SelectRegionScreenStateProvider::class) state: WorkLocationScreenState
+) {
+    DiplomaTheme {
+        SelectRegionScreen(
+            state = state,
+            actions = RegionActions(
+                onRegionClick = {},
+                onSearchTextChange = {},
+                onBackClick = {}
+            )
+        )
+    }
+}

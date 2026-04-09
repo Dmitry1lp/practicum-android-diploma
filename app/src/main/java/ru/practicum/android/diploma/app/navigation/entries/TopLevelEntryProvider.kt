@@ -38,8 +38,10 @@ import ru.practicum.android.diploma.feature.vacancy.ui.VacancyScreen
 fun topLevelEntryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryProvider<NavKey> {
     entry<Route.Team> {
         val viewModel: TeamViewModel = koinViewModel()
+        val developers by viewModel.developers.collectAsStateWithLifecycle()
+
         TeamScreen(
-            developers = viewModel.developers.collectAsState().value,
+            developers = developers,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(teamScreenPadding)
@@ -48,9 +50,10 @@ fun topLevelEntryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryP
 
     entry<Route.Favorites> {
         val viewModel: FavoritesViewModel = koinViewModel()
+        val state by viewModel.state.collectAsStateWithLifecycle()
 
         FavoritesScreen(
-            state = viewModel.state.collectAsState().value,
+            state = state,
             onVacancyClick = { vacancyId ->
                 topLevelBackStack.add(Route.Vacancy(vacancyId))
             },
@@ -60,7 +63,6 @@ fun topLevelEntryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryP
 
     entry<Route.Search> {
         val viewModel: SearchViewModel = koinViewModel()
-
         val state by viewModel.uiState.collectAsStateWithLifecycle()
 
         SearchScreen(
@@ -80,7 +82,6 @@ fun topLevelEntryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryP
         val vacancyId = route.id
 
         val viewModel: VacancyDetailsViewModel = koinViewModel(parameters = { parametersOf(vacancyId) })
-
         val state by viewModel.state.collectAsState()
 
         val context = LocalContext.current

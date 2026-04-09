@@ -15,9 +15,9 @@ import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
-import ru.practicum.android.diploma.feature.filters.presentation.country.CountryUiState
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.AreasStatus
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationScreenState
+import ru.practicum.android.diploma.feature.filters.ui.region.SelectRegionScreenStateProvider
 import ru.practicum.android.diploma.feature.filters.ui.states.FilterContentState
 import ru.practicum.android.diploma.feature.filters.ui.states.FilterFetchErrorState
 
@@ -55,17 +55,17 @@ fun SelectCountryScreen(
     }
 }
 
-//@Preview(showSystemUi = true)
-//@PreviewLightDark
-//@Composable
-//private fun SelectCountryScreenPreview(
-//    @PreviewParameter(SelectCountryUiStateProvider::class) state: CountryUiState
-//) {
-//    DiplomaTheme {
-//        SelectCountryScreen(
-//            state = state,
-//            onBackClick = {},
-//            onCountryClick = {}
-//        )
-//    }
-//}
+@Preview(showSystemUi = true)
+@PreviewLightDark
+@Composable
+private fun SelectCountryScreenPreview(
+    @PreviewParameter(SelectRegionScreenStateProvider::class) state: WorkLocationScreenState
+) {
+    DiplomaTheme {
+        SelectCountryScreen(
+            state = state,
+            onBackClick = {},
+            onCountryClick = {}
+        )
+    }
+}
