@@ -1,11 +1,14 @@
 package ru.practicum.android.diploma.feature.filters.presentation.worklocation
 
+import okhttp3.internal.immutableListOf
 import ru.practicum.android.diploma.core.domain.model.GeoArea
-import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersUiState
 
 data class WorkLocationUiState(
     val country: GeoArea.Country? = null,
-    val region: GeoArea.Region? = null
+    val region: GeoArea.Region? = null,
+    val searchText: String = "",
+    val allRegions: List<GeoArea.Region> = immutableListOf(),
+    val filteredRegions: List<GeoArea.Region> = immutableListOf()
 ) {
     val locationString: String?
         get() = when {
@@ -16,13 +19,4 @@ data class WorkLocationUiState(
 
     val isEmpty: Boolean
         get() = country == null && region == null
-
-    companion object {
-        fun fromFiltersState(filtersState: FiltersUiState): WorkLocationUiState {
-            return WorkLocationUiState(
-                country = filtersState.currentCountry,
-                region = filtersState.currentRegion
-            )
-        }
-    }
 }

@@ -24,7 +24,7 @@ import ru.practicum.android.diploma.feature.filters.ui.states.FilterNoSuchRegion
 fun SelectRegionScreen(
     modifier: Modifier = Modifier,
     state: SelectRegionUiState,
-    searchText: String,
+    searchText: String = "",
     onRegionClick: (GeoArea) -> Unit,
     onSearchTextChange: (String) -> Unit,
     onBackClick: () -> Unit
@@ -69,7 +69,6 @@ private fun SelectRegionScreenPreview(
     DiplomaTheme {
         SelectRegionScreen(
             state = state,
-            searchText = "",
             onRegionClick = {},
             onSearchTextChange = {},
             onBackClick = {}
