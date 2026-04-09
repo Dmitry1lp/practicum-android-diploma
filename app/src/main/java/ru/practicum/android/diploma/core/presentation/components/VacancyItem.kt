@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.core.presentation.components
 
-import android.R
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
