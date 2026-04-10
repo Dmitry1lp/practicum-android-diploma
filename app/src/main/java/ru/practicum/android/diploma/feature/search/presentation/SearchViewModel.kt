@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.domain.model.VacancyQuery
 import ru.practicum.android.diploma.feature.filters.domain.interactor.FiltersInteractor
-import ru.practicum.android.diploma.feature.search.data.models.Resource
 import ru.practicum.android.diploma.feature.search.domain.interactor.SearchInteractor
 
 class SearchViewModel(
@@ -75,9 +74,11 @@ class SearchViewModel(
         val query = applyFiltersToQuery(queryText)
 
         Log.d("PAGINATION0", "Requesting page = $currentPage")
-        when (val result = searchInteractor.searchVacancies(query)) {
-            is Resource.Success -> {
-                val (vacancies, totalPages, found) = result.data
+
+        val result = searchInteractor.searchVacancies(query)
+
+        result.fold(
+            onSuccess = { (vacancies, totalPages, found) ->
 
                 loadedVacancies.addAll(vacancies)
                 maxPages = totalPages
@@ -89,10 +90,12 @@ class SearchViewModel(
                     vacancyState = newState,
                     totalFound = totalFound
                 )
-            }
+            },
+            onFailure = { error ->
 
-            is Resource.Error -> {
-                val newState = when (result.resultCode) {
+                val code = error.message?.toIntOrNull()
+
+                val newState = when (code) {
                     -1 -> VacancyState.ErrorInternet
                     else -> VacancyState.ErrorFound
                 }
@@ -101,10 +104,10 @@ class SearchViewModel(
                     vacancyState = newState
                 )
             }
-        }
+        )
     }
 
-    // функция которая будет использоваться при изменении текста чтобы не было конфликтов запросов
+    // функция, которая будет использоваться при изменении текста чтобы не было конфликтов запросов
     fun onSearchTextChanged(text: String) {
         _uiState.value = _uiState.value.copy(
             searchText = text,
@@ -151,9 +154,11 @@ class SearchViewModel(
             val query = applyFiltersToQuery(queryText)
 
             Log.d("PAGINATION", "Requesting page = $currentPage")
-            when (val result = searchInteractor.searchVacancies(query)) {
-                is Resource.Success -> {
-                    val (vacancies, totalPages) = result.data
+
+            val result = searchInteractor.searchVacancies(query)
+
+            result.fold(
+                onSuccess = { (vacancies, totalPages, _) ->
 
                     loadedVacancies.addAll(vacancies)
 
@@ -164,17 +169,20 @@ class SearchViewModel(
                     }
 
                     maxPages = totalPages
-                }
+                },
+                onFailure = { error ->
 
-                is Resource.Error -> {
-                    val newState = when (result.resultCode) {
+                    val code = error.message?.toIntOrNull()
+
+                    val newState = when (code) {
                         -1 -> VacancyState.ErrorInternet
                         else -> VacancyState.ErrorFound
                     }
 
                     _uiState.update { it.copy(vacancyState = newState) }
+
                 }
-            }
+            )
             _uiState.update { it.copy(isNextPageLoading = false) }
         }
     }

@@ -23,12 +23,6 @@ fun VacancyItem(
     modifier: Modifier = Modifier,
     onClick: (String) -> Unit
 ) {
-    val textItems = listOf(
-        "${data.name}, ${data.location}" to MaterialTheme.typography.titleMedium,
-        data.industry to MaterialTheme.typography.bodyLarge,
-        data.salary to MaterialTheme.typography.bodyLarge
-    )
-
     ThumbnailListItem(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
@@ -43,13 +37,23 @@ fun VacancyItem(
         Column(
             Modifier.padding(start = AppDimensions.VacancyItem.contentGap)
         ) {
-            textItems.forEach { (text, style) ->
-                Text(
-                    text = text,
-                    style = style,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            }
+            Text(
+                text = data.title,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+
+            Text(
+                text = data.industry,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+
+            Text(
+                text = data.salary,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground
+            )
         }
     }
 }
