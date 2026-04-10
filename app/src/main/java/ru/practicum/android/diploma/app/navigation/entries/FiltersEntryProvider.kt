@@ -30,17 +30,21 @@ fun filtersEntryProvider(
     entry<FiltersRoute.Main> {
         val state by viewModel.filtersUiState.collectAsStateWithLifecycle()
         val areButtonsEnabled = remember(state) { state.hasActiveFilters }
+        LaunchedEffect(state) { viewModel.saveSettings(false) }
 
         FiltersScreen(
             currentState = state,
             areButtonsEnabled = areButtonsEnabled,
             actions = FiltersActions(
-                onBackClick = {
-                    viewModel.saveSettings(false)
-                    onCloseFilters()
+                onBackClick = { onCloseFilters() },
+                onWorkLocationClick = {
+                    viewModel.setWorkLocation()
+                    backStack.add(FiltersRoute.WorkLocation)
                 },
-                onWorkLocationClick = { backStack.add(FiltersRoute.WorkLocation) },
-                onIndustryClick = { backStack.add(FiltersRoute.Industry) },
+                onIndustryClick = {
+                    viewModel.setIndustry()
+                    backStack.add(FiltersRoute.Industry)
+                },
                 onSalaryTextChange = { viewModel.onSalaryTextChange(it) },
                 onCheckBoxChange = viewModel::onCheckBox,
                 onApplyClick = { isStartSearch ->

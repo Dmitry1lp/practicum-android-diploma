@@ -36,15 +36,42 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
 
     init {
         getFiltersSettings()
-        viewModelScope.launch {
-            filtersUiState.collect { uiState ->
-                _industryState.update { it.copy(selectedIndustry = uiState.industry) }
+    }
+
+    fun setWorkLocation() {
+        _workLocationState.update {
+            it.copy(
+                regionSearchQuery = "",
+                workLocation = _filtersUiState.value.workLocation
+            )
+        }
+    }
+
+    fun setIndustry() {
+        _industryState.update { currentState ->
+            when (val uiState = currentState.uiState) {
+                is IndustryUiState.Content -> {
+                    currentState.copy(
+                        searchText = "",
+                        selectedIndustry = _filtersUiState.value.industry,
+                        uiState = uiState.copy(
+                            filteredIndustries = uiState.industries
+                        )
+                    )
+                }
+
+                else -> currentState.copy(
+                    searchText = "",
+                    selectedIndustry = _filtersUiState.value.industry
+                )
             }
         }
     }
 
     fun onIndustrySelected(industry: FilterIndustry?) = _industryState.update { it.copy(selectedIndustry = industry) }
-    fun onIndustryApplied(industry: FilterIndustry?) = _filtersUiState.update { it.copy(industry = industry) }
+    fun onIndustryApplied(industry: FilterIndustry?) {
+        _filtersUiState.update { it.copy(industry = industry) }
+    }
 
     fun onSearchIndustryTextChange(text: String) = when (val uiState = _industryState.value.uiState) {
         is IndustryUiState.Content -> _industryState.update { currentState ->
@@ -59,8 +86,8 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
         else -> _industryState.update { it.copy(searchText = text) }
     }
 
-    fun onWorkLocationApplied(current: WorkLocation) = _filtersUiState.update {
-        it.copy(workLocation = WorkLocation(current.country, current.region))
+    fun onWorkLocationApplied(current: WorkLocation) {
+        _filtersUiState.update { it.copy(workLocation = WorkLocation(current.country, current.region)) }
     }
 
     fun onCountryApplied(country: GeoArea.Country) = _workLocationState.update { state ->
@@ -85,21 +112,24 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
         )
     }
 
-    fun onSalaryTextChange(text: String) = _filtersUiState.update { it.copy(salaryText = text) }
+    fun onSalaryTextChange(text: String) {
+        _filtersUiState.update { it.copy(salaryText = text) }
+    }
 
     fun onSearchRegionTextChange(text: String) = _workLocationState.update { it.copy(regionSearchQuery = text) }
 
-    fun onCheckBox() = _filtersUiState.update { it.copy(isCheckBox = !filtersUiState.value.isCheckBox) }
+    fun onCheckBox() {
+        _filtersUiState.update { it.copy(isCheckBox = !filtersUiState.value.isCheckBox) }
+    }
 
     fun saveSettings(isStartSearch: Boolean) {
         if (filtersUiState.value.hasActiveFilters) {
-            val selectedIndustry = _industryState.value.selectedIndustry
 
             interactor.saveFiltersSetting(
                 FiltersSettings(
                     country = filtersUiState.value.workLocation.country,
                     region = filtersUiState.value.workLocation.region,
-                    industry = selectedIndustry,
+                    industry = filtersUiState.value.industry,
                     salaryText = filtersUiState.value.salaryText.ifEmpty { null },
                     onlyWithSalary = filtersUiState.value.isCheckBox.let { if (!it) null else true },
                     isStartSearch = isStartSearch
@@ -152,7 +182,7 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
         }
     }
 
-    private fun getFiltersSettings() {
+    fun getFiltersSettings() {
         val filtersSettings = interactor.getFiltersSettings()
         filtersSettings?.let {
             _filtersUiState.update {
