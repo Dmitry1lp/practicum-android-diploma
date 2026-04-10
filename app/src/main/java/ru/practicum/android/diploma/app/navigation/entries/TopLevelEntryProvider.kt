@@ -20,6 +20,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import ru.practicum.android.diploma.app.navigation.NavigationTransitions
 import ru.practicum.android.diploma.app.navigation.TopLevelBackStack
 import ru.practicum.android.diploma.app.navigation.routes.FiltersRoute
 import ru.practicum.android.diploma.app.navigation.routes.Route
@@ -38,8 +39,10 @@ import ru.practicum.android.diploma.feature.vacancy.ui.VacancyScreen
 fun topLevelEntryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryProvider<NavKey> {
     entry<Route.Team> {
         val viewModel: TeamViewModel = koinViewModel()
+        val developers by viewModel.developers.collectAsStateWithLifecycle()
+
         TeamScreen(
-            developers = viewModel.developers.collectAsState().value,
+            developers = developers,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(teamScreenPadding)
@@ -48,9 +51,10 @@ fun topLevelEntryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryP
 
     entry<Route.Favorites> {
         val viewModel: FavoritesViewModel = koinViewModel()
+        val state by viewModel.state.collectAsStateWithLifecycle()
 
         FavoritesScreen(
-            state = viewModel.state.collectAsState().value,
+            state = state,
             onVacancyClick = { vacancyId ->
                 topLevelBackStack.add(Route.Vacancy(vacancyId))
             },
@@ -60,7 +64,6 @@ fun topLevelEntryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryP
 
     entry<Route.Search> {
         val viewModel: SearchViewModel = koinViewModel()
-
         val state by viewModel.uiState.collectAsStateWithLifecycle()
 
         SearchScreen(
@@ -80,7 +83,6 @@ fun topLevelEntryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryP
         val vacancyId = route.id
 
         val viewModel: VacancyDetailsViewModel = koinViewModel(parameters = { parametersOf(vacancyId) })
-
         val state by viewModel.state.collectAsState()
 
         val context = LocalContext.current
@@ -139,12 +141,14 @@ fun topLevelEntryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryP
                 rememberSaveableStateHolderNavEntryDecorator(),
                 rememberViewModelStoreNavEntryDecorator()
             ),
-            onBack = { filtersBackStack.removeLastOrNull() },
             entryProvider = filtersEntryProvider(
                 viewModel = filtersViewModel,
                 backStack = filtersBackStack,
                 onCloseFilters = { topLevelBackStack.removeLast() }
-            )
+            ),
+            transitionSpec = { NavigationTransitions.forward() },
+            popTransitionSpec = { NavigationTransitions.back() },
+            predictivePopTransitionSpec = { NavigationTransitions.predictiveBack() }
         )
     }
 }

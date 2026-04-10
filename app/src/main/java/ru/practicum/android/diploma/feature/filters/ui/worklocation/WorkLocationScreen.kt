@@ -16,8 +16,8 @@ import ru.practicum.android.diploma.app.ui.theme.DiplomaTheme
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.feature.filters.presentation.ClearTarget
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocation
 import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationActions
-import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
 import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
 
@@ -39,7 +39,7 @@ import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
 @Composable
 fun WorkLocationScreen(
     modifier: Modifier = Modifier,
-    currentState: WorkLocationUiState,
+    currentState: WorkLocation,
     actions: WorkLocationActions,
 ) {
     Scaffold(
@@ -92,7 +92,7 @@ fun WorkLocationScreen(
 @PreviewLightDark
 @Composable
 private fun WorkLocationScreenPreview(
-    @PreviewParameter(WorkLocationUiStateProvider::class) states: Pair<WorkLocationUiState, WorkLocationUiState>
+    @PreviewParameter(WorkLocationUiStateProvider::class) states: Pair<WorkLocation, WorkLocation>
 ) {
     DiplomaTheme {
         WorkLocationScreen(

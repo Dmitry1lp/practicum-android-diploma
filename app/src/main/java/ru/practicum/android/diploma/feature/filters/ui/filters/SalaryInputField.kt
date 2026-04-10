@@ -98,7 +98,10 @@ private fun SalaryTextField(
             ),
         interactionSource = interactionSource,
         value = text,
-        onValueChange = onTextChange,
+        onValueChange = { newValue ->
+            val filteredValue = newValue.filter { it.isDigit() }
+            onTextChange(filteredValue)
+        },
         textStyle = AppTypography.bodyLarge.copy(
             color = MaterialTheme.colorScheme.onSecondary,
             textAlign = TextAlign.Start
@@ -183,7 +186,7 @@ private const val KEYBOARD_THRESHOLD_RATIO = 0.15
 @PreviewLightDark
 @Composable
 private fun SalaryInputFieldPreviewLightMode() {
-    DiplomaTheme() {
+    DiplomaTheme {
         SalaryInputField("") { }
     }
 }

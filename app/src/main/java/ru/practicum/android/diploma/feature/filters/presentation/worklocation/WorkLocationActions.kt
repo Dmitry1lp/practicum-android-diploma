@@ -7,5 +7,5 @@ data class WorkLocationActions(
     val onCountryClick: () -> Unit,
     val onRegionClick: () -> Unit,
     val onClearClick: (ClearTarget) -> Unit,
-    val onApplyClick: (WorkLocationUiState) -> Unit
+    val onApplyClick: (WorkLocation) -> Unit
 )

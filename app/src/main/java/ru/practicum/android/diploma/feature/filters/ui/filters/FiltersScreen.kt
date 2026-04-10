@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.feature.filters.ui.filters
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,7 +18,7 @@ import ru.practicum.android.diploma.core.presentation.components.AppTopBar
 import ru.practicum.android.diploma.feature.filters.presentation.ClearTarget
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersActions
 import ru.practicum.android.diploma.feature.filters.presentation.filters.FiltersUiState
-import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocation
 import ru.practicum.android.diploma.feature.filters.ui.ApplyButton
 import ru.practicum.android.diploma.feature.filters.ui.DismissButton
 import ru.practicum.android.diploma.feature.filters.ui.SelectableFilterItem
@@ -31,8 +30,6 @@ fun FiltersScreen(
     modifier: Modifier = Modifier,
     actions: FiltersActions
 ) {
-    BackHandler(enabled = true) { actions.onBackClick() }
-
     Scaffold(
         topBar = {
             AppTopBar(
@@ -105,7 +102,7 @@ private fun FiltersScreenPreviewLightMode() {
     DiplomaTheme {
         FiltersScreen(
             currentState = FiltersUiState(
-                workLocation = WorkLocationUiState(country, region),
+                workLocation = WorkLocation(country, region),
                 isCheckBox = true
             ),
             areButtonsEnabled = true,
