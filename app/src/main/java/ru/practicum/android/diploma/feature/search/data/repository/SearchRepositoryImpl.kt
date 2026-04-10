@@ -31,7 +31,8 @@ class SearchRepositoryImpl(
                 Log.d("API_RESPONSE", "page = ${dto.page}, pages = ${dto.pages}")
                 Log.d("API_RESPONSE", "vacancies = $vacancies")
 
-                Result.success(Triple(vacancies, dto.pages, dto.found)
+                Result.success(
+                    Triple(vacancies, dto.pages, dto.found)
                 )
             }
 

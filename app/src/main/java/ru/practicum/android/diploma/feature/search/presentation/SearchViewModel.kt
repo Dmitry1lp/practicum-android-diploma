@@ -91,7 +91,7 @@ class SearchViewModel(
                     totalFound = totalFound
                 )
             },
-            onFailure =  { error ->
+            onFailure = { error ->
 
                 val code = error.message?.toIntOrNull()
 
