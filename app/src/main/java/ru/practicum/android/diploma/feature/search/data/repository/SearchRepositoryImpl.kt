@@ -35,7 +35,8 @@ class SearchRepositoryImpl(
                 )
             }
 
-            else -> Result.failure(Exception(response.resultCode.toString())
+            else -> Result.failure(
+                Exception(response.resultCode.toString())
             )
         }
     }
@@ -53,7 +54,8 @@ class SearchRepositoryImpl(
                 Result.success(dto.toDomain())
             }
 
-            else -> Result.failure(Exception(response.resultCode.toString())
+            else -> Result.failure(
+                Exception(response.resultCode.toString())
             )
         }
     }

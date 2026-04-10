@@ -91,7 +91,6 @@ class SearchViewModel(
                     totalFound = totalFound
                 )
             },
-
             onFailure =  { error ->
 
                 val code = error.message?.toIntOrNull()
@@ -171,7 +170,6 @@ class SearchViewModel(
 
                     maxPages = totalPages
                 },
-
                 onFailure = { error ->
 
                     val code = error.message?.toIntOrNull()
