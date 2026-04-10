@@ -9,13 +9,12 @@ import ru.practicum.android.diploma.core.data.network.dto.VacancyResponseDto
 import ru.practicum.android.diploma.core.data.network.dto.toDomain
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.domain.model.VacancyQuery
-import ru.practicum.android.diploma.feature.search.data.models.Resource
 import ru.practicum.android.diploma.feature.search.domain.repository.SearchRepository
 
 class SearchRepositoryImpl(
     private val networkClient: NetworkClient
 ) : SearchRepository {
-    override suspend fun searchVacancies(query: VacancyQuery): Resource<Triple<List<Vacancy>, Int, Int>> {
+    override suspend fun searchVacancies(query: VacancyQuery): Result<Triple<List<Vacancy>, Int, Int>> {
         val params = buildVacancyQuery(query)
 
         val response = networkClient.doRequest(
@@ -25,27 +24,23 @@ class SearchRepositoryImpl(
         return when (response.resultCode) {
             RESULT_OK -> {
                 val dto = response as? VacancyResponseDto
-                    ?: return Resource.Error(
-                        message = RESULT_FAIL,
-                        resultCode = response.resultCode
-                    )
+                    ?: return Result.failure(Exception(RESULT_FAIL))
 
                 val vacancies = dto.items.map { it.toDomain() }
 
                 Log.d("API_RESPONSE", "page = ${dto.page}, pages = ${dto.pages}")
                 Log.d("API_RESPONSE", "vacancies = $vacancies")
 
-                Resource.Success(Triple(vacancies, dto.pages, dto.found))
+                Result.success(Triple(vacancies, dto.pages, dto.found)
+                )
             }
 
-            else -> Resource.Error(
-                message = RESULT_FAIL,
-                resultCode = response.resultCode
+            else -> Result.failure(Exception(response.resultCode.toString())
             )
         }
     }
 
-    override suspend fun getVacancyDetails(id: String): Resource<Vacancy> {
+    override suspend fun getVacancyDetails(id: String): Result<Vacancy> {
         val response = networkClient.doRequest(
             Request.VacancyDetailsRequest(id)
         )
@@ -53,24 +48,18 @@ class SearchRepositoryImpl(
         return when (response.resultCode) {
             RESULT_OK -> {
                 val dto = response as? VacancyDetailDto
-                    ?: return Resource.Error(
-                        message = RESULT_FAIL,
-                        resultCode = response.resultCode
-                    )
+                    ?: return Result.failure(Exception(RESULT_FAIL))
 
-                Resource.Success(dto.toDomain())
+                Result.success(dto.toDomain())
             }
 
-            else -> Resource.Error(
-                message = RESULT_FAIL,
-                resultCode = response.resultCode
+            else -> Result.failure(Exception(response.resultCode.toString())
             )
         }
     }
 
     companion object {
         private const val RESULT_OK = 200
-
         private const val RESULT_FAIL = "Error"
     }
 }
