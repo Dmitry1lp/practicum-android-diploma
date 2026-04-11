@@ -32,7 +32,7 @@ class FiltersInteractorImpl(
         return repository.getFiltersSettings()
     }
 
-    override fun saveFiltersSetting(settings: FiltersSettings) {
+    override fun saveFiltersSettings(settings: FiltersSettings) {
         repository.saveFiltersSetting(settings)
     }
 

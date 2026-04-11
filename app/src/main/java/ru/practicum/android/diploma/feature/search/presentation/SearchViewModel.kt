@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -26,112 +27,125 @@ class SearchViewModel(
     private val loadedVacancies = mutableListOf<Vacancy>()
 
     private val _uiState = MutableStateFlow(SearchUiState())
-    val uiState = _uiState.asStateFlow()
+    val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
 
-    fun getFiltersSettings() {
-        val filtersSettings = filtersInteractor.getFiltersSettings()
-        filtersSettings?.let {
-            _uiState.update { it.copy(filtersSettings = filtersSettings) }
-            applyFiltersSettings()
-        } ?: _uiState.update { it.copy(filtersSettings = null) }
-    }
+    fun getFiltersSettings() = filtersInteractor.getFiltersSettings()?.let { filtersSettings ->
+        _uiState.update { it.copy(filtersSettings = filtersSettings) }
+        applyFiltersSettings()
+    } ?: _uiState.update { it.copy(filtersSettings = null) }
 
     private fun applyFiltersSettings() {
-        val currentText = uiState.value.searchText
-        val isStartSearch = uiState.value.filtersSettings?.isStartSearch
-        if (currentText.isNotEmpty() && isStartSearch == true) {
-            searchJob?.cancel()
-            searchJob = viewModelScope.launch {
-                performSearch(currentText)
-            }
-            filtersInteractor.saveFiltersSetting(
-                uiState.value.filtersSettings!!.copy(
-                    isStartSearch = false
-                )
-            )
-        }
+        if (_uiState.value.filtersSettings?.isStartSearch == true) startSearch()
     }
 
-    fun startSearch() {
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            performSearch(uiState.value.searchText)
+    fun startSearch(
+        delayTimeMillis: Long? = null,
+        text: String = _uiState.value.searchText
+    ) = when {
+        latestSearchText.trim() == text.trim() -> {}
+
+        text.isNotBlank() -> {
+            searchJob?.cancel()
+            searchJob = viewModelScope.launch {
+                delayTimeMillis?.let { delay(it) }
+                performSearch(text)
+            }
         }
+
+        else -> _uiState.update { it.copy(vacancyState = VacancyState.Idle) }
     }
 
     private suspend fun performSearch(queryText: String) {
         if (queryText.isEmpty()) {
-            _uiState.value = _uiState.value.copy(vacancyState = VacancyState.Empty)
+            _uiState.update { it.copy(vacancyState = VacancyState.Empty) }
             return
         }
 
-        _uiState.value = _uiState.value.copy(vacancyState = VacancyState.Loading)
+        _uiState.update { it.copy(vacancyState = VacancyState.Loading) }
 
         loadedVacancies.clear()
         currentPage = 1
         maxPages = 1
 
-        val query = applyFiltersToQuery(queryText)
-
-        Log.d("PAGINATION0", "Requesting page = $currentPage")
-
+        val query = queryText.toVacancyQuery()
         val result = searchInteractor.searchVacancies(query)
+
+        Log.d(LOG_TAG, "performSearch(): Requesting $currentPage")
 
         result.fold(
             onSuccess = { (vacancies, totalPages, found) ->
-
                 loadedVacancies.addAll(vacancies)
                 maxPages = totalPages
                 totalFound = found
 
-                val newState =
-                    if (vacancies.isEmpty()) VacancyState.Empty else VacancyState.Content(loadedVacancies.toList())
-                _uiState.value = _uiState.value.copy(
-                    vacancyState = newState,
-                    totalFound = totalFound
-                )
-            },
-            onFailure = { error ->
+                _uiState.update {
+                    val newState = when {
+                        vacancies.isEmpty() -> VacancyState.Empty
+                        else -> VacancyState.Content(loadedVacancies)
+                    }
 
-                val code = error.message?.toIntOrNull()
-
-                val newState = when (code) {
-                    -1 -> VacancyState.ErrorInternet
-                    else -> VacancyState.ErrorFound
+                    it.copy(
+                        vacancyState = newState,
+                        totalFound = totalFound
+                    )
                 }
-
-                _uiState.value = _uiState.value.copy(
-                    vacancyState = newState
-                )
-            }
+            },
+            onFailure = { error -> handleSearchError(error) }
         )
     }
 
     // функция, которая будет использоваться при изменении текста чтобы не было конфликтов запросов
     fun onSearchTextChanged(text: String) {
-        _uiState.value = _uiState.value.copy(
-            searchText = text,
-        )
+        latestSearchText = _uiState.value.searchText
+        _uiState.update { it.copy(searchText = text) }
 
-        // дебаунс
-        if (latestSearchText == text) return
-        latestSearchText = text
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            if (text.isNotEmpty()) {
-                delay(SEARCH_DEBOUNCE_DELAY)
-                performSearch(text)
-            } else {
-                _uiState.value = _uiState.value.copy(
-                    vacancyState = VacancyState.Idle,
-                )
-            }
+        startSearch(
+            text = text,
+            delayTimeMillis = SEARCH_DEBOUNCE_DELAY
+        )
+    }
+
+    fun loadNextPage() {
+        if (_uiState.value.isNextPageLoading || currentPage >= maxPages) return
+
+        viewModelScope.launch {
+            _uiState.update { it.copy(isNextPageLoading = true) }
+
+            currentPage++
+
+            val query = _uiState.value.searchText.toVacancyQuery()
+            val result = searchInteractor.searchVacancies(query)
+
+            Log.d(LOG_TAG, "loadNextPage(): Loading page $currentPage")
+
+            result.fold(
+                onSuccess = { (vacancies, totalPages, _) ->
+                    loadedVacancies.addAll(vacancies)
+                    _uiState.update { it.copy(vacancyState = VacancyState.Content(loadedVacancies)) }
+                    maxPages = totalPages
+                },
+                onFailure = { error -> handleSearchError(error) }
+            )
+            _uiState.update { it.copy(isNextPageLoading = false) }
         }
     }
 
-    private fun applyFiltersToQuery(query: String): VacancyQuery = _uiState.value.filtersSettings.let { filters ->
+    private fun handleSearchError(error: Throwable) {
+        val code = error.message?.toIntOrNull()
+
+        _uiState.update {
+            val newState = when (code) {
+                -1 -> VacancyState.ErrorInternet
+                else -> VacancyState.ErrorFound
+            }
+
+            it.copy(vacancyState = newState)
+        }
+    }
+
+    private fun String.toVacancyQuery(): VacancyQuery = _uiState.value.filtersSettings.let { filters ->
         VacancyQuery(
-            text = query,
+            text = this,
             area = filters?.region?.id,
             industry = filters?.industry?.id,
             salary = filters?.salaryText?.toIntOrNull(),
@@ -140,54 +154,8 @@ class SearchViewModel(
         )
     }
 
-    fun loadNextPage() {
-        val queryText = _uiState.value.searchText
-
-        if (queryText.isEmpty()) return
-        if (_uiState.value.isNextPageLoading || currentPage >= maxPages) return
-
-        viewModelScope.launch {
-            _uiState.update { it.copy(isNextPageLoading = true) }
-
-            currentPage++
-
-            val query = applyFiltersToQuery(queryText)
-
-            Log.d("PAGINATION", "Requesting page = $currentPage")
-
-            val result = searchInteractor.searchVacancies(query)
-
-            result.fold(
-                onSuccess = { (vacancies, totalPages, _) ->
-
-                    loadedVacancies.addAll(vacancies)
-
-                    _uiState.update {
-                        it.copy(
-                            vacancyState = VacancyState.Content(loadedVacancies.toList())
-                        )
-                    }
-
-                    maxPages = totalPages
-                },
-                onFailure = { error ->
-
-                    val code = error.message?.toIntOrNull()
-
-                    val newState = when (code) {
-                        -1 -> VacancyState.ErrorInternet
-                        else -> VacancyState.ErrorFound
-                    }
-
-                    _uiState.update { it.copy(vacancyState = newState) }
-
-                }
-            )
-            _uiState.update { it.copy(isNextPageLoading = false) }
-        }
-    }
-
     companion object {
+        private val LOG_TAG = SearchViewModel::class.simpleName.toString()
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }

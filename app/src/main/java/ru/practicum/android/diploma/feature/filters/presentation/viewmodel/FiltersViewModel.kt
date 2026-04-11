@@ -124,8 +124,7 @@ class FiltersViewModel(private val interactor: FiltersInteractor) : ViewModel() 
 
     fun saveSettings(isStartSearch: Boolean) {
         if (filtersUiState.value.hasActiveFilters) {
-
-            interactor.saveFiltersSetting(
+            interactor.saveFiltersSettings(
                 FiltersSettings(
                     country = filtersUiState.value.workLocation.country,
                     region = filtersUiState.value.workLocation.region,
