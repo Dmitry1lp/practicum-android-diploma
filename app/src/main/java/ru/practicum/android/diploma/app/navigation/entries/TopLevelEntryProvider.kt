@@ -2,7 +2,6 @@
 
 package ru.practicum.android.diploma.app.navigation.entries
 
-import android.content.Intent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.LaunchedEffect
@@ -10,7 +9,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
@@ -32,8 +30,8 @@ import ru.practicum.android.diploma.feature.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.feature.search.ui.SearchScreen
 import ru.practicum.android.diploma.feature.team.presentation.TeamViewModel
 import ru.practicum.android.diploma.feature.team.ui.TeamScreen
-import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsUiEvent
 import ru.practicum.android.diploma.feature.vacancy.presentation.VacancyDetailsViewModel
+import ru.practicum.android.diploma.feature.vacancy.ui.ObserveVacancyEvents
 import ru.practicum.android.diploma.feature.vacancy.ui.VacancyScreen
 
 fun topLevelEntryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryProvider<NavKey> {
@@ -93,33 +91,10 @@ fun topLevelEntryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryP
         }
 
         // обработка событий
-        LaunchedEffect(Unit) {
-            viewModel.events.collect { event ->
-                when (event) {
-                    is VacancyDetailsUiEvent.ShareVacancyLink -> {
-                        val intent = Intent(Intent.ACTION_SEND).apply {
-                            putExtra(Intent.EXTRA_TEXT, event.url)
-                            type = "text/plain"
-                        }
-                        context.startActivity(Intent.createChooser(intent, null))
-                    }
-
-                    is VacancyDetailsUiEvent.OpenEmailTo -> {
-                        val intent = Intent(Intent.ACTION_SENDTO).apply {
-                            data = "mailto:${event.email}".toUri()
-                        }
-                        context.startActivity(intent)
-                    }
-
-                    is VacancyDetailsUiEvent.OpenPhoneCall -> {
-                        val intent = Intent(Intent.ACTION_DIAL).apply {
-                            data = "tel:${event.phone}".toUri()
-                        }
-                        context.startActivity(intent)
-                    }
-                }
-            }
-        }
+        ObserveVacancyEvents(
+            events = viewModel.events,
+            context = context
+        )
 
         VacancyScreen(
             state = state,
