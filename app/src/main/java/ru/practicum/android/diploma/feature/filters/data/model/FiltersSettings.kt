@@ -10,4 +10,10 @@ data class FiltersSettings(
     val salaryText: String? = null,
     val onlyWithSalary: Boolean? = null,
     val isStartSearch: Boolean = false
-)
+) {
+    val areaId: Int?
+        get() = region?.id ?: country?.id
+
+    val salary: Int?
+        get() = salaryText?.toIntOrNull()
+}

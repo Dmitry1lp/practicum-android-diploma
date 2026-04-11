@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.domain.model.VacancyQuery
+import ru.practicum.android.diploma.feature.filters.data.model.FiltersSettings
 import ru.practicum.android.diploma.feature.filters.domain.interactor.FiltersInteractor
 import ru.practicum.android.diploma.feature.search.domain.interactor.SearchInteractor
 
@@ -32,10 +33,10 @@ class SearchViewModel(
     fun getFiltersSettings() = filtersInteractor.getFiltersSettings()?.let { filtersSettings ->
         _uiState.update { it.copy(filtersSettings = filtersSettings) }
         applyFiltersSettings()
-    } ?: _uiState.update { it.copy(filtersSettings = null) }
+    } ?: _uiState.update { it.copy(filtersSettings = FiltersSettings()) }
 
     private fun applyFiltersSettings() {
-        if (_uiState.value.filtersSettings?.isStartSearch == true) startSearch()
+        if (_uiState.value.filtersSettings.isStartSearch) startSearch()
     }
 
     fun startSearch(
@@ -146,10 +147,10 @@ class SearchViewModel(
     private fun String.toVacancyQuery(): VacancyQuery = _uiState.value.filtersSettings.let { filters ->
         VacancyQuery(
             text = this,
-            area = filters?.region?.id,
-            industry = filters?.industry?.id,
-            salary = filters?.salaryText?.toIntOrNull(),
-            onlyWithSalary = filters?.onlyWithSalary,
+            area = filters.areaId,
+            industry = filters.industry?.id,
+            salary = filters.salary,
+            onlyWithSalary = filters.onlyWithSalary,
             page = currentPage
         )
     }
