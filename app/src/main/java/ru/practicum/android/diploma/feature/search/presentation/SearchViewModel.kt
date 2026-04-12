@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,6 +29,9 @@ class SearchViewModel(
 
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState = _uiState.asStateFlow()
+
+    private val _events = MutableSharedFlow<SearchEvent>()
+    val events = _events.asSharedFlow()
 
     fun getFiltersSettings() {
         val filtersSettings = filtersInteractor.getFiltersSettings()
@@ -174,12 +179,14 @@ class SearchViewModel(
 
                     val code = error.message?.toIntOrNull()
 
-                    val newState = when (code) {
-                        -1 -> VacancyState.ErrorInternet
-                        else -> VacancyState.ErrorFound
+                    val event = when (code) {
+                        -1 -> SearchEvent.ShowInternetError
+                        else -> SearchEvent.ShowCommonError
                     }
 
-                    _uiState.update { it.copy(vacancyState = newState) }
+                    viewModelScope.launch {
+                        _events.emit(event)
+                    }
 
                 }
             )
