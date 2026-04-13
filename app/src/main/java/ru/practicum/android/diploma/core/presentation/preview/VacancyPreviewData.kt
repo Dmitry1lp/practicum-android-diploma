@@ -25,6 +25,7 @@ object VacancyPreviewData {
             "Ленина",
             "9"
         ),
+        areaName = "Московская область",
         experience = "Нет опыта",
         schedule = "Полный день",
         employmentType = "Полная занятость",

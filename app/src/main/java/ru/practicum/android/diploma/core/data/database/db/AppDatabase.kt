@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.core.data.database.entity.FavoriteVacancyEnt
 import ru.practicum.android.diploma.feature.favorite.data.StringListTypeConverter
 
 @Database(
-    version = 1,
+    version = 2,
     entities = [FavoriteVacancyEntity::class]
 )
 @TypeConverters(StringListTypeConverter::class)
