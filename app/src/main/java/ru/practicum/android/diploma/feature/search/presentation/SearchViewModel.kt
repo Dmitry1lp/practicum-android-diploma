@@ -7,8 +7,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,7 +27,7 @@ class SearchViewModel(
     private var maxPages = 1
     private var totalFound = 0
     private var isLastLoadPageFailure = false
-    private val loadedVacancies = mutableListOf<Vacancy>()
+    private val loadedVacancies = mutableMapOf<String, Vacancy>()
 
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
@@ -80,14 +80,14 @@ class SearchViewModel(
 
         result.fold(
             onSuccess = { (vacancies, totalPages, found) ->
-                loadedVacancies.addAll(vacancies)
+                loadedVacancies.putAll(vacancies.map { it.id to it })
                 maxPages = totalPages
                 totalFound = found
 
                 _uiState.update {
                     val newState = when {
                         vacancies.isEmpty() -> VacancyState.Empty
-                        else -> VacancyState.Content(loadedVacancies)
+                        else -> VacancyState.Content(loadedVacancies.values.toList())
                     }
 
                     it.copy(
@@ -138,8 +138,8 @@ class SearchViewModel(
 
             result.fold(
                 onSuccess = { (vacancies, totalPages, _) ->
-                    loadedVacancies.addAll(vacancies)
-                    _uiState.update { it.copy(vacancyState = VacancyState.Content(loadedVacancies)) }
+                    loadedVacancies.putAll(vacancies.map { it.id to it })
+                    _uiState.update { it.copy(vacancyState = VacancyState.Content(loadedVacancies.values.toList())) }
                     maxPages = totalPages
                 },
                 onFailure = { error ->
