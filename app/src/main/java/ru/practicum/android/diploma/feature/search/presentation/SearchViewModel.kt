@@ -7,11 +7,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-<<<<<<< feature/search_padding_load
+//<<<<<<< feature/search_padding_load
 import kotlinx.coroutines.flow.asSharedFlow
-=======
+//=======
 import kotlinx.coroutines.flow.StateFlow
->>>>>>> dev
+//>>>>>>> dev
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -33,27 +33,27 @@ class SearchViewModel(
     private val loadedVacancies = mutableListOf<Vacancy>()
 
     private val _uiState = MutableStateFlow(SearchUiState())
-<<<<<<< feature/search_padding_load
-    val uiState = _uiState.asStateFlow()
+//<<<<<<< feature/search_padding_load
+//    val uiState = _uiState.asStateFlow()
 
     private val _events = MutableSharedFlow<SearchEvent>()
     val events = _events.asSharedFlow()
 
-    fun getFiltersSettings() {
-        val filtersSettings = filtersInteractor.getFiltersSettings()
-        filtersSettings?.let {
-            _uiState.update { it.copy(filtersSettings = filtersSettings) }
-            applyFiltersSettings()
-        } ?: _uiState.update { it.copy(filtersSettings = null) }
-    }
-=======
+    //    fun getFiltersSettings() {
+//        val filtersSettings = filtersInteractor.getFiltersSettings()
+//        filtersSettings?.let {
+//            _uiState.update { it.copy(filtersSettings = filtersSettings) }
+//            applyFiltersSettings()
+//        } ?: _uiState.update { it.copy(filtersSettings = null) }
+//    }
+//=======
     val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
 
     fun getFiltersSettings() = filtersInteractor.getFiltersSettings()?.let { filtersSettings ->
         _uiState.update { it.copy(filtersSettings = filtersSettings) }
         applyFiltersSettings()
     } ?: _uiState.update { it.copy(filtersSettings = FiltersSettings()) }
->>>>>>> dev
+//>>>>>>> dev
 
     private fun applyFiltersSettings() {
         if (_uiState.value.filtersSettings.isStartSearch) startSearch()
@@ -145,13 +145,7 @@ class SearchViewModel(
                     _uiState.update { it.copy(vacancyState = VacancyState.Content(loadedVacancies)) }
                     maxPages = totalPages
                 },
-                onFailure = { error -> handleSearchError(error) }
-            )
-            _uiState.update { it.copy(isNextPageLoading = false) }
-        }
-    }
-
-<<<<<<< feature/search_padding_load
+                onFailure = {
                     val event = when (code) {
                         -1 -> SearchEvent.ShowInternetError
                         else -> SearchEvent.ShowCommonError
@@ -161,7 +155,23 @@ class SearchViewModel(
                         Log.d("PAGINATION", "$event was emitted")
                         _events.emit(event)
                     }
-=======
+                }
+            )
+            _uiState.update { it.copy(isNextPageLoading = false) }
+        }
+    }
+
+    //<<<<<<< feature/search_padding_load
+//                    val event = when (code) {
+//                        -1 -> SearchEvent.ShowInternetError
+//                        else -> SearchEvent.ShowCommonError
+//                    }
+//
+//                    viewModelScope.launch {
+//                        Log.d("PAGINATION", "$event was emitted")
+//                        _events.emit(event)
+//                    }
+//=======
     private fun handleSearchError(error: Throwable) {
         val code = error.message?.toIntOrNull()
 
@@ -170,7 +180,7 @@ class SearchViewModel(
                 -1 -> VacancyState.ErrorInternet
                 else -> VacancyState.ErrorFound
             }
->>>>>>> dev
+//>>>>>>> dev
 
             it.copy(vacancyState = newState)
         }
