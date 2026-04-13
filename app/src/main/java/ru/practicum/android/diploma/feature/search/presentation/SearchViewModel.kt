@@ -48,24 +48,24 @@ class SearchViewModel(
     fun startSearch(
         delayTimeMillis: Long? = null,
         text: String = _uiState.value.searchText
-    ) = when {
-        text.isBlank() -> {
-            jobsCancel()
-            _uiState.update { it.copy(vacancyState = VacancyState.Idle) }
-        }
-
-        latestSearchText.trim() == text.trim() -> {
-            jobsCancel()
-            if (delayTimeMillis == null) searchJob = viewModelScope.launch { performSearch(text) } else {
-                Unit
+    ) {
+        when {
+            text.isBlank() -> {
+                jobsCancel()
+                _uiState.update { it.copy(vacancyState = VacancyState.Idle) }
             }
-        }
 
-        else -> {
-            jobsCancel()
-            searchJob = viewModelScope.launch {
-                delayTimeMillis?.let { delay(it) }
-                performSearch(text)
+            latestSearchText.trim() == text.trim() -> {
+                jobsCancel()
+                if (delayTimeMillis == null) searchJob = viewModelScope.launch { performSearch(text) }
+            }
+
+            else -> {
+                jobsCancel()
+                searchJob = viewModelScope.launch {
+                    delayTimeMillis?.let { delay(it) }
+                    performSearch(text)
+                }
             }
         }
     }
