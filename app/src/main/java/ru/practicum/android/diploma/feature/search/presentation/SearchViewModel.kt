@@ -49,7 +49,19 @@ class SearchViewModel(
         delayTimeMillis: Long? = null,
         text: String = _uiState.value.searchText
     ) = when {
-        latestSearchText.trim() == text.trim() -> {}
+        text.isBlank() -> {
+            loadJob?.cancel()
+            searchJob?.cancel()
+            _uiState.update { it.copy(vacancyState = VacancyState.Idle) }
+        }
+
+        latestSearchText.trim() == text.trim() -> {
+            loadJob?.cancel()
+            searchJob?.cancel()
+            if (delayTimeMillis == null) {
+                searchJob = viewModelScope.launch { performSearch(text) }
+            } else {}
+        }
 
         text.isNotBlank() -> {
             loadJob?.cancel()
@@ -60,16 +72,14 @@ class SearchViewModel(
             }
         }
 
-        else -> {
-            loadJob?.cancel()
-            _uiState.update { it.copy(vacancyState = VacancyState.Idle) }
-        }
+        else -> {}
     }
 
     private suspend fun performSearch(queryText: String) {
         loadJob?.cancel()
 
         _uiState.update { it.copy(vacancyState = VacancyState.Loading) }
+        latestSearchText = queryText
 
         loadedVacancies.clear()
         currentPage = 1
@@ -115,8 +125,10 @@ class SearchViewModel(
 
     // функция, которая будет использоваться при изменении текста чтобы не было конфликтов запросов
     fun onSearchTextChanged(text: String) {
-        latestSearchText = _uiState.value.searchText
+        if (text.isBlank()) latestSearchText = text
+//        latestSearchText = _uiState.value.searchText
         _uiState.update { it.copy(searchText = text) }
+        Log.d("Nico", "onSearchTextChanged($text)")
 
         startSearch(
             text = text,
