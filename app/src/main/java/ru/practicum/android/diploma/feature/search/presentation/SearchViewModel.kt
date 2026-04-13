@@ -56,7 +56,9 @@ class SearchViewModel(
 
         latestSearchText.trim() == text.trim() -> {
             jobsCancel()
-            if (delayTimeMillis == null) searchJob = viewModelScope.launch { performSearch(text) } else {}
+            if (delayTimeMillis == null) searchJob = viewModelScope.launch { performSearch(text) } else {
+                Unit
+            }
         }
 
         else -> {
