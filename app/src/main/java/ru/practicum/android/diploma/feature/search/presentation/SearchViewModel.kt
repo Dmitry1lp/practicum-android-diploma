@@ -30,6 +30,7 @@ class SearchViewModel(
     private var currentPage = 1
     private var maxPages = 1
     private var totalFound = 0
+    private var isLastLoadPageFailure = false
     private val loadedVacancies = mutableListOf<Vacancy>()
 
     private val _uiState = MutableStateFlow(SearchUiState())
@@ -111,7 +112,18 @@ class SearchViewModel(
                     )
                 }
             },
-            onFailure = { error -> handleSearchError(error) }
+            onFailure = { error ->
+                val code = error.message?.toIntOrNull()
+
+                _uiState.update {
+                    val newState = when (code) {
+                        -1 -> VacancyState.ErrorInternet
+                        else -> VacancyState.ErrorFound
+                    }
+
+                    it.copy(vacancyState = newState)
+                }
+            }
         )
     }
 
@@ -127,6 +139,7 @@ class SearchViewModel(
     }
 
     fun loadNextPage() {
+        if (isLastLoadPageFailure) return
         if (_uiState.value.isNextPageLoading || currentPage >= maxPages) return
 
         viewModelScope.launch {
@@ -145,16 +158,23 @@ class SearchViewModel(
                     _uiState.update { it.copy(vacancyState = VacancyState.Content(loadedVacancies)) }
                     maxPages = totalPages
                 },
-                onFailure = {
+                onFailure = { error ->
+                    currentPage--
+
+                    val code = error.message?.toIntOrNull()
+
                     val event = when (code) {
                         -1 -> SearchEvent.ShowInternetError
                         else -> SearchEvent.ShowCommonError
                     }
 
                     viewModelScope.launch {
-                        Log.d("PAGINATION", "$event was emitted")
+                        isLastLoadPageFailure = true
                         _events.emit(event)
+                        delay(SHOW_TOAST_DELAY)
+                        isLastLoadPageFailure = false
                     }
+
                 }
             )
             _uiState.update { it.copy(isNextPageLoading = false) }
@@ -172,19 +192,19 @@ class SearchViewModel(
 //                        _events.emit(event)
 //                    }
 //=======
-    private fun handleSearchError(error: Throwable) {
-        val code = error.message?.toIntOrNull()
-
-        _uiState.update {
-            val newState = when (code) {
-                -1 -> VacancyState.ErrorInternet
-                else -> VacancyState.ErrorFound
-            }
-//>>>>>>> dev
-
-            it.copy(vacancyState = newState)
-        }
-    }
+//    private fun handleSearchError(error: Throwable) {
+//        val code = error.message?.toIntOrNull()
+//
+//        _uiState.update {
+//            val newState = when (code) {
+//                -1 -> VacancyState.ErrorInternet
+//                else -> VacancyState.ErrorFound
+//            }
+////>>>>>>> dev
+//
+//            it.copy(vacancyState = newState)
+//        }
+//    }
 
     private fun String.toVacancyQuery(): VacancyQuery = _uiState.value.filtersSettings.let { filters ->
         VacancyQuery(
@@ -200,5 +220,6 @@ class SearchViewModel(
     companion object {
         private val LOG_TAG = SearchViewModel::class.simpleName.toString()
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val SHOW_TOAST_DELAY = 4000L
     }
 }
