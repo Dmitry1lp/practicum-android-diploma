@@ -73,7 +73,8 @@ fun topLevelEntryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryP
             onLoadNextPage = viewModel::loadNextPage,
             onFiltersClick = { topLevelBackStack.add(Route.Filters) },
             onAction = viewModel::startSearch,
-            getFiltersSettings = viewModel::getFiltersSettings
+            getFiltersSettings = viewModel::getFiltersSettings,
+            events = viewModel.events
         )
     }
 

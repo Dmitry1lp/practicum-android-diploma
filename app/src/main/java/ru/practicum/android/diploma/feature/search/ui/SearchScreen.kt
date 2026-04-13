@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.feature.search.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -19,9 +21,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.presentation.components.StateInfo
+import ru.practicum.android.diploma.feature.search.presentation.SearchEvent
 import ru.practicum.android.diploma.feature.search.presentation.SearchUiState
 import ru.practicum.android.diploma.feature.search.presentation.VacancyState
 
@@ -34,9 +38,26 @@ fun SearchScreen(
     onLoadNextPage: () -> Unit,
     onFiltersClick: () -> Unit,
     onAction: () -> Unit,
-    getFiltersSettings: () -> Unit
+    getFiltersSettings: () -> Unit,
+    events: Flow<SearchEvent>
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+
+    val internetErrorText = stringResource(R.string.search_no_internet)
+    val commonErrorText = stringResource(R.string.search_error)
+
+    LaunchedEffect(Unit) {
+        events.collect { event ->
+
+            val message = when (event) {
+                SearchEvent.ShowInternetError -> internetErrorText
+                SearchEvent.ShowCommonError -> commonErrorText
+            }
+
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     LaunchedEffect(lifecycleOwner.lifecycle) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
