@@ -7,17 +7,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-//<<<<<<< feature/search_padding_load
 import kotlinx.coroutines.flow.asSharedFlow
-//=======
 import kotlinx.coroutines.flow.StateFlow
-//>>>>>>> dev
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.domain.model.VacancyQuery
-import ru.practicum.android.diploma.feature.filters.data.model.FiltersSettings
 import ru.practicum.android.diploma.feature.filters.domain.interactor.FiltersInteractor
 import ru.practicum.android.diploma.feature.search.domain.interactor.SearchInteractor
 
@@ -34,27 +30,15 @@ class SearchViewModel(
     private val loadedVacancies = mutableListOf<Vacancy>()
 
     private val _uiState = MutableStateFlow(SearchUiState())
-//<<<<<<< feature/search_padding_load
-//    val uiState = _uiState.asStateFlow()
+    val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
 
     private val _events = MutableSharedFlow<SearchEvent>()
     val events = _events.asSharedFlow()
 
-    //    fun getFiltersSettings() {
-//        val filtersSettings = filtersInteractor.getFiltersSettings()
-//        filtersSettings?.let {
-//            _uiState.update { it.copy(filtersSettings = filtersSettings) }
-//            applyFiltersSettings()
-//        } ?: _uiState.update { it.copy(filtersSettings = null) }
-//    }
-//=======
-    val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
-
     fun getFiltersSettings() = filtersInteractor.getFiltersSettings()?.let { filtersSettings ->
         _uiState.update { it.copy(filtersSettings = filtersSettings) }
         applyFiltersSettings()
-    } ?: _uiState.update { it.copy(filtersSettings = FiltersSettings()) }
-//>>>>>>> dev
+    } ?: _uiState.update { it.copy(filtersSettings = null) }
 
     private fun applyFiltersSettings() {
         if (_uiState.value.filtersSettings?.isStartSearch == true) startSearch()
@@ -181,31 +165,6 @@ class SearchViewModel(
         }
     }
 
-    //<<<<<<< feature/search_padding_load
-//                    val event = when (code) {
-//                        -1 -> SearchEvent.ShowInternetError
-//                        else -> SearchEvent.ShowCommonError
-//                    }
-//
-//                    viewModelScope.launch {
-//                        Log.d("PAGINATION", "$event was emitted")
-//                        _events.emit(event)
-//                    }
-//=======
-//    private fun handleSearchError(error: Throwable) {
-//        val code = error.message?.toIntOrNull()
-//
-//        _uiState.update {
-//            val newState = when (code) {
-//                -1 -> VacancyState.ErrorInternet
-//                else -> VacancyState.ErrorFound
-//            }
-////>>>>>>> dev
-//
-//            it.copy(vacancyState = newState)
-//        }
-//    }
-
     private fun String.toVacancyQuery(): VacancyQuery = _uiState.value.filtersSettings.let { filters ->
         VacancyQuery(
             text = this,
@@ -220,6 +179,6 @@ class SearchViewModel(
     companion object {
         private val LOG_TAG = SearchViewModel::class.simpleName.toString()
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private const val SHOW_TOAST_DELAY = 4000L
+        private const val SHOW_TOAST_DELAY = 2500L
     }
 }
