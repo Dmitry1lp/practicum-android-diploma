@@ -80,7 +80,7 @@ val dataModule = module {
             AppDatabase::class.java,
             DatabaseConfig.DATABASE_NAME
         )
-            .fallbackToDestructiveMigration(false)
+            .fallbackToDestructiveMigration(true)
             .build()
     }
 

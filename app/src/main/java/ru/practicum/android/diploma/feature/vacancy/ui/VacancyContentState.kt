@@ -13,13 +13,13 @@ import ru.practicum.android.diploma.core.domain.model.Contacts
 import ru.practicum.android.diploma.core.domain.model.Employer
 import ru.practicum.android.diploma.core.domain.model.Salary
 import ru.practicum.android.diploma.core.domain.model.Vacancy
-import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyAddress
 import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyCompanyCard
 import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyCompanyInfo
 import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyConditions
 import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyContacts
 import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyDescription
 import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyHeader
+import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyLocation
 import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancySalary
 import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancySkills
 
@@ -39,8 +39,13 @@ fun VacancyContentState(
         item { VacancyCompanyCard(vacancy) }
         item { VacancyCompanyInfo(vacancy) }
 
-        vacancy.address?.let {
-            item { VacancyAddress(it) }
+        if (vacancy.address != null || vacancy.areaName.isNotBlank()) {
+            item {
+                VacancyLocation(
+                    address = vacancy.address,
+                    regionName = vacancy.areaName
+                )
+            }
         }
 
         item { VacancyConditions(vacancy) }
@@ -79,6 +84,7 @@ private val mockVacancy = Vacancy(
         "Ленина",
         "9"
     ),
+    areaName = "Московская область",
     experience = "Нет опыта",
     schedule = "Полный день",
     employmentType = "Полная занятость",
