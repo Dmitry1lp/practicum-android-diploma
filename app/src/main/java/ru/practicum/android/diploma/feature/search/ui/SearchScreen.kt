@@ -49,14 +49,13 @@ fun SearchScreen(
 
     LaunchedEffect(Unit) {
         events.collect { event ->
-            when (event) {
-                SearchEvent.ShowInternetError -> {
-                    Toast.makeText(context, internetErrorText, Toast.LENGTH_LONG).show()
-                }
-                SearchEvent.ShowCommonError -> {
-                    Toast.makeText(context, commonErrorText, Toast.LENGTH_LONG).show()
-                }
+
+            val message = when (event) {
+                SearchEvent.ShowInternetError -> internetErrorText
+                SearchEvent.ShowCommonError -> commonErrorText
             }
+
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
     }
 

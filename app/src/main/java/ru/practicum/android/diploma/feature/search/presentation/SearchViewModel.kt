@@ -185,6 +185,7 @@ class SearchViewModel(
                     }
 
                     viewModelScope.launch {
+                        Log.d("PAGINATION", "$event was emitted")
                         _events.emit(event)
                     }
 

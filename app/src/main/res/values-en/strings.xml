@@ -13,6 +13,8 @@
     <string name="screen_favorites">Favorites</string>
     <string name="error_vacancies_list">Failed to get vacancies list</string>
     <string name="error_no_internet">No internet connection</string>
+    <string name="search_no_internet">Check your internet connection</string>
+    <string name="search_error">Error</string>
     <string name="error_vacancy_not_found">Vacancy not found or removed</string>
     <string name="error_region_not_found">Region not found</string>
     <string name="error_list_fetch">Failed to fetch list</string>
