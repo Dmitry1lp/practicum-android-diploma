@@ -52,6 +52,7 @@ class SearchViewModel(
         latestSearchText.trim() == text.trim() -> {}
 
         text.isNotBlank() -> {
+            loadJob?.cancel()
             searchJob?.cancel()
             searchJob = viewModelScope.launch {
                 delayTimeMillis?.let { delay(it) }
@@ -66,10 +67,7 @@ class SearchViewModel(
     }
 
     private suspend fun performSearch(queryText: String) {
-        if (queryText.isEmpty()) {
-            _uiState.update { it.copy(vacancyState = VacancyState.Empty) }
-            return
-        }
+        loadJob?.cancel()
 
         _uiState.update { it.copy(vacancyState = VacancyState.Loading) }
 
@@ -127,7 +125,7 @@ class SearchViewModel(
     }
 
     fun loadNextPage() {
-        if (isLastLoadPageFailure) return
+        if (isLastLoadPageFailure || loadJob?.isActive == true) return
         if (_uiState.value.isNextPageLoading || currentPage >= maxPages) return
 
         loadJob = viewModelScope.launch {
