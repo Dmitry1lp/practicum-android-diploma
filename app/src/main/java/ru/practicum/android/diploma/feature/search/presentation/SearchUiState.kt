@@ -7,5 +7,5 @@ data class SearchUiState(
     val vacancyState: VacancyState = VacancyState.Idle,
     val totalFound: Int = 0,
     val isNextPageLoading: Boolean = false,
-    val filtersSettings: FiltersSettings = FiltersSettings()
+    val filtersSettings: FiltersSettings? = null
 )

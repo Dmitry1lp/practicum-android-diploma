@@ -57,7 +57,7 @@ class SearchViewModel(
 //>>>>>>> dev
 
     private fun applyFiltersSettings() {
-        if (_uiState.value.filtersSettings.isStartSearch) startSearch()
+        if (_uiState.value.filtersSettings?.isStartSearch == true) startSearch()
     }
 
     fun startSearch(
@@ -209,10 +209,10 @@ class SearchViewModel(
     private fun String.toVacancyQuery(): VacancyQuery = _uiState.value.filtersSettings.let { filters ->
         VacancyQuery(
             text = this,
-            area = filters.areaId,
-            industry = filters.industry?.id,
-            salary = filters.salary,
-            onlyWithSalary = filters.onlyWithSalary,
+            area = filters?.areaId,
+            industry = filters?.industry?.id,
+            salary = filters?.salary,
+            onlyWithSalary = filters?.onlyWithSalary,
             page = currentPage
         )
     }
