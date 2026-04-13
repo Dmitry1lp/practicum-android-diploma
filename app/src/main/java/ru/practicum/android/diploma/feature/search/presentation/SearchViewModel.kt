@@ -22,6 +22,7 @@ class SearchViewModel(
     private val filtersInteractor: FiltersInteractor
 ) : ViewModel() {
     private var searchJob: Job? = null
+    private var loadJob: Job? = null
     private var latestSearchText: String = ""
     private var currentPage = 1
     private var maxPages = 1
@@ -58,7 +59,10 @@ class SearchViewModel(
             }
         }
 
-        else -> _uiState.update { it.copy(vacancyState = VacancyState.Idle) }
+        else -> {
+            loadJob?.cancel()
+            _uiState.update { it.copy(vacancyState = VacancyState.Idle) }
+        }
     }
 
     private suspend fun performSearch(queryText: String) {
@@ -126,7 +130,7 @@ class SearchViewModel(
         if (isLastLoadPageFailure) return
         if (_uiState.value.isNextPageLoading || currentPage >= maxPages) return
 
-        viewModelScope.launch {
+        loadJob = viewModelScope.launch {
             _uiState.update { it.copy(isNextPageLoading = true) }
 
             currentPage++
