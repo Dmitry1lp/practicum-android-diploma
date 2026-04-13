@@ -7,8 +7,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -22,12 +22,13 @@ class SearchViewModel(
     private val filtersInteractor: FiltersInteractor
 ) : ViewModel() {
     private var searchJob: Job? = null
+    private var loadJob: Job? = null
     private var latestSearchText: String = ""
     private var currentPage = 1
     private var maxPages = 1
     private var totalFound = 0
     private var isLastLoadPageFailure = false
-    private val loadedVacancies = mutableListOf<Vacancy>()
+    private val loadedVacancies = mutableMapOf<String, Vacancy>()
 
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
@@ -51,6 +52,7 @@ class SearchViewModel(
         latestSearchText.trim() == text.trim() -> {}
 
         text.isNotBlank() -> {
+            loadJob?.cancel()
             searchJob?.cancel()
             searchJob = viewModelScope.launch {
                 delayTimeMillis?.let { delay(it) }
@@ -58,14 +60,14 @@ class SearchViewModel(
             }
         }
 
-        else -> _uiState.update { it.copy(vacancyState = VacancyState.Idle) }
+        else -> {
+            loadJob?.cancel()
+            _uiState.update { it.copy(vacancyState = VacancyState.Idle) }
+        }
     }
 
     private suspend fun performSearch(queryText: String) {
-        if (queryText.isEmpty()) {
-            _uiState.update { it.copy(vacancyState = VacancyState.Empty) }
-            return
-        }
+        loadJob?.cancel()
 
         _uiState.update { it.copy(vacancyState = VacancyState.Loading) }
 
@@ -80,14 +82,14 @@ class SearchViewModel(
 
         result.fold(
             onSuccess = { (vacancies, totalPages, found) ->
-                loadedVacancies.addAll(vacancies)
+                loadedVacancies.putAll(vacancies.map { it.id to it })
                 maxPages = totalPages
                 totalFound = found
 
                 _uiState.update {
                     val newState = when {
                         vacancies.isEmpty() -> VacancyState.Empty
-                        else -> VacancyState.Content(loadedVacancies)
+                        else -> VacancyState.Content(loadedVacancies.values.toList())
                     }
 
                     it.copy(
@@ -123,10 +125,10 @@ class SearchViewModel(
     }
 
     fun loadNextPage() {
-        if (isLastLoadPageFailure) return
+        if (isLastLoadPageFailure || loadJob?.isActive == true) return
         if (_uiState.value.isNextPageLoading || currentPage >= maxPages) return
 
-        viewModelScope.launch {
+        loadJob = viewModelScope.launch {
             _uiState.update { it.copy(isNextPageLoading = true) }
 
             currentPage++
@@ -138,8 +140,8 @@ class SearchViewModel(
 
             result.fold(
                 onSuccess = { (vacancies, totalPages, _) ->
-                    loadedVacancies.addAll(vacancies)
-                    _uiState.update { it.copy(vacancyState = VacancyState.Content(loadedVacancies)) }
+                    loadedVacancies.putAll(vacancies.map { it.id to it })
+                    _uiState.update { it.copy(vacancyState = VacancyState.Content(loadedVacancies.values.toList())) }
                     maxPages = totalPages
                 },
                 onFailure = { error ->
