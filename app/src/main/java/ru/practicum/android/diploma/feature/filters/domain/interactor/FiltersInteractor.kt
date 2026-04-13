@@ -12,7 +12,7 @@ interface FiltersInteractor {
 
     fun getFiltersSettings(): FiltersSettings?
 
-    fun saveFiltersSetting(settings: FiltersSettings)
+    fun saveFiltersSettings(settings: FiltersSettings)
 
     fun clearSettings()
 }
