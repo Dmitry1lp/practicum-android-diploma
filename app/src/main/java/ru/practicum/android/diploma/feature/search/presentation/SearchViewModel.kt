@@ -42,7 +42,14 @@ class SearchViewModel(
     } ?: _uiState.update { it.copy(filtersSettings = null) }
 
     private fun applyFiltersSettings() {
-        if (_uiState.value.filtersSettings?.isStartSearch == true) startSearch()
+        if (_uiState.value.filtersSettings?.isStartSearch == false) return
+
+        startSearch()
+        filtersInteractor.saveFiltersSettings(
+            uiState.value.filtersSettings!!.copy(
+                isStartSearch = false
+            )
+        )
     }
 
     fun startSearch(
