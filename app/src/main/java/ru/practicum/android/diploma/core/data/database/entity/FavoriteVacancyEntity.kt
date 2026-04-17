@@ -16,6 +16,7 @@ data class FavoriteVacancyEntity(
     val description: String,
     @Embedded(prefix = "salary_") val salary: Salary?,
     @Embedded(prefix = "address_") val address: Address?,
+    val areaName: String,
     val experience: String?,
     val schedule: String?,
     val employmentType: String?,

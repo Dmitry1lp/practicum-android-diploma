@@ -11,21 +11,30 @@ import ru.practicum.android.diploma.app.ui.theme.AppTypography
 import ru.practicum.android.diploma.core.domain.model.Address
 
 @Composable
-fun VacancyAddress(address: Address) {
+fun VacancyLocation(
+    address: Address?,
+    regionName: String
+) {
     Text(
         modifier = Modifier.padding(top = AppDimensions.paddingMedium),
         text = stringResource(R.string.vacancy_address),
         style = AppTypography.titleMedium
     )
 
-    val addressText = listOfNotNull(
-        address.city,
-        address.street,
-        address.building
-    ).joinToString(", ")
+    val addressText = address?.let {
+        listOfNotNull(
+            address.city,
+            address.street,
+            address.building
+        ).joinToString(", ")
+    }.orEmpty()
+
+    val textToShow = addressText.ifBlank {
+        regionName
+    }
 
     Text(
-        text = addressText,
+        text = textToShow,
         style = AppTypography.bodyLarge
     )
 }

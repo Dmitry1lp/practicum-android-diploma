@@ -2,7 +2,6 @@
 
 package ru.practicum.android.diploma.app.navigation
 
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -16,13 +15,6 @@ import androidx.navigation3.ui.NavDisplay
 import org.koin.androidx.compose.koinViewModel
 import ru.practicum.android.diploma.app.navigation.entries.topLevelEntryProvider
 import ru.practicum.android.diploma.app.navigation.routes.BottomNavItem
-import ru.practicum.android.diploma.app.navigation.routes.Route
-
-private val bottomNavItems = listOf<BottomNavItem>(
-    Route.Search,
-    Route.Favorites,
-    Route.Team
-)
 
 @Composable
 fun NavigationRoot(
@@ -39,7 +31,7 @@ fun NavigationRoot(
         bottomBar = {
             if (topLevelBackStack.shouldDrawBottomNavBar()) {
                 BottomNavigationBar(
-                    bottomNavItems = bottomNavItems,
+                    bottomNavItems = navigationViewModel.bottomNavItems,
                     topLevelBackStack = topLevelBackStack
                 )
             }
@@ -55,17 +47,13 @@ fun NavigationRoot(
             onBack = { topLevelBackStack.removeLast() },
             entryProvider = entryProvider,
             transitionSpec = {
-                NavigationTransitions.slideInHorizontally(rightToLeft = true) togetherWith
-                    NavigationTransitions.slideOutHorizontally(rightToLeft = false)
+                when (topLevelBackStack.transitionDirection) {
+                    TopLevelBackStack.HorizontalDirection.Forward -> NavigationTransitions.forward()
+                    TopLevelBackStack.HorizontalDirection.Backward -> NavigationTransitions.back()
+                }
             },
-            popTransitionSpec = {
-                NavigationTransitions.slideInHorizontally(rightToLeft = false) togetherWith
-                    NavigationTransitions.slideOutHorizontally(rightToLeft = true)
-            },
-            predictivePopTransitionSpec = {
-                NavigationTransitions.slideInHorizontally(rightToLeft = false) togetherWith
-                    NavigationTransitions.slideOutHorizontally(rightToLeft = true)
-            }
+            popTransitionSpec = { NavigationTransitions.back() },
+            predictivePopTransitionSpec = { NavigationTransitions.predictiveBack() }
         )
     }
 }

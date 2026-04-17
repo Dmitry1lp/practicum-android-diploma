@@ -40,6 +40,7 @@ fun VacancyDetailDto.toDomain(): Vacancy = Vacancy(
             building = address.building
         )
     },
+    areaName = area.name,
     experience = experience?.name,
     schedule = schedule?.name,
     employmentType = employment?.name,

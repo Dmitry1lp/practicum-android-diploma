@@ -7,7 +7,7 @@ class IndustryDto(
     val name: String
 )
 
-fun IndustryDto.toDomain(): FilterIndustry {
+fun IndustryDto.toIndustries(): FilterIndustry {
     return FilterIndustry(
         id = id,
         name = name

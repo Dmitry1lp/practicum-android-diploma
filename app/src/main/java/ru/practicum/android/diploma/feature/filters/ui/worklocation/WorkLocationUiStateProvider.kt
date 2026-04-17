@@ -2,9 +2,9 @@ package ru.practicum.android.diploma.feature.filters.ui.worklocation
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import ru.practicum.android.diploma.core.domain.model.GeoArea
-import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocationUiState
+import ru.practicum.android.diploma.feature.filters.presentation.worklocation.WorkLocation
 
-class WorkLocationUiStateProvider : PreviewParameterProvider<Pair<WorkLocationUiState, WorkLocationUiState>> {
+class WorkLocationUiStateProvider : PreviewParameterProvider<Pair<WorkLocation, WorkLocation>> {
 
     companion object {
         const val REGION_ID = 1620
@@ -14,19 +14,19 @@ class WorkLocationUiStateProvider : PreviewParameterProvider<Pair<WorkLocationUi
     private val region = GeoArea.Region(REGION_ID, "Республика Марий Эл", COUNTRY_ID)
     private val country = GeoArea.Country(COUNTRY_ID, "Россия", listOf(region))
 
-    override val values: Sequence<Pair<WorkLocationUiState, WorkLocationUiState>>
+    override val values: Sequence<Pair<WorkLocation, WorkLocation>>
         get() = sequenceOf(
-            WorkLocationUiState() to WorkLocationUiState(),
-            WorkLocationUiState() to WorkLocationUiState(country),
-            WorkLocationUiState() to WorkLocationUiState(country, region),
+            WorkLocation() to WorkLocation(),
+            WorkLocation() to WorkLocation(country),
+            WorkLocation() to WorkLocation(country, region),
 
-            WorkLocationUiState(country) to WorkLocationUiState(),
-            WorkLocationUiState(country) to WorkLocationUiState(country),
-            WorkLocationUiState(country) to WorkLocationUiState(country, region),
+            WorkLocation(country) to WorkLocation(),
+            WorkLocation(country) to WorkLocation(country),
+            WorkLocation(country) to WorkLocation(country, region),
 
-            WorkLocationUiState(country, region) to WorkLocationUiState(),
-            WorkLocationUiState(country, region) to WorkLocationUiState(country),
-            WorkLocationUiState(country, region) to WorkLocationUiState(country, region)
+            WorkLocation(country, region) to WorkLocation(),
+            WorkLocation(country, region) to WorkLocation(country),
+            WorkLocation(country, region) to WorkLocation(country, region)
         )
 
 }

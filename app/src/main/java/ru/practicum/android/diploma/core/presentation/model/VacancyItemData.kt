@@ -6,8 +6,7 @@ import ru.practicum.android.diploma.core.utils.toLocalizedString
 
 data class VacancyItemData(
     val id: String,
-    val name: String,
-    val location: String,
+    val title: String,
     val industry: String,
     val salary: String,
     val imageUrl: String?
@@ -16,8 +15,7 @@ data class VacancyItemData(
 @Composable
 fun Vacancy.toItemData(): VacancyItemData = VacancyItemData(
     id = id,
-    name = name,
-    location = address?.city ?: "",
+    title = "$name, ${address?.city ?: ""}",
     industry = industry,
     salary = salary.toLocalizedString(),
     imageUrl = employer.logoUrl
