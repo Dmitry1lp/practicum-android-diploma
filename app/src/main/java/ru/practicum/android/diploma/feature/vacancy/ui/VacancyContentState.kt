@@ -17,7 +17,7 @@ import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyCompany
 import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyCompanyInfo
 import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyConditions
 import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyContacts
-import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyDescription
+import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyDescriptionHtml
 import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyHeader
 import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancyLocation
 import ru.practicum.android.diploma.feature.vacancy.ui.components.VacancySalary
@@ -49,7 +49,7 @@ fun VacancyContentState(
         }
 
         item { VacancyConditions(vacancy) }
-        item { VacancyDescription(vacancy) }
+        item { VacancyDescriptionHtml(vacancy.description) }
 
         if (vacancy.skills.isNotEmpty()) {
             item { VacancySkills(vacancy.skills) }
@@ -73,7 +73,24 @@ private const val MOCK_UPPER_BOUND = 100_000
 private val mockVacancy = Vacancy(
     id = "1",
     name = "Product Manager в Amazon",
-    description = "Приглашаем на вакансию Product Manager в Amazon",
+    description = """
+    <h2>Описание вакансии</h2>
+    <p>Приглашаем на вакансию Product Manager в Amazon</p>
+    
+    <h3>Обязанности</h3>
+    <ul>
+        <li>Работать с продуктовой стратегией</li>
+        <li>Анализировать метрики</li>
+        <li>Взаимодействовать с командой разработки</li>
+    </ul>
+
+    <h3>Требования</h3>
+    <ul>
+        <li>Опыт работы от 1 года</li>
+        <li>Знание SQL</li>
+        <li>Аналитическое мышление</li>
+    </ul>
+""".trimIndent(),
     salary = Salary(
         MOCK_LOWER_BOUND,
         MOCK_UPPER_BOUND,

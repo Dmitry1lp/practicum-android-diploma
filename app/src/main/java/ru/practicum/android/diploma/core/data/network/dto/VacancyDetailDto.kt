@@ -10,24 +10,24 @@ import ru.practicum.android.diploma.core.utils.fixImageSize
 data class VacancyDetailDto(
     val id: String,
     val name: String,
-    val description: String,
+    val description: String?,
     val salary: SalaryDto?,
     val address: AddressDto?,
     val experience: ExperienceDto?,
     val schedule: ScheduleDto?,
     val employment: EmploymentDto?,
     val contacts: ContactsDto?,
-    val employer: EmployerDto,
-    val area: FilterAreaDto,
-    val skills: List<String>,
-    val url: String,
-    val industry: IndustryDto
+    val employer: EmployerDto?,
+    val area: FilterAreaDto?,
+    val skills: List<String>?,
+    val url: String?,
+    val industry: IndustryDto?
 ) : Response()
 
 fun VacancyDetailDto.toDomain(): Vacancy = Vacancy(
     id = id,
     name = name,
-    description = description,
+    description = description ?: "",
     salary = Salary(
         lowerBound = salary?.from,
         upperBound = salary?.to,
@@ -40,7 +40,7 @@ fun VacancyDetailDto.toDomain(): Vacancy = Vacancy(
             building = address.building
         )
     },
-    areaName = area.name,
+    areaName = area?.name ?: "",
     experience = experience?.name,
     schedule = schedule?.name,
     employmentType = employment?.name,
@@ -52,10 +52,10 @@ fun VacancyDetailDto.toDomain(): Vacancy = Vacancy(
         )
     },
     employer = Employer(
-        name = employer.name,
-        logoUrl = employer.logo.fixImageSize() ?: ""
+        name = employer?.name ?: "",
+        logoUrl = employer?.logo.fixImageSize() ?: ""
     ),
-    skills = skills,
-    website = url,
-    industry = industry.name
+    skills = skills ?: emptyList(),
+    website = url ?: "",
+    industry = industry?.name ?: ""
 )

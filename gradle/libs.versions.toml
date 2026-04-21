@@ -48,6 +48,9 @@ detektTwitterComposeRules = "0.0.26"
 # KotlinX
 collections = "0.4.0"
 
+# jsoup
+jsoup = "1.17.2"
+
 [libraries]
 
 # AndroidX
@@ -106,6 +109,9 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 
 # KotlinX
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "collections" }
+
+# jsoup
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 
 [plugins]
 
