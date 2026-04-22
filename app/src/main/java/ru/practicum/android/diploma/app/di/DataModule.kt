@@ -26,7 +26,6 @@ import ru.practicum.android.diploma.feature.vacancy.data.VacancyDetailsRepositor
 import ru.practicum.android.diploma.feature.vacancy.domain.VacancyDetailsRepository
 import coil.ImageLoader
 import coil.decode.SvgDecoder
-import coil.util.DebugLogger
 
 /**
  * Модуль Koin, отвечающий за зависимости Repository и Data sources
@@ -116,5 +115,4 @@ val dataModule = module {
             .crossfade(true)
             .build()
     }
-
 }

@@ -4,7 +4,6 @@ import ru.practicum.android.diploma.core.domain.model.Address
 import ru.practicum.android.diploma.core.domain.model.Employer
 import ru.practicum.android.diploma.core.domain.model.Salary
 import ru.practicum.android.diploma.core.domain.model.Vacancy
-import ru.practicum.android.diploma.core.utils.fixImageSize
 
 data class VacancyCardDto(
     val id: String,
