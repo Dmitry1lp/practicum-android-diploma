@@ -6,7 +6,6 @@ import ru.practicum.android.diploma.feature.vacancy.ui.model.DescriptionBlock
 
 fun parseElement(element: Element, result: MutableList<DescriptionBlock>) {
     when (element.tagName()) {
-
         "h2", "h3" -> {
             result.add(DescriptionBlock.Header(element.text()))
         }

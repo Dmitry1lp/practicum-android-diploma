@@ -27,7 +27,6 @@ class SearchRepositoryImpl(
                     ?: return Result.failure(Exception(RESULT_FAIL))
 
                 val vacancies = dto.items.map {
-
                     Log.d("DEBUG_LOGO", "logo = ${it.logo}")
 
                     it.toDomain() }

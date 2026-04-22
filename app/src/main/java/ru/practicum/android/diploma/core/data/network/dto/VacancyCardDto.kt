@@ -37,7 +37,7 @@ fun VacancyCardDto.toDomain(): Vacancy = Vacancy(
     contacts = null,
     employer = Employer(
         name = company ?: "",
-        //logoUrl = logo?.fixImageSize() ?: ""
+        // logoUrl = logo?.fixImageSize() ?: ""
         logoUrl = logo ?: ""
     ),
     skills = emptyList(),

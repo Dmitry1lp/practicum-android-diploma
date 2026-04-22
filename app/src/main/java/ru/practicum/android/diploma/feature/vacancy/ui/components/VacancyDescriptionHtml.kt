@@ -18,7 +18,6 @@ fun VacancyDescriptionHtml(html: String) {
     Column {
         blocks.forEach { block ->
             when (block) {
-
                 is DescriptionBlock.Header -> {
                     Text(
                         text = block.text,
