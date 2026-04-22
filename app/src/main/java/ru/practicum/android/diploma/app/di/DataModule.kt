@@ -24,6 +24,9 @@ import ru.practicum.android.diploma.feature.search.data.repository.SearchReposit
 import ru.practicum.android.diploma.feature.search.domain.repository.SearchRepository
 import ru.practicum.android.diploma.feature.vacancy.data.VacancyDetailsRepositoryImpl
 import ru.practicum.android.diploma.feature.vacancy.domain.VacancyDetailsRepository
+import coil.ImageLoader
+import coil.decode.SvgDecoder
+import coil.util.DebugLogger
 
 /**
  * Модуль Koin, отвечающий за зависимости Repository и Data sources
@@ -103,6 +106,15 @@ val dataModule = module {
 
     single {
         androidContext().getSharedPreferences(DIPLOMA_PREFERENCES, Context.MODE_PRIVATE)
+    }
+
+    single<ImageLoader> {
+        ImageLoader.Builder(androidContext())
+            .components {
+                add(SvgDecoder.Factory())
+            }
+            .crossfade(true)
+            .build()
     }
 
 }

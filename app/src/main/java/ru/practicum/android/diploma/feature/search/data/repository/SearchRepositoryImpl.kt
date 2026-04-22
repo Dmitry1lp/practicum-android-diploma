@@ -26,7 +26,11 @@ class SearchRepositoryImpl(
                 val dto = response as? VacancyResponseDto
                     ?: return Result.failure(Exception(RESULT_FAIL))
 
-                val vacancies = dto.items.map { it.toDomain() }
+                val vacancies = dto.items.map {
+
+                    Log.d("DEBUG_LOGO", "logo = ${it.logo}")
+
+                    it.toDomain() }
 
                 Log.d("API_RESPONSE", "page = ${dto.page}, pages = ${dto.pages}")
                 Log.d("API_RESPONSE", "vacancies = $vacancies")

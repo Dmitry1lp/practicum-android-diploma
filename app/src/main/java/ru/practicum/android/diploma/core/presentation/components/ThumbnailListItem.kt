@@ -22,8 +22,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import org.koin.compose.koinInject
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
@@ -40,6 +42,7 @@ fun ThumbnailListItem(
 
 ) {
     val shape = remember { RoundedCornerShape(AppDimensions.ThumbnailListItem.imageCornerRadius) }
+    val imageLoader: ImageLoader = koinInject()
 
     Row(
         modifier = modifier
@@ -59,8 +62,8 @@ fun ThumbnailListItem(
                 .clip(shape).padding(AppDimensions.paddingVerySmall),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(model)
-                .addHeader("User-Agent", "Mozilla/5.0")
                 .build(),
+            imageLoader = imageLoader,
             contentDescription = imageContentDescription,
             placeholder = painterResource(R.drawable.ic_placeholder_32),
             error = painterResource(R.drawable.ic_placeholder_32),

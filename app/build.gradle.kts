@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.koin.compose)
     testImplementation(libs.koin.test.junit4)
     implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
     implementation(libs.compose.material3)
     implementation(libs.compose.activity)
     implementation(libs.lifecycle.viewmodel.compose)
