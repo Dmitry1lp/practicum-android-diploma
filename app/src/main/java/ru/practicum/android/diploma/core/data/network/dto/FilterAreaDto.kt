@@ -3,22 +3,22 @@ package ru.practicum.android.diploma.core.data.network.dto
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 
 data class FilterAreaDto(
-    val id: Int,
+    val id: String,
     val name: String,
-    val parentId: Int?,
+    val parentId: String?,
     val areas: List<FilterAreaDto>
 )
 
 fun FilterAreaDto.toGeoArea(): GeoArea = when {
     parentId == null -> GeoArea.Country(
-        id = id,
+        id = id.toInt(),
         name = name,
         regions = areas.map { it.toGeoArea() as GeoArea.Region }
     )
 
     else -> GeoArea.Region(
-        id = id,
+        id = id.toInt(),
         name = name,
-        countryId = parentId
+        countryId = parentId.toInt()
     )
 }

@@ -25,18 +25,14 @@ class DtoToDomainTest : KoinTest {
     }
 
     @Test
-    fun vacancyDtoToDomain() = runBlocking {
+    fun vacancyCardDtoToDomain() = runBlocking {
         val result = api.searchVacancies()
-        val vacancyDto = result.items.first()
-        val vacancy = vacancyDto.toDomain()
+        val dto = result.items.first()
+        val vacancy = dto.toVacancy()
 
-        assertEquals(vacancyDto.description, vacancy.description)
-        assertEquals(vacancyDto.address?.raw, vacancy.address?.fullAddress)
-        assertEquals(vacancyDto.url, vacancy.website)
-        assertEquals(
-            vacancyDto.contacts?.phones?.first()?.formatted,
-            vacancy.contacts?.phoneNumbers?.first()
-        )
+        assertEquals(dto.name, vacancy.name)
+        assertEquals(dto.company ?: "", vacancy.employer.name)
+        assertEquals(dto.city ?: "", vacancy.areaName)
     }
 
     @Test

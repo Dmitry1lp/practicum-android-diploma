@@ -65,6 +65,8 @@ dependencies {
     implementation(libs.koin.compose)
     testImplementation(libs.koin.test.junit4)
     implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
+    implementation(libs.coil.network.okhttp)
     implementation(libs.compose.material3)
     implementation(libs.compose.activity)
     implementation(libs.lifecycle.viewmodel.compose)
@@ -79,4 +81,5 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+    implementation(libs.jsoup)
 }

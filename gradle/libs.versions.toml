@@ -19,7 +19,7 @@ material = "1.13.0"
 composeBom = "2026.03.00"
 composeActivity = "1.13.0"
 composeViewModel = "2.10.0"
-coil = "2.7.0"
+coil = "3.4.0"
 
 # Navigation
 navigation3ViewModel = "2.11.0-alpha02"
@@ -47,6 +47,9 @@ detektTwitterComposeRules = "0.0.26"
 
 # KotlinX
 collections = "0.4.0"
+
+# jsoup
+jsoup = "1.17.2"
 
 [libraries]
 
@@ -94,7 +97,9 @@ koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = 
 koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
 
 # Image Loading
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 
 # Networking & Data
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
@@ -106,6 +111,9 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 
 # KotlinX
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "collections" }
+
+# jsoup
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 
 [plugins]
 
