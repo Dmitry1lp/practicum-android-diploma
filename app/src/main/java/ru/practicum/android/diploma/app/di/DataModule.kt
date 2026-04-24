@@ -2,8 +2,9 @@ package ru.practicum.android.diploma.app.di
 
 import android.content.Context
 import androidx.room.Room
-import coil.ImageLoader
-import coil.decode.SvgDecoder
+import coil3.ImageLoader
+import coil3.request.crossfade
+import coil3.svg.SvgDecoder
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -109,9 +110,7 @@ val dataModule = module {
 
     single<ImageLoader> {
         ImageLoader.Builder(androidContext())
-            .components {
-                add(SvgDecoder.Factory())
-            }
+            .components { add(SvgDecoder.Factory()) }
             .crossfade(true)
             .build()
     }
