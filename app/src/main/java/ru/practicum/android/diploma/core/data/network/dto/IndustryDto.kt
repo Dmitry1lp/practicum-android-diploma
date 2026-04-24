@@ -7,7 +7,7 @@ class IndustryDto(
     val name: String
 )
 
-fun IndustryDto.toIndustries(): FilterIndustry {
+fun IndustryDto.toIndustry(): FilterIndustry {
     return FilterIndustry(
         id = id.toInt(),
         name = name

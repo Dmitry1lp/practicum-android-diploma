@@ -10,7 +10,7 @@ import ru.practicum.android.diploma.core.data.network.dto.GeoAreasResponse
 import ru.practicum.android.diploma.core.data.network.dto.IndustriesResponse
 import ru.practicum.android.diploma.core.data.network.dto.Request
 import ru.practicum.android.diploma.core.data.network.dto.toGeoArea
-import ru.practicum.android.diploma.core.data.network.dto.toIndustries
+import ru.practicum.android.diploma.core.data.network.dto.toIndustry
 import ru.practicum.android.diploma.core.domain.model.FilterIndustry
 import ru.practicum.android.diploma.core.domain.model.GeoArea
 import ru.practicum.android.diploma.feature.filters.data.model.FiltersSettings
@@ -47,7 +47,7 @@ class FiltersRepositoryImpl(
             SUCCESS -> {
                 val data = (response as IndustriesResponse)
                     .industries
-                    .map { it.toIndustries() }
+                    .map { it.toIndustry() }
 
                 Result.success(data)
             }

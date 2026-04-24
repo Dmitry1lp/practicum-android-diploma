@@ -14,7 +14,7 @@ data class VacancyCardDto(
     val logo: String?
 )
 
-fun VacancyCardDto.toDomain(): Vacancy = Vacancy(
+fun VacancyCardDto.toVacancy(): Vacancy = Vacancy(
     id = id,
     name = name,
     description = "",
@@ -37,7 +37,6 @@ fun VacancyCardDto.toDomain(): Vacancy = Vacancy(
     contacts = null,
     employer = Employer(
         name = company ?: "",
-        // logoUrl = logo?.fixImageSize() ?: ""
         logoUrl = logo ?: ""
     ),
     skills = emptyList(),

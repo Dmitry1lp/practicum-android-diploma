@@ -90,7 +90,7 @@ private val mockVacancy = Vacancy(
         <li>Знание SQL</li>
         <li>Аналитическое мышление</li>
     </ul>
-""".trimIndent(),
+    """.trimIndent(),
     salary = Salary(
         MOCK_LOWER_BOUND,
         MOCK_UPPER_BOUND,

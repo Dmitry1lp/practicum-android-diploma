@@ -24,7 +24,7 @@ data class VacancyDetailDto(
     val industry: IndustryDto?
 ) : Response()
 
-fun VacancyDetailDto.toDomain(): Vacancy = Vacancy(
+fun VacancyDetailDto.toVacancy(): Vacancy = Vacancy(
     id = id,
     name = name,
     description = description ?: "",
