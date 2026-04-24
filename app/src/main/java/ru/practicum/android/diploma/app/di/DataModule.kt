@@ -2,6 +2,8 @@ package ru.practicum.android.diploma.app.di
 
 import android.content.Context
 import androidx.room.Room
+import coil.ImageLoader
+import coil.decode.SvgDecoder
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -24,8 +26,6 @@ import ru.practicum.android.diploma.feature.search.data.repository.SearchReposit
 import ru.practicum.android.diploma.feature.search.domain.repository.SearchRepository
 import ru.practicum.android.diploma.feature.vacancy.data.VacancyDetailsRepositoryImpl
 import ru.practicum.android.diploma.feature.vacancy.domain.VacancyDetailsRepository
-import coil.ImageLoader
-import coil.decode.SvgDecoder
 
 /**
  * Модуль Koin, отвечающий за зависимости Repository и Data sources
