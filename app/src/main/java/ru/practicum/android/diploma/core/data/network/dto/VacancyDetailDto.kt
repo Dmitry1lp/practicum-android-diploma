@@ -24,6 +24,7 @@ data class VacancyDetailDto(
     val industry: IndustryDto?
 ) : Response()
 
+@Suppress("CyclomaticComplexMethod")
 fun VacancyDetailDto.toVacancy(): Vacancy = Vacancy(
     id = id,
     name = name,
