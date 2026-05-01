@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.feature.vacancy.data
 import ru.practicum.android.diploma.core.data.network.client.NetworkClient
 import ru.practicum.android.diploma.core.data.network.dto.Request
 import ru.practicum.android.diploma.core.data.network.dto.VacancyDetailDto
-import ru.practicum.android.diploma.core.data.network.dto.toDomain
+import ru.practicum.android.diploma.core.data.network.dto.toVacancy
 import ru.practicum.android.diploma.core.domain.model.Vacancy
 import ru.practicum.android.diploma.core.domain.repository.FavoritesRepository
 import ru.practicum.android.diploma.feature.vacancy.domain.VacancyDetailsRepository
@@ -27,7 +27,7 @@ class VacancyDetailsRepositoryImpl(
             SUCCESS -> {
                 val dto = response as? VacancyDetailDto
                 if (dto != null) {
-                    VacancyDetailsResult.Success(dto.toDomain())
+                    VacancyDetailsResult.Success(dto.toVacancy())
                 } else {
                     VacancyDetailsResult.ServerError(SUCCESS)
                 }

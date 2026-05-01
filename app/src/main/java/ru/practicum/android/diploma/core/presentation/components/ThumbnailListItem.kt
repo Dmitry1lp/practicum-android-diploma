@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.core.presentation.components
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -22,8 +23,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+import coil3.ImageLoader
+import coil3.compose.AsyncImage
+import coil3.network.NetworkHeaders
+import coil3.network.httpHeaders
+import coil3.request.ImageRequest
+import org.koin.compose.koinInject
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.ui.theme.AppDimensions
 import ru.practicum.android.diploma.app.ui.theme.AppTypography
@@ -40,6 +45,27 @@ fun ThumbnailListItem(
 
 ) {
     val shape = remember { RoundedCornerShape(AppDimensions.ThumbnailListItem.imageCornerRadius) }
+    val imageLoader: ImageLoader = koinInject()
+
+    /**
+     * Заголовки HTTP-запросов.
+     *
+     * Формат User-Agent (согласно [официальной политике](https://foundation.wikimedia.org/wiki/Policy:Wikimedia_Foundation_User-Agent_Policy)):
+     * ```
+     * <client name>/<version> (<contact information>) <library/framework>/<version>
+     * ```
+     *
+     * В данном случае:
+     * - `Practicum-Android-Diploma/1.0`
+     * - `(https://android-diploma.education-services.ru/)`
+     * - `Coil3/3.4.0`
+     */
+    val headers = NetworkHeaders.Builder()
+        .add(
+            key = "User-Agent",
+            value = "Practicum-Android-Diploma/1.0 (https://android-diploma.education-services.ru/) Coil3/3.4.0"
+        )
+        .build()
 
     Row(
         modifier = modifier
@@ -56,16 +82,20 @@ fun ThumbnailListItem(
                         shape = shape
                     )
                 }
-                .clip(shape).padding(AppDimensions.paddingVerySmall),
+                .clip(shape)
+                .padding(AppDimensions.paddingVerySmall),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(model)
-                .addHeader("User-Agent", "Mozilla/5.0")
+                .httpHeaders(headers)
                 .build(),
+            imageLoader = imageLoader,
             contentDescription = imageContentDescription,
             placeholder = painterResource(R.drawable.ic_placeholder_32),
             error = painterResource(R.drawable.ic_placeholder_32),
             contentScale = ContentScale.Fit,
-            onError = {
+            onError = { error ->
+                val throwable = error.result.throwable
+                Log.e("SVG", throwable.message, throwable)
             }
         )
 
